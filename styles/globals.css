@@ -1,50 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 .body{
     display: flex;
-    justify-content: center;
+    
     align-items: center;
     flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.navbar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 500px;
-   
-}
-
-.nav-links{
-    display: flex;
-    align-items: center;
-    width: fit-content;
-    gap: 32px;
+    font-family:  Helvetica;
     margin: 0px;
-    padding: 0px;
-    
+    background-color: black;
 }
 
-.navbar ul{
-    list-style: none;
-}
-
-.nav-logo{
-    display: flex;
-    width: fit-content;
-    align-items: center;
-    gap: 32px;
-}
 .prm-btn{
     background-color: oklch(74.6% 0.16 232.661) ;
+    width: 120px;
     padding: 8px 16px;
     color: black;
     border: 0;
+    border-radius: 4px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     
@@ -57,9 +37,11 @@
 
 .sec-btn{
     background-color: black ;
+    width: 120px;
     padding: 8px 16px;
     color: white;
     border: 1px solid white;
+    border-radius: 4px;
      font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     
@@ -69,36 +51,6 @@
     background-color: white;
     color: black;
     border: 1px solid black;
-}
-
-
-
-
-
-.hero{
-    margin-top: 0px;
-    width: 100vw;
-    height: 90vh;
-}
-
-.hero-heading{
-    
-    font-size: 72px;
-    margin: 10px;
-    width: 1280px;
-}
-
-.hero-caption{
-    width: 800px;
-}
-
-
-.hero-btn{
-    display: flex;
-    gap: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 200;
-    margin-top: 20px;
 }
 
 .flex-center{

@@ -1,0 +1,21 @@
+.info-card{
+    display: flex;
+    flex-direction: column;
+    max-width: 590px;
+    min-height: 450px;
+    height: auto;
+    padding: 50px;
+    gap: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+}
+
+.heading h3{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.para{
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7) ;
+}

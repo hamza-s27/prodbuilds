@@ -1,0 +1,44 @@
+.sec4-bg{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height:fit-content;
+    background-color: white;
+    justify-content: center;
+}
+
+.sec4-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 800px;
+    padding: 80px 0px;
+    gap: 36px;
+
+}
+
+.sec4-heading h2{
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.sec4-img{
+     display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 32px;
+
+}
+
+.sec4-img img{
+    width: 100%;
+}
+
+.sec4-button{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

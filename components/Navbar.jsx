@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Button from "./Button";
+import "../styles/navbar.css";
 
 const Navbar = () => {
   return (
@@ -21,7 +22,7 @@ const Navbar = () => {
         <Button
           title="Get Started"
           type="submit"
-          className="prm-btn rounded-full "
+          className="prm-btn "
         ></Button>
       </div>
     </div>

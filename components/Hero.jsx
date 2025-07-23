@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Button from "./Button";
+import "../styles/hero.css";
+
 
 const Hero = () => {
   const getStarted = () => {
@@ -11,11 +13,12 @@ const Hero = () => {
   };
 
   return (
-    <section>
-      // hero section start
+    <section className="hero-bg">
+      
+      {/* hero section start  */}
       <div className=" hero flex flex-col justify-center items-center text-center">
         {/* hero text and buttons */}
-        <div className="flex flex-col justify-center items-center text-center">
+        <div className="hero-content flex flex-col items-center text-center">
           <div className="flex flex-col justify-center items-center text-center">
             <h1 className="hero-heading">
               Build beautiful native mobile applications for your business
@@ -33,15 +36,25 @@ const Hero = () => {
               onClick={getStarted}
               type="submit"
               title="Get Started"
-              className=" prm-btn rounded-full"
+              className=" prm-btn"
             ></Button>
             <Button
               onClick={bookDemo}
               type="submit"
               title="Book a Demo"
-              className="sec-btn rounded-full"
+              className="sec-btn"
             ></Button>
           </div>
+        </div>
+        <div className="client-logo">
+          <img src="/assets/pepsi.png"></img>
+          <img src="/assets/pepsi.png"></img>
+          <img src="/assets/pepsi.png"></img>
+          <img src="/assets/pepsi.png"></img>
+          <img src="/assets/pepsi.png"></img>
+          <img src="/assets/pepsi.png"></img>
+          
+       
         </div>
         {/* more divs below this */}
       </div>
