@@ -31,7 +31,8 @@
     width: fit-content;
     gap: 32px;
     margin: 0px;
-    font-weight: lighter ;
+    font-weight: 500;
+    font-size: 18px;
     
     
 }
@@ -47,4 +48,61 @@
     width: fit-content;
     align-items: center;
     gap: 52px;
+}
+
+.navbar-short{
+    display: none;
+    position: fixed;
+    top: 0;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 999;
+    height: 60px;
+    color: aliceblue;
+    width: 100vw;
+    
+    padding: 10px 32px;
+    background-color: black;
+    
+    
+    height: fit-content;
+    
+    
+    color: aliceblue;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    
+    backdrop-filter: blur(8px); /* Optional for modern effect */
+
+
+}
+
+.side-bar{
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 250px;
+    height: 30vh;
+    background-color: black;
+    top: 0;
+    right: 0;
+    padding: 30px 20px;
+    list-style: none;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+@media (max-width: 1000px) {
+
+.navbar-short{
+    display: flex;
+    
+}
+
+.navbar{
+    display: none;
+}
+
 }

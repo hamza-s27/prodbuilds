@@ -18,8 +18,8 @@ const Hero = () => {
       {/* hero section start  */}
       <div className=" hero flex flex-col justify-center items-center text-center">
         {/* hero text and buttons */}
-        <div className="hero-content flex flex-col items-center text-center">
-          <div className="flex flex-col justify-center items-center text-center">
+        <div className=" flex flex-col items-center text-center">
+          <div className="hero-content">
             <h1 className="hero-heading">
               Build beautiful native mobile applications for your business
               without coding a single thing

@@ -1,14 +1,20 @@
 
 .hero{
     
-    width: 100vw;
+    width: 100%;
     height: fit-content;
 }
 
 .hero-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     margin-top: 250px;
     max-width: 1200px;
     padding: 0px 32px;
+    height: fit-content;
 
 }
 
@@ -17,7 +23,8 @@
     font-size: 72px;
     font-weight: 500;
     margin: 0px;
-    
+    width: 100%;
+    max-width: 1200px;
     
     height: fit-content;
     color: aliceblue;
@@ -28,7 +35,7 @@
     font-weight: 100;       
     text-align: center;
     line-height: 150%;
-    width: 800px;
+    max-width: 800px;
     height: fit-content;
     margin-top: 25px;
     
@@ -73,4 +80,48 @@
     
     height: 60px;
     width: 150px;
+}
+
+@media (max-width: 480px) {
+
+.hero-content{
+    width: 100vw;
+    margin-top: 100px;
+    padding: 0px 20px;
+}
+
+.hero-heading{
+    
+    font-size: 44px !important;
+    font-weight: 500;
+    margin: 0px;
+    width: 100%;
+    max-width: 450px;
+    
+    height: fit-content;
+    color: aliceblue;
+}
+
+.hero-caption{
+    max-width: 450px;
+}
+
+    
+}
+
+@media (max-width: 900px) {
+    .hero-content{
+        margin-top: 150px;
+        width: 100vw;
+    }
+
+    .hero-heading{
+        font-size: 52px;
+        width: 100%;
+        max-width: 900px;
+        height: auto;
+
+
+    }
+    
 }
