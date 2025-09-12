@@ -27,7 +27,10 @@
     max-width: 1200px;
     
     height: fit-content;
-    color: aliceblue;
+    background: linear-gradient(rgb(141, 21, 141),rgba(22, 31, 159, 1));
+    background-clip: text;
+    color: transparent;
+
 }
 
 .hero-caption{
@@ -99,7 +102,9 @@
     max-width: 450px;
     
     height: fit-content;
-    color: aliceblue;
+    background: linear-gradient(rgb(141, 21, 141),rgba(22, 31, 159, 1));
+    background-clip: text;
+    color: transparent;
 }
 
 .hero-caption{

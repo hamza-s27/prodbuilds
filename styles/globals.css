@@ -8,13 +8,14 @@
   box-sizing: border-box;
 }
 
-.body{
+body {
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family:  Helvetica;
+    font-family: Helvetica;
     margin: 0px;
     background-color: black;
+    overflow-x: hidden;
 }
 
 .prm-btn{

@@ -10,6 +10,7 @@
 
 .sec2-main{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     padding-top: 80px;
     padding-bottom: 80px;
@@ -22,6 +23,19 @@
 
 }
 
+.sec2-main h2{
+    font-size: 40px ;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.sec2-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
 .sec2-content{
     display: flex;
     flex-direction: column;
@@ -29,30 +43,141 @@
     align-items: flex-start;
     width: 100%;
     max-width: 550px;
+    min-height: 500px;
     height: auto;
     padding-right: 0px;
     padding-left: 60px;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 75px;
+    padding-bottom: 60px;
+}
+
+
+
+.sec2-content h4{
+    color: rgb(161, 2, 2);
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0px;
+    padding-bottom:12px ;
 }
 
 .sec2-image{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     height: auto;
-    padding: 24px;
+    padding: 20px;
 }
 
 .sec2-image img{
     max-width: 100%;
     height: auto;
-    display: block;
+    /* display: block; */
 }
 
 .sec2-content h2{
     font-size: 30px;
     font-weight: 500;
+}
+
+.scroll-arrow p{
+    margin: 0px;
+}
+
+/* small card css below */
+
+.sc{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 20px;
+    padding-right: 24px;
+}
+
+
+
+.sc-content{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-between;
+    
+    height: fit-content;
+
+}
+
+.sc-content p{
+    font-size: 16px;
+    font-weight: lighter;
+    color: oklch(55.1% 0.027 264.364);
+    margin: 0px;
+    padding: 0px;
+}
+
+.sc-content h3{
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0px;
+    padding-bottom: 12px;
+}
+
+/* repsonive css for section 2 below */
+
+@media (max-width: 768px) {
+    
+    .sec2-main{
+        justify-content: center;
+    }
+
+    .sec2-main h2{
+        font-size: 28px ;
+        text-align: center;
+        margin-left: 0px;
+    }
+
+    .sec2-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center !important;
+        padding: 0px;
+        
+        
+
+    }
+    .sec2-content {
+        max-width: 100%;
+        padding: 12px;
+        text-align: center;
+        align-items: center;
+        width: 100vw;
+        min-height: auto;
+        justify-content: center;
+    }
+    
+    .sec2-image{
+        justify-content: center;
+        width: 100vw;
+        
+    }
+    
+    .sec2-image img{
+        width: 100vw;
+        padding: 10px;
+    }
+
+    .sc{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .sc-content{
+        align-items: center;
+        
+    }
 }

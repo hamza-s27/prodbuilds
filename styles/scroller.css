@@ -1,0 +1,138 @@
+.logo-scroller-container {
+            width: 100vw;
+            /* max-width: 1200px; */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 0px;
+            padding: 40px 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroller-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .scroller-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .scroller-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .logo-scroller {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .logo-track {
+            display: flex;
+            animation: scroll-rtl 20s linear infinite;
+            will-change: transform;
+        }
+
+        .logo-track:hover {
+            animation-play-state: paused;
+        }
+
+        .logo-item {
+            flex: 0 0 auto;
+            width: 180px;
+            height: 100px;
+            margin: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-item img {
+            max-width: 80%;
+            max-height: 60%;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .logo-item:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Create seamless loop by duplicating the logos */
+        @keyframes scroll-rtl {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo-item {
+                width: 140px;
+                height: 80px;
+                margin: 0 20px;
+            }
+            
+            .scroller-header h2 {
+                font-size: 24px;
+            }
+            
+            .logo-scroller-container {
+                padding: 30px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-item {
+                width: 120px;
+                height: 70px;
+                margin: 0 15px;
+            }
+            
+            .logo-track {
+                animation-duration: 15s;
+            }
+        }
+
+        /* Fade edges for smooth visual effect */
+        .logo-scroller::before,
+        .logo-scroller::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .logo-scroller::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .logo-scroller::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0.2), transparent);
+        }

@@ -27,8 +27,6 @@ const Navbar = () => {
     <div className="navbar">
       <div className="nav-logo">
         <img src="www.google.com" alt="prodbuilds logo"></img>
-      </div>
-      <div>
         <ul className="nav-links">
           <li>Solutions</li>
           <li>Products</li>
@@ -36,10 +34,9 @@ const Navbar = () => {
           <li>Resources</li>
         </ul>
       </div>
+      
       <div className="nav-links">
-        <ul>
-          <li>Login</li>
-        </ul>
+        
         <Button
           title="Get Started"
           type="submit"

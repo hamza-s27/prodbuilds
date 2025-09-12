@@ -1,0 +1,293 @@
+.container-service-bg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    padding: 80px 32px;    
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.container-service{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1184px; /* Fixed: Use max-width instead of fixed width */
+    align-items: center;
+    padding: 0px 32px;
+    box-sizing: border-box;
+}
+
+.heading{
+    padding-bottom: 62px;
+}
+
+.heading h2{
+    font-size: 40px;
+    font-weight: 500;
+}
+
+.heading p{
+    font-size: 18px;
+    width: 65%;
+    color: #8c8c8c;
+}
+
+.button-div{
+    display: flex;
+    justify-content: center;
+    padding: 4px 16px;
+}
+
+.services-buttons{
+    border: 0px;
+    background:#ffffff;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8c8c8c;
+    text-transform: uppercase;
+}
+
+.services-buttons:hover{
+    color: red;
+}
+
+.service-card-container{
+    display: grid;
+    width: 100%;
+    height: auto;
+    padding-top: 28px;
+    row-gap: 1rem;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.inner-grid1{
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 1rem;
+}
+
+.inner-grid2{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduced min-width */
+    gap: 1rem;
+}
+
+/* SERVICE CARD COMPONENT CSS */
+.serviceCard{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 300px; /* Reduced from 358px */
+    max-height: 300px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.service-container{
+    margin-bottom: 30px;
+}
+
+.service-content{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 12px;
+}
+
+.service-header{
+    position: relative;
+    z-index: 1;
+}
+
+.service-header h4{
+    font-size: 24px;
+    font-weight: 500;
+    color: #000000;
+    margin: 0px;
+    padding: 32px 32px 0 32px;
+    z-index: 1;
+}
+
+.service-content p{
+    font-size: 20px;
+    font-weight: 400;
+    color: #8c8c8c;
+    padding: 8px 32px 0 32px;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.service-image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 400px !important;
+    bottom: 240px;
+    background-color: #edeff1;
+    width: 100%;
+    transition: opacity 0.4s ease;
+    box-sizing: border-box;
+}
+
+.service-image img{
+    padding-left: 50px;
+    max-width: 100%; /* Fixed: Removed 110% overflow */
+    height: auto;
+}
+
+.serviceCard:hover .service-image{
+    opacity: 0;
+}
+
+/* TABLET STYLES */
+@media (max-width: 1024px) {
+  .container-service-bg {
+    padding: 80px 16px;
+  }
+  
+  .container-service {
+    padding: 0 16px;
+  }
+  
+  .inner-grid1,
+  .inner-grid2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .serviceCard {
+    min-width: 100vw;
+    max-height: 340px;
+  }
+  
+  .service-content p {
+    padding: 8px 16px 0 16px;
+    font-size: 18px;
+  }
+  
+  .service-header h4 {
+    padding: 32px 16px 0 16px;
+    font-size: 22px;
+  }
+  
+  .service-image {
+    min-height: 220px !important;
+    bottom: 120px;
+  }
+  
+  .service-image img {
+    padding-left: 16px;
+  }
+}
+
+/* MOBILE STYLES */
+@media (max-width: 768px) {
+  .container-service-bg {
+    padding: 40px 8px;
+  }
+  
+  .service-card-container {
+    justify-content: center;
+   
+    
+  }
+
+  .container-service {
+    padding: 0 8px;
+  }
+  
+  .serviceCard {
+   
+    
+    
+    width: 100%;
+    min-width: 280px;
+    max-width: 500px;
+    max-height: 360px;
+    margin: 0 auto 20px auto;
+    
+
+
+    /* min-width: 350px;
+    max-height: 360px;
+    margin: 0px 20px; */
+  }
+  
+  .service-content p {
+    padding: 8px 12px 0 12px;
+    font-size: 16px;
+  }
+  
+  .service-header h4 {
+    padding: 32px 12px 0 12px;
+    font-size: 20px;
+  }
+  
+  .service-image {
+    min-height: 400px !important;
+    bottom: 150px;
+  }
+  
+  .service-image img {
+    padding-left: 12px;
+  }
+  
+  .heading{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding-bottom: 32px;
+    
+  }
+
+  .heading h2 {
+    width: 85vw;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .heading p {
+    width: 75vw;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 500px){
+
+    .serviceCard {
+   
+    
+    
+    width: 100%;
+    min-width: 280px;
+    max-width: 300px;
+    max-height: 300px;
+    margin: 0 auto 20px auto;
+    
+
+
+    /* min-width: 350px;
+    max-height: 360px;
+    margin: 0px 20px; */
+  }
+
+ .service-image {
+    min-height: 400px !important;
+    bottom: 190px;
+  }  
+
+  .service-image img {
+    width: 200%;
+  }
+
+}

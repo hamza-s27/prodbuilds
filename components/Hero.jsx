@@ -2,6 +2,7 @@
 import React from "react";
 import Button from "./Button";
 import "../styles/hero.css";
+import Scroller from "./Scroller";
 
 
 const Hero = () => {
@@ -21,14 +22,13 @@ const Hero = () => {
         <div className=" flex flex-col items-center text-center">
           <div className="hero-content">
             <h1 className="hero-heading">
-              Build beautiful native mobile applications for your business
-              without coding a single thing
+              Innovate.
+              Collaborate.
+              Build.
             </h1>
 
             <p className="hero-caption">
-              Prodbuilds powerful and easy to use mobile app builder helps
-              businesses create mobile apps for iOS & Android in a fraction of
-              the time and cost.
+              Product development studio with an AI-driven customer-centric approach.
             </p>
           </div>
           <div className="hero-btn">
@@ -57,6 +57,7 @@ const Hero = () => {
        
         </div>
         {/* more divs below this */}
+        <Scroller></Scroller>
       </div>
     </section>
   );
