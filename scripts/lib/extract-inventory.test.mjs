@@ -63,9 +63,9 @@ describe("extractInventory", () => {
   });
 
   it("names the problem when JSON-LD is malformed", () => {
-    expect(() =>
-      extractInventory(`<script type="application/ld+json">{oops</script>`),
-    ).toThrow(/Malformed JSON-LD/);
+    expect(() => extractInventory(`<script type="application/ld+json">{oops</script>`)).toThrow(
+      /Malformed JSON-LD/,
+    );
   });
 
   it("returns nulls for missing metadata", () => {

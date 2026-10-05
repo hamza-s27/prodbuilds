@@ -22,9 +22,7 @@ export function extractAssets(html) {
     ...scriptTags.map((tag) => attr(tag, "src")),
     ...linkTags.filter((tag) => SCRIPT_PRELOAD.test(tag)).map((tag) => attr(tag, "href")),
   ];
-  const styles = linkTags
-    .filter((tag) => /\brel="stylesheet"/i.test(tag))
-    .map((tag) => attr(tag, "href"));
+  const styles = linkTags.filter((tag) => /\brel="stylesheet"/i.test(tag)).map((tag) => attr(tag, "href"));
   return {
     scripts: unique(scripts.filter(isLocal)),
     styles: unique(styles.filter(isLocal)),
@@ -63,8 +61,6 @@ export function evaluateBudgets(measurements, budgets) {
     ];
     const missing = checks.find((check) => typeof check.limitKb !== "number");
     if (missing) throw new Error(`No ${missing.metric} budget for ${route} in budgets.json`);
-    return checks
-      .filter((check) => check.actualKb > check.limitKb)
-      .map((check) => ({ route, ...check }));
+    return checks.filter((check) => check.actualKb > check.limitKb).map((check) => ({ route, ...check }));
   });
 }

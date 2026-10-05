@@ -1,0 +1,80 @@
+/* Design tokens: "production telemetry" (docs/redesign-plan.md §2). */
+:root {
+  /* Palette (carried over from prodbuilds.com, extended) */
+  --brand-bg: #0c0c0f;
+  --brand-surface: #141419;
+  --brand-surface-2: #1b1b22;
+  --brand-teal: #1cb495;
+  --brand-teal-dim: #138a72;
+  --brand-teal-glow: rgb(28 180 149 / 0.35);
+  --brand-text: #ecebe6;
+  --brand-body: #c8c7c2;
+  --brand-muted: #8b8b94;
+  --brand-border: #24242d;
+  --brand-hairline: rgb(236 235 230 / 0.08);
+  --brand-field: #62626c;
+  --brand-bad: #ff6b5b;
+
+  /* shadcn semantic mapping */
+  --background: var(--brand-bg);
+  --foreground: var(--brand-text);
+  --body: var(--brand-body);
+  --card: var(--brand-surface);
+  --card-foreground: var(--brand-text);
+  --popover: var(--brand-surface);
+  --popover-foreground: var(--brand-text);
+  --primary: var(--brand-teal);
+  --primary-foreground: var(--brand-bg);
+  --secondary: var(--brand-surface);
+  --secondary-foreground: var(--brand-text);
+  --muted: var(--brand-surface);
+  --muted-foreground: var(--brand-muted);
+  --accent: var(--brand-border);
+  --accent-foreground: var(--brand-text);
+  --destructive: var(--brand-bad);
+  --border: var(--brand-border);
+  --input: var(--brand-field);
+  --ring: var(--brand-teal);
+  --chart-1: var(--brand-teal);
+  --chart-2: #5fd3bb;
+  --chart-3: var(--brand-teal-dim);
+  --chart-4: var(--brand-muted);
+  --chart-5: var(--brand-field);
+  --radius: 0.625rem;
+  --sidebar: var(--brand-surface);
+  --sidebar-foreground: var(--brand-text);
+  --sidebar-primary: var(--brand-teal);
+  --sidebar-primary-foreground: var(--brand-bg);
+  --sidebar-accent: var(--brand-border);
+  --sidebar-accent-foreground: var(--brand-text);
+  --sidebar-border: var(--brand-border);
+  --sidebar-ring: var(--brand-teal);
+
+  /* Type scale */
+  --text-hero: clamp(2.75rem, 1.1rem + 6.2vw, 6.75rem);
+  --text-h1: clamp(2.5rem, 1.3rem + 4.2vw, 5rem);
+  --text-h2: clamp(2rem, 1.2rem + 3vw, 3.75rem);
+  --text-h3: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-base: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  --text-hud: 0.75rem;
+  --stretch-display: 118%;
+
+  /* Spacing rhythm: deliberately uneven */
+  --gutter: clamp(1rem, 4vw, 5rem);
+  --space-section: clamp(4rem, 2.5rem + 5vw, 8rem);
+  --space-section-major: clamp(6rem, 3rem + 8vw, 12rem);
+  --header-h: 4rem;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* Textures (static, no JS) */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}

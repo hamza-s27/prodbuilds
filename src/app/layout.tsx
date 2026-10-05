@@ -1,45 +1,44 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Mono, Roboto } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SkipLink } from "@/components/layout/SkipLink";
+import { SITE_NAME, SITE_URL, THEME_COLOR } from "@/content/site";
 import "./globals.css";
 
-const roboto = Roboto({
-  variable: "--font-roboto",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+  preload: false,
 });
 
-const TITLE = "ProdBuilds | Backend, Cloud & AI Software Development";
-const DESCRIPTION =
-  "ProdBuilds designs and builds backend systems, APIs, cloud infrastructure and AI integrations that hold up in production, from a first MVP to the platform you already run.";
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://prodbuilds.com"),
-  title: { default: TITLE, template: "%s | ProdBuilds" },
-  description: DESCRIPTION,
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    url: "/",
-    locale: "en_US",
-    siteName: "ProdBuilds",
-    title: TITLE,
-    description: DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  authors: [{ name: SITE_NAME }],
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: "/apple-touch-icon.png",
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+};
+
+export const viewport: Viewport = {
+  themeColor: THEME_COLOR,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${roboto.variable} ${plexMono.variable} dark h-full antialiased`}
-    >
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable} dark`}>
+      <body className="flex min-h-dvh flex-col">
+        <SkipLink />
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

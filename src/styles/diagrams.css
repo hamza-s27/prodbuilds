@@ -1,0 +1,104 @@
+/* Blog diagrams (SVG classes carried over from the legacy site). */
+.prose .diagram {
+  margin-block: 2.5em;
+  padding: 1.5rem;
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-hud);
+  background: var(--brand-surface);
+}
+
+.prose .diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* :where() keeps this base rule at (0,2,0) so the .d-* rules below win by source order. */
+.prose .diagram :where(text) {
+  fill: var(--brand-body);
+  font-family: var(--font-sans);
+  font-size: 13px;
+}
+
+.prose .diagram figcaption {
+  margin-top: 1rem;
+  color: var(--brand-muted);
+  font-size: 0.9rem;
+}
+
+.diagram .d-note {
+  fill: var(--brand-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.diagram .d-title {
+  fill: var(--brand-teal);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.diagram .d-strong {
+  fill: var(--brand-text);
+}
+.diagram .d-bad {
+  fill: var(--brand-bad);
+}
+.diagram .d-good {
+  fill: var(--brand-teal);
+}
+.diagram .d-ink {
+  fill: var(--brand-bg);
+  font-weight: 700;
+  font-size: 13px;
+}
+.diagram .d-axis {
+  stroke: var(--brand-field);
+  fill: none;
+}
+.diagram .d-guide {
+  stroke: var(--brand-field);
+  stroke-dasharray: 2 3;
+  fill: none;
+}
+.diagram .d-run {
+  fill: var(--brand-teal);
+}
+.diagram .d-dup {
+  fill: var(--brand-bad);
+}
+.diagram .d-lock {
+  fill: color-mix(in oklab, var(--brand-teal) 16%, transparent);
+  stroke: var(--brand-teal);
+}
+.diagram .d-skip {
+  fill: none;
+  stroke: var(--brand-muted);
+  stroke-dasharray: 3 3;
+}
+.diagram .d-gap {
+  fill: color-mix(in oklab, var(--brand-bad) 12%, transparent);
+  stroke: var(--brand-bad);
+  stroke-dasharray: 3 3;
+}
+.diagram .d-overlap {
+  fill: color-mix(in oklab, var(--brand-bad) 10%, transparent);
+  stroke: var(--brand-bad);
+  stroke-dasharray: 4 3;
+}
+.diagram .d-inset {
+  fill: var(--brand-surface);
+  stroke: var(--brand-border);
+}
+.diagram .d-due {
+  stroke: var(--brand-bad);
+  stroke-width: 2;
+}
+.diagram .d-zoom {
+  fill: none;
+  stroke: var(--brand-text);
+}
+.diagram .d-arrow {
+  fill: none;
+  stroke: var(--brand-teal);
+  stroke-width: 1.5;
+}

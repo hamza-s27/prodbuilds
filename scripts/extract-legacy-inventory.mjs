@@ -11,7 +11,10 @@ const pages = readdirSync(HTML_DIR)
   .filter((name) => name.endsWith(".html"))
   .map((name) => {
     try {
-      return { path: pathFromFixtureName(name), ...extractInventory(readFileSync(join(HTML_DIR, name), "utf8")) };
+      return {
+        path: pathFromFixtureName(name),
+        ...extractInventory(readFileSync(join(HTML_DIR, name), "utf8")),
+      };
     } catch (error) {
       throw new Error(`${name}: ${error.message}`);
     }

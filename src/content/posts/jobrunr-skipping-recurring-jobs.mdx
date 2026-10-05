@@ -1,0 +1,110 @@
+<Lede>Three schedulers. One job. Every minute, on the minute. At 03:37 the counters read: Spring 1,076. Quartz 1,076. JobRunr 1,075.</Lede>
+
+Somewhere, a run had vanished. No exception, no warning, nothing in the logs to say it had been skipped.
+
+Our founder found this in 2022 while comparing job schedulers, and reported it to JobRunr as issue #448, with logs and a reproduction. JobRunr’s maintainer fixed it, and the fix shipped in 5.2.0 in September 2022. Here’s how the case unfolded, and why the same mistake is easy to make in any scheduler that polls.
+
+<Stats>
+<Stat value="1,440" tone="plain">runs a day for a job that fires every minute</Stat>
+<Stat value="1" tone="bad">run that silently vanished</Stat>
+<Stat value="0" tone="bad">errors logged about it</Stat>
+</Stats>
+
+<Tldr>
+
+<H2 id="in-short">In short</H2>
+
+- **Affected:** JobRunr before 5.2.0. It was reported against 4.0.9 and also seen on version 5. The current stable line is 8.x.
+- **Cause:** each scheduling pass looked only 15 seconds ahead of the moment it ran, and started 15 seconds after the previous one finished. The windows didn’t join up, and a run due in the gap between two of them was never scheduled.
+- **Fix:** JobRunr now remembers the last run it scheduled and schedules everything from there, so the windows join up, and it even catches up after a long garbage-collection pause.
+- **Lesson:** if your own code polls for due work, anchor each window to where the last one ended, not to “now”.
+
+</Tldr>
+
+<H2 id="how-it-showed-up">The scene: three schedulers, one job</H2>
+
+The test was deliberately boring: one Spring Boot app running the same job three ways, each on the cron expression `0 * * * * *` (every minute, on the minute): Spring’s `@Scheduled`, Quartz, and JobRunr 4.0.9 with in-memory storage. Each job counted its own runs.
+
+Spring and Quartz kept perfect time. Somewhere between 1,000 and 5,000 minutes in, JobRunr’s count slipped one behind. This is the log from the original report, trimmed for width (times in UTC):
+
+```text
+03:34:59.989  JobRunr  C: 1074
+03:35:00.000  Quartz   C: 1074
+03:35:00.000  Spring   C: 1074
+03:35:59.999  JobZooKeeper: Found 1 recurring jobs
+03:36:00.000  Spring   C: 1075
+03:36:00.001  Quartz   C: 1075
+03:36:45.018  JobRunr  C: 1075
+03:37:00.001  Spring   C: 1076
+03:37:00.001  Quartz   C: 1076
+```
+
+<Callout tone="note" label="The clue">
+
+03:35:59.999. A JobRunr scheduling pass, one millisecond before the 03:36 run was due. After it: no 03:36 run.
+
+</Callout>
+
+Read the log closely and it tells the whole story. JobRunr’s 03:35 run started 11 ms early. The pass at 03:35:59.999 came and went, and there was no JobRunr run at 03:36. The run at 03:36:45 was the 03:37 run starting early: before 5.2.0, JobRunr started any job due within the next polling interval. From then on, JobRunr stayed one run behind.
+
+<H2 id="what-caused-it">The culprit: windows that didn’t quite touch</H2>
+
+Before 5.2.0, JobRunr’s scheduler woke up every 15 seconds (the default poll interval) and asked each recurring job two questions: when is your next run after now, and does it fall within the next 15 seconds? If so, it created a scheduled job for it.
+
+Two innocent-looking details made that unreliable:
+
+- **The passes drifted.** They were spaced with a fixed delay: each started 15 seconds after the previous one *finished*, not every 15 seconds by the clock. Every pass that took a few milliseconds pushed the next one a little later.
+- **Each window started at “now”.** A pass covered the 15 seconds after whatever moment it happened to run. Because the passes drifted, one window could end a sliver before the next one began.
+
+A run due in that sliver slipped through. The pass before it said “not due yet”; the pass after it was already past it, so “the next run after now” was a minute away:
+
+<Figure>
+<PollingGapDiagram />
+<Caption>Round numbers for illustration, not from the log. The real miss had the same shape: a pass at 03:35:59.999, and no 03:36 run.</Caption>
+</Figure>
+
+That’s the pattern in the log: a pass one millisecond before 03:36, and no 03:36 run.
+
+<H2 id="the-fix">The fix: start where the last window ended</H2>
+
+The fix, by JobRunr’s maintainer, changed the question. Instead of “what’s due after now?”, JobRunr remembers the last run it scheduled for each recurring job and creates every run from that point up to the end of the current window. Consecutive windows now join up, so there’s no sliver left to fall through.
+
+The same change handles a nastier version of the problem. If a long stop-the-world garbage collection freezes the server for minutes, the next pass creates all the runs it missed instead of quietly moving on. The [5.2.0 release notes](https://github.com/jobrunr/jobrunr/releases/tag/v5.2.0) list it as “Skipping Recurring Jobs due to timedrift”.
+
+<H2 id="are-you-affected">Are you affected?</H2>
+
+- **Check your version.** Anything before 5.2.0 has the bug. In Maven: `mvn dependency:tree -Dincludes=org.jobrunr`.
+- **Upgrade to a current release**, not to 5.2.0 specifically. At the time of writing, the stable line is 8.x (8.8.2 on Maven Central).
+- **If you can’t upgrade yet,** compare how many times a frequent recurring job should have run with how many times it did. A skipped run doesn’t fail, so it leaves no error behind.
+
+<H2 id="the-lesson">The moral: anchor to the last window, not to now</H2>
+
+This isn’t really a JobRunr story. Any code that wakes up every N seconds and asks “what’s due in the next N seconds?” has the same gap, because wake-ups drift: fixed delays, garbage-collection pauses, a busy CPU. A simplified sketch of the idea (not JobRunr’s code):
+
+```java
+// Fragile: each window starts wherever this pass happens to run.
+Instant next = cron.next(now);
+if (next.isBefore(now.plus(pollInterval))) {
+    schedule(job, next);
+}
+
+// Robust: start from the last run you scheduled, so the windows join up.
+Instant from = lastScheduled.getOrDefault(job.id(), now);
+Instant upTo = now.plus(pollInterval);
+for (Instant t = cron.next(from); t.isBefore(upTo); t = cron.next(t)) {
+    schedule(job, t);
+    lastScheduled.put(job.id(), t);
+}
+```
+
+Two more habits help. Make scheduling idempotent: a unique key on the job and its run time means an overlapping pass can’t create the same run twice. And alert on missed runs, not only failed ones: a skipped run never fails, so an error alert will never see it.
+
+If your scheduled jobs also run on more than one instance, you may have [the opposite problem: every run happening twice](/blog/spring-boot-scheduled-jobs-multiple-instances).
+
+<PostFooter>
+
+**About ProdBuilds.** ProdBuilds is a software studio founded by a senior backend engineer. We design and build backend systems, cloud infrastructure and AI features that hold up in production. [Get in touch](/contact) if you’re working on something like this.
+
+<Sources>Sources: [JobRunr 5.2.0 release notes](https://github.com/jobrunr/jobrunr/releases/tag/v5.2.0)</Sources>
+
+</PostFooter>

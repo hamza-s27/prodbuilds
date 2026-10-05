@@ -37,9 +37,7 @@ export default defineConfig({
   },
   projects: [...chromiumProjects, ...crossBrowserProjects],
   webServer: {
-    command: IS_PROD
-      ? "npm run build && node scripts/serve-static.mjs"
-      : "npm run dev",
+    command: IS_PROD ? "npm run build && node scripts/serve-static.mjs" : "npm run dev",
     url: BASE_URL,
     env: { PORT: String(PORT) },
     // A leftover prod server would serve a stale build, so prod always starts fresh.

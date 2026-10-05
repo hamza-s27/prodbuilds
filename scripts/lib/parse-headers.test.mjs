@@ -76,7 +76,9 @@ describe("headersFor", () => {
   });
 
   it("joins a header set by several matching rules with a comma, as Cloudflare does", () => {
-    const joined = parseHeadersFile(`/*\n  Cache-Control: max-age=0\n/static/*\n  Cache-Control: immutable\n`);
+    const joined = parseHeadersFile(
+      `/*\n  Cache-Control: max-age=0\n/static/*\n  Cache-Control: immutable\n`,
+    );
 
     expect(headersFor(joined, "/static/a.js")["cache-control"]).toBe("max-age=0, immutable");
   });

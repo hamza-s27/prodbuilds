@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "../styles/tokens.css";
+@import "../styles/utilities.css";
 
 /* The site is dark-only; <html> carries `.dark` so registry components pick their dark styles. */
 @custom-variant dark (&:is(.dark *));
@@ -8,9 +10,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-roboto);
+  --font-sans: var(--font-archivo);
   --font-mono: var(--font-plex-mono);
-  --font-heading: var(--font-roboto);
+  --font-heading: var(--font-archivo);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -41,6 +43,10 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-body: var(--body);
+  --color-surface-2: var(--brand-surface-2);
+  --color-hairline: var(--brand-hairline);
+  --color-teal-dim: var(--brand-teal-dim);
+  --color-field: var(--brand-field);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -48,72 +54,71 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-hud: 2px;
   --ease-out-expo: var(--ease-out-expo);
-}
-
-/* Brand palette carried over from prodbuilds.com (site.css). */
-:root {
-  --brand-bg: #0c0c0f;
-  --brand-surface: #141419;
-  --brand-teal: #1cb495;
-  --brand-text: #ecebe6;
-  --brand-body: #c8c7c2;
-  --brand-muted: #8b8b94;
-  --brand-border: #24242d;
-  --brand-field: #62626c;
-  --brand-bad: #ff6b5b;
-
-  --background: var(--brand-bg);
-  --foreground: var(--brand-text);
-  --body: var(--brand-body);
-  --card: var(--brand-surface);
-  --card-foreground: var(--brand-text);
-  --popover: var(--brand-surface);
-  --popover-foreground: var(--brand-text);
-  --primary: var(--brand-teal);
-  --primary-foreground: var(--brand-bg);
-  --secondary: var(--brand-surface);
-  --secondary-foreground: var(--brand-text);
-  --muted: var(--brand-surface);
-  --muted-foreground: var(--brand-muted);
-  --accent: var(--brand-border);
-  --accent-foreground: var(--brand-text);
-  --destructive: var(--brand-bad);
-  --border: var(--brand-border);
-  --input: var(--brand-field);
-  --ring: var(--brand-teal);
-  --chart-1: var(--brand-teal);
-  --chart-2: #5fd3bb;
-  --chart-3: #138a72;
-  --chart-4: var(--brand-muted);
-  --chart-5: var(--brand-field);
-  --radius: 0.625rem;
-  --sidebar: var(--brand-surface);
-  --sidebar-foreground: var(--brand-text);
-  --sidebar-primary: var(--brand-teal);
-  --sidebar-primary-foreground: var(--brand-bg);
-  --sidebar-accent: var(--brand-border);
-  --sidebar-accent-foreground: var(--brand-text);
-  --sidebar-border: var(--brand-border);
-  --sidebar-ring: var(--brand-teal);
-
-  /* Motion */
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-  color-scheme: dark;
+  --ease-in-out-quart: var(--ease-in-out-quart);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+    font-size: 100%;
+    scroll-padding-top: calc(var(--header-h) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: var(--text-base);
+    line-height: 1.65;
+    font-variation-settings: "wdth" 100;
+  }
+  /* Fixed atmosphere: faint blueprint grid fading out down the page, plus static grain. */
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  body::before {
+    background-image:
+      linear-gradient(var(--brand-hairline) 1px, transparent 1px),
+      linear-gradient(90deg, var(--brand-hairline) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 20%, transparent 75%);
+    opacity: 0.6;
+  }
+  body::after {
+    background-image: var(--grain);
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    color: var(--brand-text);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--brand-teal);
+    color: var(--brand-bg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--brand-teal);
+    outline-offset: 3px;
+  }
+  /* <main> takes focus from the skip link; a ring around the whole page adds nothing. */
+  main:focus-visible {
+    outline: none;
   }
 }
 

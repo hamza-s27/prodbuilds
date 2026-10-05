@@ -1,0 +1,213 @@
+<Lede>Going once. Going twice. An auction is the rare feature where a few seconds really matter: bids pile up in the final moments, and your backend has to answer two questions exactly. When did it end? And who won?</Lede>
+
+Our founder built the backend for a real-time auction platform on Firebase Functions and Firestore, with event-driven workflows and scheduled jobs. This post is the approach we recommend today for closing auctions on time. The code type-checks against `firebase-functions` 7.4.0 and `firebase-admin` 14.5.0, and we tested it against the Firestore emulator.
+
+<Tldr>
+
+<H2 id="in-short">In short</H2>
+
+- Enforce the end time inside the bid transaction, using the server’s clock. Then a close that runs late can’t let a late bid in.
+- Schedule one Cloud Task per auction, for its end time. Scheduled functions use cron syntax, so they run at most once a minute.
+- Tasks can’t be edited, and a task ID can’t be reused for about an hour. When a bid extends an auction, enqueue a new task and let the old one find nothing to do.
+- Make the close idempotent. In our test, five simultaneous close attempts produced one close and one “closed” event.
+- Keep a slow scheduled sweep as a safety net, and treat `ABORTED` as “try again” on busy auctions.
+
+</Tldr>
+
+<H2 id="why-not-a-sweep">Why a cron sweep closes auctions late</H2>
+
+The obvious approach is a scheduled function that runs every minute and closes whatever has ended. The catch is in the schedule: Firebase’s `onSchedule` takes Unix crontab or App Engine syntax, and cron’s smallest unit is a minute. An auction that ends just after a sweep waits almost a minute for the next one, plus however long the function takes to start. Meanwhile, bidders are staring at an auction that should be over.
+
+A sweep is still useful. It’s the safety net, not the mechanism.
+
+<H2 id="deadline-in-the-transaction">Rule 1: the deadline lives in the bid transaction</H2>
+
+If closing is what stops bids, a close that runs late lets late bids in. So take that job away from the close: check the end time in the same transaction that accepts the bid, using the server’s clock. Client clocks can be minutes off.
+
+```typescript
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
+import { HttpsError } from "firebase-functions/v2/https";
+
+initializeApp();
+const db = getFirestore();
+
+const EXTEND_WINDOW_MS = 30_000; // a bid in the last 30 seconds...
+const EXTEND_TO_MS = 30_000;     // ...moves the end to 30 seconds after that bid
+
+export async function placeBid(auctionId: string, bidderId: string, amount: number) {
+  const ref = db.collection("auctions").doc(auctionId);
+  return db.runTransaction(async (tx) => {
+    const auction = (await tx.get(ref)).data();
+    if (!auction) throw new HttpsError("not-found", "No such auction.");
+    const now = Date.now();
+    const endsAt = auction.endsAt.toMillis();
+    if (auction.status !== "open" || now >= endsAt) {
+      throw new HttpsError("failed-precondition", "This auction has ended.");
+    }
+    if (amount < auction.price + auction.minIncrement) {
+      throw new HttpsError("failed-precondition", "Bid is below the minimum.");
+    }
+    const extended = endsAt - now < EXTEND_WINDOW_MS;
+    const newEndsAt = extended ? now + EXTEND_TO_MS : endsAt;
+    tx.update(ref, {
+      price: amount,
+      leader: bidderId,
+      bidCount: FieldValue.increment(1),
+      endsAt: Timestamp.fromMillis(newEndsAt),
+    });
+    tx.create(ref.collection("bids").doc(), { bidderId, amount, at: Timestamp.fromMillis(now) });
+    return { extended, endsAt: newEndsAt };
+  });
+}
+```
+
+The same transaction runs a soft close: a bid in the last 30 seconds moves the end to 30 seconds after that bid, which takes the fun out of sniping. Bids go through a callable function, so the server always has the final word:
+
+```typescript
+import { onCall, HttpsError } from "firebase-functions/v2/https";
+
+export const bid = onCall<{ auctionId: string; amount: number }>(async (request) => {
+  if (!request.auth) throw new HttpsError("unauthenticated", "Sign in to bid.");
+  const result = await placeBid(request.data.auctionId, request.auth.uid, request.data.amount);
+  if (result.extended) await scheduleClose(request.data.auctionId, result.endsAt);
+  return result;
+});
+```
+
+Clients never write to auctions directly. The Admin SDK in your functions bypasses security rules, so the rules can shut every client write out:
+
+```text
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /auctions/{auctionId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
+```
+
+In our emulator tests, a bid placed after the end was rejected before anything had closed the auction, and a bid 10 seconds before the end moved it to 30 seconds after the bid.
+
+<H2 id="one-task-per-auction">Rule 2: one Cloud Task per auction</H2>
+
+[Task queue functions](https://firebase.google.com/docs/functions/task-functions) put Cloud Tasks behind an ordinary function. You enqueue a task with a `scheduleTime`, and Cloud Tasks calls the function then: seconds after the end, not up to a minute.
+
+```typescript
+import { getFunctions } from "firebase-admin/functions";
+import { createHash } from "node:crypto";
+
+export async function scheduleClose(auctionId: string, endsAtMs: number) {
+  const id = createHash("sha256").update(`${auctionId}:${endsAtMs}`).digest("hex");
+  try {
+    await getFunctions()
+      .taskQueue("closeAuction")
+      .enqueue({ auctionId }, { scheduleTime: new Date(endsAtMs), id });
+  } catch (err) {
+    if ((err as { code?: string }).code !== "functions/task-already-exists") throw err;
+  }
+}
+```
+
+Three details from the Admin SDK’s own documentation shaped that code:
+
+- **Tasks can’t be updated after they’re created.** An extension can’t move the existing task, so each end time gets its own.
+- **An ID can’t be reused for about an hour** after the task runs or is deleted; trying throws `functions/task-already-exists`. Deriving the ID from the auction and its end time makes enqueuing the same close twice harmless.
+- **Sequential IDs slow the queue down.** The documentation warns against IDs with sequential prefixes, such as timestamps, and recommends hashes.
+
+Call `scheduleClose` when an auction is created and whenever a bid extends it. You could delete the superseded task with `taskQueue.delete(id)`, but you don’t need to: when it fires, it sees the end has moved and does nothing.
+
+<Figure>
+<SoftCloseDiagram />
+<Caption>What our emulator test showed: a bid 10 s before the end moved it to 30 s after the bid, and a close attempt after the extension returned `not-due`.</Caption>
+</Figure>
+
+<H2 id="idempotent-close">Rule 3: closing twice must be harmless</H2>
+
+Task queue functions retry failures (up to three attempts by default), a sweep may reach the same auction, and after an extension the old task still fires. The close has to be safe to run any number of times, early or late:
+
+```typescript
+import { onTaskDispatched } from "firebase-functions/v2/tasks";
+
+export async function closeIfDue(auctionId: string): Promise<"closed" | "already-closed" | "not-due"> {
+  const ref = db.collection("auctions").doc(auctionId);
+  return db.runTransaction(async (tx) => {
+    const auction = (await tx.get(ref)).data();
+    if (!auction || auction.status !== "open") return "already-closed";
+    if (Date.now() < auction.endsAt.toMillis()) return "not-due"; // extended: a later task owns it
+    tx.update(ref, { status: "closed", winner: auction.leader ?? null, closedAt: FieldValue.serverTimestamp() });
+    tx.create(db.collection("auctionEvents").doc(`${auctionId}-closed`), {
+      type: "closed", auctionId, winner: auction.leader ?? null, price: auction.price,
+    });
+    return "closed";
+  });
+}
+
+export const closeAuction = onTaskDispatched<{ auctionId: string }>(
+  { retryConfig: { maxAttempts: 5, minBackoffSeconds: 5 } },
+  async (request) => { await closeIfDue(request.data.auctionId); },
+);
+```
+
+Writing the “closed” event in the same transaction as the status change means you can’t close without telling anyone, or tell anyone twice. Emails and push notifications go out from a Firestore trigger on `auctionEvents`. Triggers can also fire more than once, so record what you’ve sent.
+
+In our tests, five simultaneous close attempts returned one `closed` and four `already-closed`, with exactly one event written. A close attempt right after an extension returned `not-due` and changed nothing.
+
+<H2 id="safety-net">Rule 4: keep a sweep as a safety net</H2>
+
+If enqueuing a task ever fails, through a bad deploy, a network error or a bug, nothing else would close that auction. A sweep every few minutes catches it, and because the close is idempotent, it can’t do any damage:
+
+```typescript
+import { onSchedule } from "firebase-functions/v2/scheduler";
+
+export const sweepEndedAuctions = onSchedule("every 5 minutes", async () => {
+  const due = await db.collection("auctions")
+    .where("status", "==", "open")
+    .where("endsAt", "<=", Timestamp.now())
+    .limit(200)
+    .get();
+  await Promise.all(due.docs.map((doc) => closeIfDue(doc.id)));
+});
+```
+
+<Callout tone="bad" label="Gotcha">
+
+This query needs a composite index on `status` and `endsAt`. The emulator doesn’t ask for one. Production does.
+
+</Callout>
+
+<H2 id="busy-auctions">The bidding war: expect ABORTED</H2>
+
+Every bid on an auction writes the same document, so bids on a hot auction queue up behind each other. The Admin SDK retries a contended transaction a few times; after that, the bid fails with `ABORTED`.
+
+So we staged a bidding war: 50 simultaneous bids at one auction, eight times over, in the emulator.
+
+<Stats>
+<Stat value="8/8" tone="good">bursts ended consistent: the price matched the highest accepted bid, and the count matched the bids stored</Stat>
+<Stat value="7/8" tone="good">bursts where every bid was accepted or cleanly rejected as too low</Stat>
+<Stat value="27" tone="bad">bids failed with `ABORTED` in the other burst, including the highest</Stat>
+</Stats>
+
+The emulator handles contention differently from production, so read those numbers as an illustration, not a benchmark. The lesson holds either way: show `ABORTED` to the bidder as “try again”, never as a lost bid, and if an auction really is that busy, consider queueing bids instead.
+
+<H2 id="countdowns">Countdowns are for display</H2>
+
+Show a countdown from the auction’s `endsAt`, and listen to the document so an extension updates it straight away. Just remember: the countdown is theatre; the transaction is the law. A bidder whose clock is ten seconds fast sees the wrong countdown, not a lost bid.
+
+<H2 id="checklist">Checklist</H2>
+
+1. Reject late bids inside the bid transaction, with the server’s clock.
+2. Enqueue one Cloud Task per end time, with a hashed ID.
+3. Make the close idempotent, and write the “closed” event in the same transaction.
+4. Run a slow sweep as a safety net, with its composite index.
+5. Treat `ABORTED` as “try again” in the client.
+
+<PostFooter>
+
+**About ProdBuilds.** ProdBuilds is a software studio founded by a senior backend engineer. We design and build backend systems, cloud infrastructure and AI features that hold up in production. [Get in touch](/contact) if you’re working on something like this.
+
+<Sources>Sources: [Firebase: Enqueue functions with Cloud Tasks](https://firebase.google.com/docs/functions/task-functions) · [Firebase: Schedule functions](https://firebase.google.com/docs/functions/schedule-functions) · [Firestore: Transactions and batched writes](https://firebase.google.com/docs/firestore/manage-data/transactions)</Sources>
+
+</PostFooter>

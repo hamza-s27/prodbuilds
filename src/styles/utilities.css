@@ -1,0 +1,164 @@
+/* Reusable building blocks for the "production telemetry" language. */
+
+/* 12-column page grid with fluid gutters, centred at 1440px. */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+  width: 100%;
+  max-width: calc(1440px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Expanded, heavy display type. */
+@utility display {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  font-variation-settings: "wdth" 118;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+/* Mono HUD label: uppercase, tracked, muted. */
+@utility hud {
+  font-family: var(--font-mono);
+  font-size: var(--text-hud);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--brand-muted);
+}
+
+/* Hairline rule with ruler ticks every 8px and a major tick every 64px. */
+@utility rule-ticks {
+  height: 9px;
+  border-top: 1px solid var(--brand-hairline);
+  background-image:
+    repeating-linear-gradient(90deg, rgb(236 235 230 / 0.16) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(90deg, var(--brand-hairline) 0 1px, transparent 1px 8px);
+  background-size:
+    100% 9px,
+    100% 4px;
+  background-repeat: no-repeat;
+}
+
+/* Primary pill button with a light sweep on hover. */
+@utility btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--brand-teal);
+  color: var(--brand-bg);
+  font-weight: 650;
+  font-variation-settings: "wdth" 108;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-out-expo);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+  &:hover {
+    background: #22c9a6;
+  }
+  &:hover::after {
+    transform: translateX(120%);
+  }
+  &:active {
+    transform: translateY(1px) scale(0.98);
+  }
+  &:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+}
+
+/* Quiet outlined pill. */
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 1.125rem;
+  border: 1px solid var(--brand-border);
+  border-radius: 999px;
+  color: var(--brand-text);
+  font-weight: 550;
+  transition:
+    border-color var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+  &:hover {
+    border-color: var(--brand-teal);
+    color: var(--brand-teal);
+  }
+}
+
+/* Underline drawn from the left on hover / focus. */
+@utility link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size var(--duration-normal) var(--ease-out-expo);
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+/* Inline prose link: always underlined, teal on hover. */
+@utility link-inline {
+  color: var(--brand-text);
+  text-decoration: underline;
+  text-decoration-color: var(--brand-teal-dim);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--duration-fast) ease;
+  &:hover {
+    color: var(--brand-teal);
+  }
+}
+
+/* Raised surface: hairline border plus a 1px top highlight. */
+@utility surface {
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-border);
+  box-shadow: inset 0 1px 0 rgb(236 235 230 / 0.05);
+}
+
+/* Scroll reveal: CSS view timelines only. Content is visible without support,
+   without JS and with reduced motion. */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

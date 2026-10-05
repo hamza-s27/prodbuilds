@@ -1,0 +1,4 @@
+{
+  "$comment": "Google Apps Script web app the lead forms post to. Public (it is in the page HTML). Also read by scripts/lib/security-headers.mjs to pin CSP connect-src / form-action.",
+  "url": "https://script.google.com/macros/s/AKfycbxRwhLF04aUZvjiJbB_5My3y6YxJWs32DIEcuHW-FgYFEebn6h6K6DI6Ho6mvDNpzFMPw/exec"
+}

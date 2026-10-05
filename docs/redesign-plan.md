@@ -5,6 +5,7 @@ This is a plan only. I made no code edits.
 Project root: `/Users/hamzashirazi/Documents/Web Development Projects/Prodbuilds` (paths below are relative to it).
 
 **Files I read**
+
 - `CLAUDE.md`, `AGENTS.md`, `next.config.ts`, `package.json`, `tsconfig.json`, `components.json`
 - `src/app/layout.tsx`, `src/app/globals.css`, `src/app/page.tsx`, `src/lib/utils.ts`
 - `playwright.config.ts`, `tests/e2e/home.spec.ts`
@@ -48,6 +49,7 @@ These came from reading the code and the crawl. Each one is a real constraint.
 ## 1. Requirements
 
 **Pages and URLs**
+
 - Rebuild prodbuilds.com as an animated, static-export Next 16 site on Cloudflare, keeping every URL:
   - `/`, `/services` (anchors `#backend #scaling #cloud #product #automation #ai`), `/how-we-work`, `/contact`, `/privacy`, `/terms`, `/blog`
   - 3 posts at `/blog/<slug>`, each with its heading anchors
@@ -56,10 +58,12 @@ These came from reading the code and the crawl. Each one is a real constraint.
 - Keep the copy close to word-for-word. It should still read as one engineer talking to another. All content lives in typed data or MDX modules, not in JSX.
 
 **Lead form**
+
 - One shared progressive-enhancement component, used in 3 places (home hero, home final CTA, contact).
 - Without JS it does a plain POST to Apps Script. With JS it uses fetch `no-cors` + URLSearchParams, a 20 s abort, an `aria` status region, and falls back to `mailto:hello@prodbuilds.com`.
 
 **Signature effects**
+
 - Home hero: an ogl LightPillar with particles, 4 principle chips joined by hairlines, and a static poster fallback.
 - Services: "dive through the stack" with a depth gauge, DecryptedText HUD labels and Animated Beams, using GSAP ScrollTrigger + Lenis.
 - Also: process pipeline, data-fact counters, stack marquee, findings terminal, FAQ, and a Border Beam on forms.
@@ -67,6 +71,7 @@ These came from reading the code and the crawl. Each one is a real constraint.
 - Blog: a strong reading experience with highlighting done at build time and very little motion.
 
 **Constraints**
+
 - Home: 150 kb gz JS and 30 kb CSS at most. LCP under 2.5 s, INP under 200 ms, CLS under 0.1.
 - Heavy libraries load lazily and only on the pages that use them.
 - Full reduced-motion support, AA contrast, keyboard access, semantic HTML.
@@ -79,6 +84,7 @@ These came from reading the code and the crawl. Each one is a real constraint.
 ## 2. Design direction and system
 
 **Direction: "Production telemetry".** The visual language of ops tooling, done with editorial restraint:
+
 - mono HUD labels, hairline rules, faint blueprint grid with static grain;
 - teal signal paths that show where data flows;
 - status colours used for meaning.
@@ -86,6 +92,7 @@ These came from reading the code and the crawl. Each one is a real constraint.
 It deliberately avoids gradient blobs, uniform card grids and default shadcn looks. It is original work inspired by Beacon, Abyssal and Halide; no Scrolltide code or prompts.
 
 **Palette (extends the existing `--brand-*` tokens in `src/app/globals.css`)**
+
 - Keep: bg `#0C0C0F`, surface `#141419`, teal `#1CB495`, text `#ECEBE6`, body `#C8C7C2`, muted `#8B8B94`, border `#24242D`, field `#62626C`, bad `#FF6B5B`.
 - Add:
   - `--brand-surface-2: #1B1B22` (raised layer)
@@ -103,31 +110,33 @@ It deliberately avoids gradient blobs, uniform card grids and default shadcn loo
   - muted on bg: about 5.8:1
   - field border on bg: about 3.2:1 (passes 1.4.11 for UI components)
 
-**Typography (needs your decision, see Open questions).** The rules allow at most 2 families, so a new display face has to *replace* Roboto, not join it.
+**Typography (needs your decision, see Open questions).** The rules allow at most 2 families, so a new display face has to _replace_ Roboto, not join it.
 
-| Option | Pairing | Character | Font cost |
-|---|---|---|---|
+| Option              | Pairing                                                | Character                                                                                                                                                                          | Font cost                                             |
+| ------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | **A (recommended)** | **Archivo variable (`wght` + `wdth`)** + IBM Plex Mono | Expanded width (about 115–125) at 700–800 for display gives an industrial, infrastructure feel. Normal width at 400 for body. One family gives strong contrast in scale and width. | About 1 variable file (latin subset) + 2 mono weights |
-| B | IBM Plex Sans variable + IBM Plex Mono | Same superfamily, very coherent, engineering heritage, less distinctive | Similar |
-| C | Keep Roboto + Plex Mono | No brand risk, but generic (the design rules ban default-looking type) | Current |
+| B                   | IBM Plex Sans variable + IBM Plex Mono                 | Same superfamily, very coherent, engineering heritage, less distinctive                                                                                                            | Similar                                               |
+| C                   | Keep Roboto + Plex Mono                                | No brand risk, but generic (the design rules ban default-looking type)                                                                                                             | Current                                               |
 
 Type scale:
 
-| Role | Size | Line-height / spacing |
-|---|---|---|
-| `--text-hero` | `clamp(2.75rem, 1.1rem + 6.2vw, 6.75rem)` | tracking -0.035em, line-height 0.95 |
-| `--text-h2` | `clamp(2rem, 1.2rem + 3vw, 3.75rem)` | — |
-| `--text-h3` | `clamp(1.25rem, 1rem + 0.8vw, 1.625rem)` | — |
-| `--text-base` | `clamp(1rem, 0.94rem + 0.3vw, 1.125rem)` | line-height 1.65; prose measure 68ch |
-| `--text-hud` | 0.75rem mono, uppercase | tracking 0.14em |
+| Role          | Size                                      | Line-height / spacing                |
+| ------------- | ----------------------------------------- | ------------------------------------ |
+| `--text-hero` | `clamp(2.75rem, 1.1rem + 6.2vw, 6.75rem)` | tracking -0.035em, line-height 0.95  |
+| `--text-h2`   | `clamp(2rem, 1.2rem + 3vw, 3.75rem)`      | —                                    |
+| `--text-h3`   | `clamp(1.25rem, 1rem + 0.8vw, 1.625rem)`  | —                                    |
+| `--text-base` | `clamp(1rem, 0.94rem + 0.3vw, 1.125rem)`  | line-height 1.65; prose measure 68ch |
+| `--text-hud`  | 0.75rem mono, uppercase                   | tracking 0.14em                      |
 
 **Spacing rhythm.** Spacing is deliberately uneven:
+
 - `--space-section-major: clamp(6rem, 3rem + 8vw, 12rem)` after the hero and before the final CTA.
 - `--space-section: clamp(4rem, 2.5rem + 5vw, 8rem)` elsewhere.
 - Spacing inside a cluster stays tight, on an 8 px base.
 - Layout is a 12-column grid. Content is offset (starts at column 2 or 3) for editorial asymmetry. Hero visuals break the grid and overlap into the next section.
 
 **Depth.** Three planes:
+
 1. Background: grid, grain, WebGL.
 2. Middle: surfaces with a 1 px hairline border and a 1 px top inner highlight.
 3. Front: HUD labels and chips.
@@ -135,6 +144,7 @@ Type scale:
 Shadows are neutral for elevation. Teal glow is reserved for the active or focused element. Radii vary on purpose: 2 px for HUD, chips and code; 10 px for forms and surfaces; full pill for primary buttons only.
 
 **Interaction states**
+
 - Primary button:
   - hover: brighter, with a beam sweeping across via a transformed pseudo-element;
   - active: `translateY(1px) scale(.98)`;
@@ -143,6 +153,7 @@ Shadows are neutral for elevation. Teal glow is reserved for the active or focus
 - Lead form: the Border Beam runs only on `:focus-within` or hover. Motion there signals "this input is live".
 
 **Motion principles**
+
 - Durations: `--duration-fast 150ms`, `normal 300ms`, `slow 600ms`.
 - Easing: `--ease-out-expo` (exists) plus a new `--ease-in-out-quart`.
 - Motion only (a) shows data flow (beams), (b) shows state (counters, decrypt, pipeline stages) or (c) shows depth (the dive).
@@ -165,31 +176,32 @@ src/app/(content)/layout.tsx       no animation runtime. Blog, privacy, terms
 
 ### Home `/` (`src/app/(marketing)/page.tsx`)
 
-| # | Section | Content source | Powered by |
-|---|---|---|---|
-| 1 | Header | `site.ts` nav | Server component. Sticky. The scroll-shadow border is CSS `animation-timeline: scroll()`. |
-| 2 | Hero: eyebrow, h1 "Software that holds up in production.", lead, LeadForm (`hero`), note "No spam. Just a conversation." | `home.ts`, `principles.ts` | Text is server-rendered with **no entrance animation**, so the h1 is the LCP element. `HeroVisual` (client) shows the poster first, then after idle and in view lazy-loads `LightPillarCanvas` (ogl). `PrincipleChips` is a real `<ul aria-label="Principles">` of 4 chips joined to the pillar by SVG hairlines (motion `pathLength`). Each chip links to `/how-we-work#principles`. A pause button sits on the visual. Mobile: the pillar is dimmed behind a scrim and the chips become a 2×2 list under the form. |
-| 3 | Services: "Backend, cloud and AI work…" | `services.ts` | `StackList`: 6 rows styled as layers in a stack (stack order), not a card grid. Mono tag, large title, summary. On hover/focus the row lifts and shows its stack chips. Each row links to `/services#id`. Then `StackMarquee`: the de-duplicated union of all "Typical stack" chips, built from the data. It pauses on hover/focus and with the global toggle; under reduced motion it is a static list. |
-| 4 | Data band: "Your data stays yours." | `privacy-facts.ts` | `DataFacts`. "0" is static with a mono readout caption. "Never" uses DecryptedText to settle on the word. "30 days" uses a NumberTicker from 0 to 30. **The server renders the final values**, the animation runs only after hydration and in view, and the animated characters are `aria-hidden` next to real text. |
-| 5 | How we work: "From first call to production, in four steps." | `process.ts` | `ProcessPipeline`: CI-style stages, horizontal at 1024 px and up, vertical below. A teal pulse runs along the connector (transform) and stages move queued → running → passed in view. It is an `<ol>`. |
-| 6 | Blog: "Engineering notes." | `posts/index.ts` | `FindingsTerminal` (Magic UI Terminal, adapted, `aria-hidden` because it repeats card facts) types real findings: "21/21 runs happened twice with no lock", the JobRunr log line, "5 simultaneous closes → 1 close". Next to it, 3 `PostCard`s laid out editorially (lead post large, 2 stacked). |
-| 7 | Final CTA: "Ready to build something?" | `home.ts` | LeadForm (`cta`) with Border Beam. Stretch: `ParticleCoalesce` behind it, which reuses the ogl chunk. |
-| 8 | Footer | `site.ts` | Server component, plus the global "Motion: on/off" toggle. |
+| #   | Section                                                                                                                  | Content source             | Powered by                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| --- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Header                                                                                                                   | `site.ts` nav              | Server component. Sticky. The scroll-shadow border is CSS `animation-timeline: scroll()`.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| 2   | Hero: eyebrow, h1 "Software that holds up in production.", lead, LeadForm (`hero`), note "No spam. Just a conversation." | `home.ts`, `principles.ts` | Text is server-rendered with **no entrance animation**, so the h1 is the LCP element. `HeroVisual` (client) shows the poster first, then after idle and in view lazy-loads `LightPillarCanvas` (ogl). `PrincipleChips` is a real `<ul aria-label="Principles">` of 4 chips joined to the pillar by SVG hairlines (motion `pathLength`). Each chip links to `/how-we-work#principles`. A pause button sits on the visual. Mobile: the pillar is dimmed behind a scrim and the chips become a 2×2 list under the form. |
+| 3   | Services: "Backend, cloud and AI work…"                                                                                  | `services.ts`              | `StackList`: 6 rows styled as layers in a stack (stack order), not a card grid. Mono tag, large title, summary. On hover/focus the row lifts and shows its stack chips. Each row links to `/services#id`. Then `StackMarquee`: the de-duplicated union of all "Typical stack" chips, built from the data. It pauses on hover/focus and with the global toggle; under reduced motion it is a static list.                                                                                                             |
+| 4   | Data band: "Your data stays yours."                                                                                      | `privacy-facts.ts`         | `DataFacts`. "0" is static with a mono readout caption. "Never" uses DecryptedText to settle on the word. "30 days" uses a NumberTicker from 0 to 30. **The server renders the final values**, the animation runs only after hydration and in view, and the animated characters are `aria-hidden` next to real text.                                                                                                                                                                                                 |
+| 5   | How we work: "From first call to production, in four steps."                                                             | `process.ts`               | `ProcessPipeline`: CI-style stages, horizontal at 1024 px and up, vertical below. A teal pulse runs along the connector (transform) and stages move queued → running → passed in view. It is an `<ol>`.                                                                                                                                                                                                                                                                                                              |
+| 6   | Blog: "Engineering notes."                                                                                               | `posts/index.ts`           | `FindingsTerminal` (Magic UI Terminal, adapted, `aria-hidden` because it repeats card facts) types real findings: "21/21 runs happened twice with no lock", the JobRunr log line, "5 simultaneous closes → 1 close". Next to it, 3 `PostCard`s laid out editorially (lead post large, 2 stacked).                                                                                                                                                                                                                    |
+| 7   | Final CTA: "Ready to build something?"                                                                                   | `home.ts`                  | LeadForm (`cta`) with Border Beam. Stretch: `ParticleCoalesce` behind it, which reuses the ogl chunk.                                                                                                                                                                                                                                                                                                                                                                                                                |
+| 8   | Footer                                                                                                                   | `site.ts`                  | Server component, plus the global "Motion: on/off" toggle.                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ### Services `/services` (`src/app/(marketing)/services/page.tsx`)
 
 **Layer order** follows a request's real path from the user downwards. AI cuts across all layers.
 
-| Depth | id | HUD label | Why here |
-|---|---|---|---|
-| L0 | `#product` | `L0 · SURFACE · PRODUCT` | Where the request starts (UI, MVPs, real-time) |
-| L1 | `#backend` | `L1 · INTERFACE · API` | Contracts, data models |
-| L2 | `#scaling` | `L2 · THROUGHPUT · CACHE + QUEUE` | Requests hit cache, writes go to queues |
-| L3 | `#automation` | `L3 · WORKERS · JOBS + INTEGRATIONS` | Queues feed jobs and integrations |
-| L4 | `#cloud` | `L4 · BEDROCK · INFRA` | Everything runs on this |
-| Rail | `#ai` | `XL · AI · CROSS-CUTTING` | A vertical rail beside the stack. On activation, beams tap into L0 (LLM features) and L1/data (MCP), "with limits you control". |
+| Depth | id            | HUD label                            | Why here                                                                                                                        |
+| ----- | ------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| L0    | `#product`    | `L0 · SURFACE · PRODUCT`             | Where the request starts (UI, MVPs, real-time)                                                                                  |
+| L1    | `#backend`    | `L1 · INTERFACE · API`               | Contracts, data models                                                                                                          |
+| L2    | `#scaling`    | `L2 · THROUGHPUT · CACHE + QUEUE`    | Requests hit cache, writes go to queues                                                                                         |
+| L3    | `#automation` | `L3 · WORKERS · JOBS + INTEGRATIONS` | Queues feed jobs and integrations                                                                                               |
+| L4    | `#cloud`      | `L4 · BEDROCK · INFRA`               | Everything runs on this                                                                                                         |
+| Rail  | `#ai`         | `XL · AI · CROSS-CUTTING`            | A vertical rail beside the stack. On activation, beams tap into L0 (LLM features) and L1/data (MCP), "with limits you control". |
 
 Page structure:
+
 1. Breadcrumb, h1, lead (server).
 2. `StackDive`, **at 1024 px and up**:
    - Left column: a sticky (CSS `position: sticky`) `StackVisual` — 5 slabs, an AI rail, a `DepthGauge` and `HudLabel`s.
@@ -211,6 +223,7 @@ Page structure:
 ### Contact `/contact`
 
 Breadcrumb, h1, lead. Two columns:
+
 - LeadForm (`contact`) with Border Beam, and the note "We only use your email to reply…".
 - "Prefer to write?" with a plain `mailto:`, then "What happens next": a 3-step `<ol>` with a static pipeline treatment.
 
@@ -246,6 +259,7 @@ On-brand, mono "404 · route not in production", with links back.
 ## 4. Implementation phases
 
 Every phase follows ECC:
+
 1. Tests first (red).
 2. Implement (green).
 3. code-reviewer (plus typescript-reviewer, and security-reviewer on form, CSP and headers).
@@ -256,14 +270,16 @@ Every phase can be merged on its own.
 ### Phase 0: Guardrails and baseline (no visual change)
 
 **0.1 Collect live artifacts.** `public/images/og.png`, `public/images/blog/*.png`, `public/favicon.svg`, `public/apple-touch-icon.png`, `tests/fixtures/legacy/`
+
 - Download from the live site: og.png, the 3 blog OG PNGs, favicon.svg, apple-touch-icon.png, `forms.js` (for the exact status copy), `sitemap.xml`, `robots.txt`, `blog/feed.xml`.
 - Copy the 10 crawled HTML files into `tests/fixtures/legacy/html/`.
 - Record live behaviour for `/services/`, `/services.html` and `/index.html` (curl `-I`) in `tests/fixtures/legacy/url-behaviour.json`.
 - Risk: Low.
 
 **0.2 Legacy inventory fixture.** `tests/fixtures/legacy/inventory.json` (implemented as JSON)
+
 - Generated once by `scripts/extract-legacy-inventory.mjs` from the fixtures, then committed. It lists, per URL:
-  - title, description, canonical, robots, og:*, twitter:*, article:*
+  - title, description, canonical, robots, og:_, twitter:_, article:*
   - JSON-LD `@type`s and `@id`s
   - all element ids
   - h1 text
@@ -271,12 +287,14 @@ Every phase can be merged on its own.
 - Depends on 0.1. Risk: Low.
 
 **0.3 Unit test tooling.** `vitest.config.mts`, `vitest.setup.ts`, `package.json`
+
 - Add devDeps: `vitest`, `@vitejs/plugin-react`, `jsdom`, `@testing-library/react`, `@testing-library/user-event`, `@vitest/coverage-v8`.
 - Scripts: `test`, `test:unit`, `test:coverage`.
 - Coverage threshold 80% on `src/lib/**`, `src/content/**`, `src/hooks/**`.
 - Risk: Low.
 
 **0.4 Production-like static server.** `scripts/serve-static.mjs`, using only `node:http`
+
 - Clean URLs (`/services` → `services.html`).
 - Serves `404.html` with status 404.
 - Applies `out/_headers` the way Cloudflare does.
@@ -284,6 +302,7 @@ Every phase can be merged on its own.
 - Risk: Medium. Its clean-URL and header behaviour must match Cloudflare. Check against 0.1's recorded behaviour.
 
 **0.5 Budget checker.** `scripts/check-budgets.mjs`, `budgets.json`
+
 - For each route's HTML in `out/`:
   - sum the gzipped size of the `<script src>` files (initial JS);
   - sum CSS;
@@ -293,10 +312,12 @@ Every phase can be merged on its own.
 - Risk: Medium.
 
 **0.6 Licence check.** Record in `docs/third-party.md`, or the existing docs location (ask first per AGENTS.md).
+
 - Check React Bits (MIT + Commons Clause — fine for use in a site), Magic UI (MIT), Aceternity (free tier terms), Animate UI (MIT).
 - Risk: Low.
 
 **Acceptance**
+
 - `npm run test` and `npm run budget` run green.
 - Baseline JS is recorded.
 - The prod-server Playwright run passes the existing `home.spec.ts`.
@@ -306,6 +327,7 @@ Every phase can be merged on its own.
 This alone is a launchable site.
 
 **1.1 Typed content modules.** `src/content/`
+
 - `site.ts` — nav, footer, contact email, org facts, `APPS_SCRIPT_URL`
 - `services.ts` — `Service { id: ServiceId; tag; title; homeSummary; intro; included: readonly string[]; stack: readonly string[]; relatedPostSlugs; layer: { depth; hud } }`
 - `process.ts`
@@ -325,6 +347,7 @@ This alone is a launchable site.
 - Risk: Low.
 
 **1.2 SEO library.** `src/lib/seo/`
+
 - `metadata.ts`: `buildPageMetadata({ title, description, path, ogImage?, ogTitle?, type?, article? })` → `Metadata`.
   - Supports the cases where OG title and `<title>` differ (services, posts).
   - Handles robots variants and `alternates.types` for RSS.
@@ -335,6 +358,7 @@ This alone is a launchable site.
 - Risk: Low.
 
 **1.3 Tokens and typography.** `src/app/globals.css`, `src/app/layout.tsx`
+
 - Add the tokens from section 2, focus ring utilities, and `scroll-padding-top: var(--header-h)` (WCAG 2.4.11).
 - Grain and grid textures as static CSS/SVG data URIs.
 - Apply the chosen font via `next/font/google` (check `13-fonts.md` for the `axes: ['wdth']` syntax).
@@ -343,11 +367,13 @@ This alone is a launchable site.
 - Depends on the typography decision. Risk: Medium (brand change).
 
 **1.4 Site shell.** `src/components/layout/`
+
 - `SiteHeader.tsx`, `NavLinks.tsx` (small client island using `usePathname` for `aria-current`), `SiteFooter.tsx`, `SkipLink.tsx`, `Breadcrumbs.tsx` (renders visible crumbs and returns JSON-LD from one data source), `PageHead.tsx`.
 - Move `page.tsx` into the `(marketing)` group and create both group layouts.
 - Risk: Low.
 
 **1.5 Lead form.** `src/lib/lead/` and `src/components/lead-form/`
+
 - `lead-config.ts`: URL, `LEAD_TIMEOUT_MS = 20_000`, messages from `forms.js`.
 - `validate-email.ts`.
 - `submit-lead.ts`: `submitLead(email, { fetchImpl, signalFactory }) => Promise<LeadResult>`, a discriminated union `sent | network-error | timeout`.
@@ -366,11 +392,13 @@ This alone is a launchable site.
 - Risk: **High** (it is the conversion path). Run the security-reviewer.
 
 **1.6 Static pages.** No signature motion yet. Plain CSS reveals are fine.
+
 - `(marketing)/page.tsx`, `services/page.tsx`, `how-we-work/page.tsx`, `contact/page.tsx`; `(content)/privacy/page.tsx`, `terms/page.tsx`, `blog/page.tsx`.
 - Feature components get server-only first versions: `StackList`, `DataFacts` (static values), `ProcessPipeline` (static), `PrinciplesGrid`, `FaqList` (details), `PostCard`, `FinalCta`.
 - Depends on 1.1–1.5. Risk: Low.
 
 **1.7 Blog pipeline.** `next.config.ts`, `src/mdx-components.tsx`, `src/content/posts/*.mdx`, `src/components/blog/`
+
 - Deps: `@next/mdx @mdx-js/loader @mdx-js/react @types/mdx remark-gfm @shikijs/rehype shiki` plus a heading-id plugin (`remark-heading-id`, so headings can be written `## Title {#what-we-tested}`).
 - Plugins are passed as **strings with JSON options** (Turbopack). Custom theme JSON: `src/lib/mdx/shiki-prodbuilds.json`.
 - **Start with a half-day spike.** If any plugin fails under Turbopack, switch `build` to `next build --webpack` and record why.
@@ -382,6 +410,7 @@ This alone is a launchable site.
 - Risk: **Medium-High** (plugin compatibility, keeping heading ids).
 
 **1.8 Metadata routes.**
+
 - `src/app/sitemap.ts` (`dynamic = 'force-static'`, built from routes plus posts, lastmod from data).
 - `src/app/robots.txt`: a static copy of the live file, byte for byte.
 - `src/app/(content)/blog/feed.xml/route.ts` (`force-static`), using `src/lib/feed/build-rss.ts` (pure, unit-tested against the live feed's structure).
@@ -389,6 +418,7 @@ This alone is a launchable site.
 - Risk: Low.
 
 **1.9 Headers and CSP.** `scripts/postbuild-headers.mjs` (wired as the npm `postbuild` script), `src/config/security-headers.ts`
+
 - For each `out/**/*.html`, sha256 every inline executable `<script>` (skip `application/ld+json`) and write a per-route rule into `out/_headers`.
 - Policy:
   - `default-src 'self'`
@@ -409,6 +439,7 @@ This alone is a launchable site.
 - Risk: **High**.
 
 **Phase 1 acceptance**
+
 - `seo-parity.spec.ts`: every legacy URL returns 200, and title, description, canonical, OG/Twitter, robots, JSON-LD types and ids, and every legacy element id (including post heading ids, `#step-1..4`, service anchors) match `inventory.ts`.
 - `/blog/feed.xml`, `/sitemap.xml` and `/robots.txt` are valid.
 - `/images/og.png`, `/favicon.svg` and `/apple-touch-icon.png` return 200.
@@ -421,6 +452,7 @@ This alone is a launchable site.
 ### Phase 2: Motion foundations and home hero
 
 **2.1 Motion infrastructure**
+
 - `src/components/motion/MotionProvider.tsx`: `LazyMotion strict`, with features loaded asynchronously from `src/components/motion/features.ts` (`domAnimation`).
 - Hooks in `src/hooks/`:
   - `usePrefersReducedMotion.ts`
@@ -434,12 +466,14 @@ This alone is a launchable site.
 - Risk: Low.
 
 **2.2 Render quality logic** (pure, TDD). `src/lib/webgl/`
+
 - `capability.ts`: `canUseWebGL()` tries a context with `failIfMajorPerformanceCaveat: true`; also checks `saveData` and reduced motion.
 - `quality.ts`: `initialQuality({ dpr, cores, viewport })` → `{ dprCap: ≤1.5 (1 on mobile), renderScale: 0.5–0.75, fpsCap }`.
 - `nextQualityStep(frameSamples, current)`: lowers the render scale when average frame time is over 20 ms; falls back to the poster when it stays over 33 ms.
 - Risk: Low.
 
 **2.3 LightPillar port to ogl.** `src/components/hero/`
+
 - `shaders/light-pillar.frag.ts` and `light-pillar.vert.ts`:
   - The shader is re-implemented from the React Bits LightPillar idea with brand uniforms (`uColor` teal, `uIntensity`, `uTime`).
   - Particles are drawn as hashed noise inside the same fragment shader: one fullscreen `Triangle`, one draw call.
@@ -455,6 +489,7 @@ This alone is a launchable site.
 - Risk: **Medium-High**: shader port effort, GPU differences, keeping text contrast over the glow (scrim plus placement away from the text column at 1024 px and up).
 
 **Phase 2 acceptance**
+
 - Lighthouse on `/`: LCP element is the h1, LCP under 2.5 s, CLS under 0.1, TBT under 200 ms.
 - The ogl chunk does not load before idle (network assertion).
 - `hero-webgl.spec.ts`:
@@ -476,6 +511,7 @@ This alone is a launchable site.
 6. **`BorderBeamFrame` around `LeadForm`.** Active only on `:focus-within` or hover.
 
 **Acceptance**
+
 - `reduced-motion.spec.ts`: every section's final content is visible and nothing animates (computed `animation-name: none`, no running WAAPI animations).
 - axe passes in both motion modes.
 - Budget still passes.
@@ -493,6 +529,7 @@ This alone is a launchable site.
 5. **`StackDive.tsx`** composes them; GSAP is reached only through `use-stack-dive`.
 
 **Acceptance (`services-dive.spec.ts`)**
+
 - For each anchor: `/services#cloud` puts the `#cloud-heading` in the viewport below the sticky header, and the visual's `data-active-layer="cloud"` is set.
 - Keyboard: tabbing through every link inside the sections keeps focus visible and not covered.
 - Reduced motion or 768 px: no `html.lenis` class, no ScrollTrigger instances, glyphs visible.
@@ -515,6 +552,7 @@ Risk: **High**.
    - optional diagram draw-in via CSS view timelines.
 
 **Acceptance:** `blog.spec.ts` checks:
+
 - highlighted token spans are present;
 - the table region is focusable;
 - heading anchors resolve;
@@ -572,14 +610,15 @@ Phases 2, 3, 4 and 5 can run in parallel after Phase 1 once 2.1 and 3.1 are merg
 
 ## 6. Performance budget plan
 
-| Route | Initial JS (gz) | Total JS incl. idle/lazy (gz) | CSS (gz) | Animation runtime allowed |
-|---|---|---|---|---|
-| `/` | ≤ 130 kb | ≤ 150 kb | ≤ 30 kb | motion (`m` + async domAnimation), ogl after idle |
-| `/services` | ≤ 130 kb | ≤ 150 kb | ≤ 30 kb | motion, gsap+ScrollTrigger+lenis (lazy, 1024 px and up, motion on) |
-| `/how-we-work`, `/contact` | ≤ 125 kb | ≤ 140 kb | ≤ 30 kb | motion only |
-| `/blog`, posts, legal | framework + islands (≤ 110 kb) | same | ≤ 30 kb | none |
+| Route                      | Initial JS (gz)                | Total JS incl. idle/lazy (gz) | CSS (gz) | Animation runtime allowed                                          |
+| -------------------------- | ------------------------------ | ----------------------------- | -------- | ------------------------------------------------------------------ |
+| `/`                        | ≤ 130 kb                       | ≤ 150 kb                      | ≤ 30 kb  | motion (`m` + async domAnimation), ogl after idle                  |
+| `/services`                | ≤ 130 kb                       | ≤ 150 kb                      | ≤ 30 kb  | motion, gsap+ScrollTrigger+lenis (lazy, 1024 px and up, motion on) |
+| `/how-we-work`, `/contact` | ≤ 125 kb                       | ≤ 140 kb                      | ≤ 30 kb  | motion only                                                        |
+| `/blog`, posts, legal      | framework + islands (≤ 110 kb) | same                          | ≤ 30 kb  | none                                                               |
 
 Strategy:
+
 - **Measure the framework baseline in Phase 0** and set exact numbers in `budgets.json` (estimated 95–105 kb for Next 16 + React 19.2).
 - If headroom on `/` is under 40 kb, swap motion on the home page for CSS + IntersectionObserver. Counters and decrypt then use small rAF utilities.
 - No Lenis and no GSAP on home: it has no scrubbed timelines. Lenis is scoped to `/services` only.
@@ -606,21 +645,22 @@ Strategy:
 
 What each component does in each mode. "Reduced" means OS reduced motion or `data-motion="off"`.
 
-| Component | Full motion | Reduced / toggle off | No JS |
-|---|---|---|---|
-| LightPillar | ogl canvas, pause button | Static poster, no canvas created | Poster |
-| Principle chips | Hairline draw + float | Static | Static list |
-| Stack marquee | Scrolling, pause on hover/focus | Static wrapped list | Static list |
-| Data facts | Ticker / decrypt in view | Final values | Final values |
-| Process pipeline / tracing beam | Pulse / scroll-filled beam | Full static beam, all stages "passed" | Same |
-| Findings terminal | Types once, under 5 s | Fully printed | Printed |
-| Border beam | Runs on focus-within | Static 1 px teal border on focus | CSS focus ring |
-| Services dive | Sticky visual, GSAP, Lenis | Stacked sections + glyphs, native scroll | Same |
-| FAQ | details + height animation | Instant toggle | Works (native) |
-| Reveals | CSS view timeline | None (visible) | Visible |
-| Reading progress | CSS scroll timeline | Static (hidden) | CSS-only |
+| Component                       | Full motion                     | Reduced / toggle off                     | No JS          |
+| ------------------------------- | ------------------------------- | ---------------------------------------- | -------------- |
+| LightPillar                     | ogl canvas, pause button        | Static poster, no canvas created         | Poster         |
+| Principle chips                 | Hairline draw + float           | Static                                   | Static list    |
+| Stack marquee                   | Scrolling, pause on hover/focus | Static wrapped list                      | Static list    |
+| Data facts                      | Ticker / decrypt in view        | Final values                             | Final values   |
+| Process pipeline / tracing beam | Pulse / scroll-filled beam      | Full static beam, all stages "passed"    | Same           |
+| Findings terminal               | Types once, under 5 s           | Fully printed                            | Printed        |
+| Border beam                     | Runs on focus-within            | Static 1 px teal border on focus         | CSS focus ring |
+| Services dive                   | Sticky visual, GSAP, Lenis      | Stacked sections + glyphs, native scroll | Same           |
+| FAQ                             | details + height animation      | Instant toggle                           | Works (native) |
+| Reveals                         | CSS view timeline               | None (visible)                           | Visible        |
+| Reading progress                | CSS scroll timeline             | Static (hidden)                          | CSS-only       |
 
 Also:
+
 - **WCAG 2.2.2:** a global footer toggle (persisted in localStorage), a hero pause button, and the marquee pauses on hover and focus.
 - **Semantics:** one h1 per page; landmarks (`header`/`nav[aria-label]`/`main#main-content`/`footer`); breadcrumbs as `nav[aria-label=Breadcrumb] ol` with `aria-current`; decorative canvases and SVG visuals `aria-hidden`; diagrams keep `role=img` with `<title>`/`<desc>`.
 - **Animated text:** DecryptedText and NumberTicker render a visually hidden real string next to `aria-hidden` animated glyphs.
@@ -663,6 +703,7 @@ Also:
 ## 9. Testing plan
 
 **Unit tests (Vitest, 80% minimum on lib/content/hooks), co-located `*.test.ts`:**
+
 - `src/content/*.test.ts`: integrity and copy parity
 - `src/lib/content/{rich-text,stack-union,ordered-services}.test.ts`
 - `src/lib/seo/{metadata,json-ld}.test.ts`
@@ -674,6 +715,7 @@ Also:
 - `scripts/postbuild-headers.test.mjs`: hash extraction and rule generation
 
 **Playwright (`tests/e2e/`). Dev group for quick runs, prod group (static server + `_headers`) for the real gates:**
+
 - `routes.spec.ts`: all URLs 200, 404 page, assets
 - `seo-parity.spec.ts`: head, JSON-LD, ids against the legacy inventory
 - `lead-form.spec.ts`: mocked success, network error → mailto, 20 s timeout via `page.clock`, no-JS post
@@ -739,17 +781,17 @@ Also:
 
 Overall: **High**. Solo estimate:
 
-| Phase | Effort |
-|---|---|
-| P0 Guardrails | 1.5 d |
-| P1 Content, shell, SEO, forms, blog, CSP | 6–7 d |
-| P2 Motion infrastructure + hero | 3.5–4.5 d |
-| P3 Home section motion | 3 d |
-| P4 Services dive | 4–5 d |
-| P5 How-we-work, contact, blog polish | 2.5–3 d |
-| P6 Hardening + launch | 2.5–3 d |
-| **Total** | **about 23–27 dev-days (4.5–5.5 weeks)** |
-| P7 Particle CTA (stretch) | +2 d |
+| Phase                                    | Effort                                   |
+| ---------------------------------------- | ---------------------------------------- |
+| P0 Guardrails                            | 1.5 d                                    |
+| P1 Content, shell, SEO, forms, blog, CSP | 6–7 d                                    |
+| P2 Motion infrastructure + hero          | 3.5–4.5 d                                |
+| P3 Home section motion                   | 3 d                                      |
+| P4 Services dive                         | 4–5 d                                    |
+| P5 How-we-work, contact, blog polish     | 2.5–3 d                                  |
+| P6 Hardening + launch                    | 2.5–3 d                                  |
+| **Total**                                | **about 23–27 dev-days (4.5–5.5 weeks)** |
+| P7 Particle CTA (stretch)                | +2 d                                     |
 
 ---
 
@@ -757,7 +799,7 @@ Overall: **High**. Solo estimate:
 
 1. **Typography:** go with Archivo variable (`wdth` + `wght`) + IBM Plex Mono, replacing Roboto (my recommendation)? Or Plex Sans + Plex Mono, or keep Roboto?
 2. **FAQ:** native `<details name="faq">` styled like Animate UI (keeps answers in the HTML, find-in-page, zero JS), or the Radix-based Animate UI accordion as originally agreed?
-3. **Service order:** use the request-path stack order (Product → API → Scale → Automation → Cloud, with AI as a rail) on /services *and* the home list? Or keep the current order (Backend, Scale, Cloud, Product, Automation, AI) on the home page?
+3. **Service order:** use the request-path stack order (Product → API → Scale → Automation → Cloud, with AI as a rail) on /services _and_ the home list? Or keep the current order (Backend, Scale, Cloud, Product, Automation, AI) on the home page?
 4. **Lenis scope:** only on `/services`, not site-wide (my recommendation, for budget and blog readability)?
 5. **Cloudflare:** is this Pages or Workers Static Assets? Can you turn off Email Obfuscation, Rocket Loader and Auto Minify, and add the `www` → apex redirect?
 6. **Anti-abuse:** add a honeypot field to the lead form? It needs a matching small change in the Apps Script, which is outside this repo.
@@ -773,22 +815,33 @@ WAITING FOR CONFIRMATION
 
 ## 13. Decisions (2026-10-05)
 
-| Question | Decision |
-|---|---|
-| Typography | Archivo variable (`wght` + `wdth`) + IBM Plex Mono; Roboto removed |
-| FAQ | Native `<details name="faq">` with Animate UI visual treatment |
-| Service order | Request-path order everywhere: Product → API → Scale → Automation → Cloud, AI as a rail; anchors unchanged |
-| Particle CTA (Phase 7) | Kept as budget-gated stretch |
-| Defaults accepted | Live asset fetches in Phase 0; Lenis on `/services` only; footer motion toggle in localStorage; GitHub Actions CI; docs in `docs/`; no honeypot yet; blog TOC / copy buttons deferred |
-| Pending (by Phase 6) | Cloudflare Pages vs Workers; disable Email Obfuscation / Rocket Loader / Auto Minify; `www` → apex 301 |
+| Question               | Decision                                                                                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Typography             | Archivo variable (`wght` + `wdth`) + IBM Plex Mono; Roboto removed                                                                                                                    |
+| FAQ                    | Native `<details name="faq">` with Animate UI visual treatment                                                                                                                        |
+| Service order          | Request-path order everywhere: Product → API → Scale → Automation → Cloud, AI as a rail; anchors unchanged                                                                            |
+| Particle CTA (Phase 7) | Kept as budget-gated stretch                                                                                                                                                          |
+| Defaults accepted      | Live asset fetches in Phase 0; Lenis on `/services` only; footer motion toggle in localStorage; GitHub Actions CI; docs in `docs/`; no honeypot yet; blog TOC / copy buttons deferred |
+| Pending (by Phase 6)   | Cloudflare Pages vs Workers; disable Email Obfuscation / Rocket Loader / Auto Minify; `www` → apex 301                                                                                |
 
 ### Budget (Phase 0 measurement, corrected)
 
 An empty Next 16 + React 19.2 page loads **130.3 kb gz** of JS in a modern browser. (An earlier reading of 169 kb wrongly counted Next's `noModule` legacy polyfill, which modern browsers never download; the checker now skips it.) The user's 150 kb landing rule therefore stands, and `budgets.json` enforces it:
 
-| Route | Initial JS (gz) | Total incl. lazy (gz) | CSS (gz) |
-|---|---|---|---|
-| `/`, `/services` | ≤ 140 kb (+10 over baseline) | ≤ 150 kb (+20), asserted in Playwright | ≤ 30 kb |
-| all other routes | ≤ 140 kb | ≤ 140 kb | ≤ 30 kb |
+| Route            | Initial JS (gz)              | Total incl. lazy (gz)                  | CSS (gz) |
+| ---------------- | ---------------------------- | -------------------------------------- | -------- |
+| `/`, `/services` | ≤ 140 kb (+10 over baseline) | ≤ 150 kb (+20), asserted in Playwright | ≤ 30 kb  |
+| all other routes | ≤ 140 kb                     | ≤ 140 kb                               | ≤ 30 kb  |
 
 Consequence (plan §6 fallback triggers, headroom on `/` < 40 kb): the home page uses **CSS view-timeline reveals, IntersectionObserver and small rAF utilities instead of the `motion` library**. `motion` (`m` + LazyMotion, ~5 kb up front, ~15 kb of async features) is used on another route only where the budget check shows it fits; registry components that need it are rewritten to CSS/rAF otherwise. Home's only lazy runtime is the minimal `ogl` import set for the hero, loaded after idle. GSAP + ScrollTrigger + Lenis on `/services` (~45 kb) exceed +20 kb, so the services dive must use **CSS `position: sticky` + scroll-driven animations (`animation-timeline: view()`) with an IntersectionObserver for the active layer**, falling back to GSAP only if the effect cannot be achieved and the budget is revisited with the user.
+
+### Phase 1 outcome (2026-10-06)
+
+Shipped as planned, with these deviations:
+
+- `next/link`, `next/image` and `usePathname` dropped (≈30 kb gz of client code); plain links do full page loads from the CDN. Header is rendered per page with `currentPath`.
+- Post heading ids use explicit JSX `<H2 id>` (MDX treats `{#id}` as an expression). Migrated text, links and code samples are verified identical to the legacy posts.
+- Root canonical/og:url render as `https://prodbuilds.com` (Next normalises the root); equivalent to the legacy `https://prodbuilds.com/`.
+- Security headers: per-route sha256 CSP plus a script-less baseline CSP on `/*` (covers the 404 page); `connect-src`/`form-action` pinned to the exact Apps Script URL; HSTS without `includeSubDomains` until subdomains are audited; COOP same-origin.
+- Lead form: validation matches native `type=email`; `credentials: "omit"` (no Google cookies sent); `maxLength` 254.
+- Open for the user: the privacy policy does not name Google (Apps Script) as the processor of submitted emails; Apps Script should length-cap input, neutralise spreadsheet formula injection and throttle.

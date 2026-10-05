@@ -1,0 +1,8 @@
+out
+.next
+coverage
+node_modules
+tests/fixtures
+package-lock.json
+# Long-form content: Prettier would reformat code samples inside fenced blocks.
+*.mdx

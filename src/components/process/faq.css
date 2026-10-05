@@ -1,0 +1,16 @@
+/* Height animation for native <details>, where supported. */
+@supports selector(::details-content) {
+  .faq-item {
+    interpolate-size: allow-keywords;
+  }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size var(--duration-normal) var(--ease-out-expo),
+      content-visibility var(--duration-normal) allow-discrete;
+  }
+  .faq-item[open]::details-content {
+    block-size: auto;
+  }
+}

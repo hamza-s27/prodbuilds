@@ -32,10 +32,7 @@ describe("extractAssets", () => {
       <link rel="modulepreload" href="/_next/static/chunks/b.js"/>
       <script src="/_next/static/chunks/a.js" async=""></script>`;
 
-    expect(extractAssets(html).scripts).toEqual([
-      "/_next/static/chunks/a.js",
-      "/_next/static/chunks/b.js",
-    ]);
+    expect(extractAssets(html).scripts).toEqual(["/_next/static/chunks/a.js", "/_next/static/chunks/b.js"]);
   });
 
   it("returns empty lists for HTML without assets", () => {

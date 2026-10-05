@@ -1,0 +1,178 @@
+<Lede>Add a second instance of your Spring Boot app and something sneaky happens: every `@Scheduled` job starts running twice. Two reminder emails. Two invoice runs. Two copies of the nightly export. Nothing crashes and nothing logs an error, so it can go on for a while before anyone notices.</Lede>
+
+Our founder has had to solve this on a horizontally scaled production platform. For this post we rebuilt the problem from scratch, ran two instances side by side and counted every duplicate.
+
+<Stats>
+<Stat value="21/21" tone="bad">runs happened twice with no lock</Stat>
+<Stat value="21/21" tone="bad">still twice with ShedLock and one clock 300 ms behind</Stat>
+<Stat value="0" tone="good">duplicates once `lockAtLeastFor` was set</Stat>
+</Stats>
+
+<Tldr>
+
+<H2 id="in-short">In short</H2>
+
+- Two instances, no coordination: every run happened twice, 21 out of 21.
+- A shared database lock (ShedLock) fixes it, but only with both limits set: `lockAtLeastFor` longer than the clock difference between your servers, and `lockAtMostFor` longer than the job ever takes.
+- Without `lockAtLeastFor`, a 300 ms clock difference let a 50 ms job run twice every time. With `lockAtMostFor` shorter than the job, both instances ran it at once.
+- A lock makes duplicates rare, not impossible. Make the job safe to run twice as well.
+
+</Tldr>
+
+<H2 id="what-we-tested">The experiment: two instances, one job, six setups</H2>
+
+Two copies of the same Spring Boot 4.1.1 app on Java 21, sharing an H2 database in server mode, with ShedLock 7.10.1. A job fired every 10 seconds and wrote down which instance ran it. Each setup ran for four minutes, which is 21 scheduled runs. To fake clock skew, one instance waited 300 ms before starting each run.
+
+<TableWrap label="Test results">
+
+| Setup | What happened |
+| --- | --- |
+| No coordination | <Verdict tone="bad">Twice</Verdict> Every run, 21 of 21, both instances at the same moment |
+| ShedLock, no `lockAtLeastFor`, 50 ms job, one clock 300 ms behind | <Verdict tone="bad">Twice</Verdict> Still every run, 21 of 21, one after the other |
+| The same, with `lockAtLeastFor` = 5 s | <Verdict tone="good">Once</Verdict> Exactly once, 21 of 21 |
+| ShedLock, no `lockAtLeastFor`, identical clocks | <Verdict tone="bad">1 extra</Verdict> One duplicate, on the first run, while one instance was still warming up |
+| 25 s job, `lockAtMostFor` = 8 s | <Verdict tone="bad">Overlap</Verdict> Both instances ran the job at the same time 13 times, overlapping by up to 15 s |
+| 25 s job, `lockAtMostFor` = 60 s | <Verdict tone="good">Clean</Verdict> No overlap |
+
+</TableWrap>
+
+<H2 id="why-scheduled-runs-everywhere">Why Spring runs it twice</H2>
+
+`@EnableScheduling` gives every instance its own task scheduler, ticking on its own clock, and none of them knows the others exist. Two instances, two runs. Ten instances, ten runs.
+
+That’s exactly right for housekeeping that belongs to one instance, like clearing a local cache. It’s wrong for anything the outside world can see: emails, payments, exports, calls to other services.
+
+<H2 id="the-fix">The fix: one lock, in the database you already have</H2>
+
+[ShedLock](https://github.com/lukas-krecan/ShedLock) works like a talking stick. Each job gets one row in a table, and before a run, every instance reaches for that row’s lock. Whoever gets it runs the job; everyone else skips this round. With the JDBC provider there’s nothing new to operate: it uses your existing database.
+
+```xml
+<dependency>
+    <groupId>net.javacrumbs.shedlock</groupId>
+    <artifactId>shedlock-spring</artifactId>
+    <version>7.10.1</version>
+</dependency>
+<dependency>
+    <groupId>net.javacrumbs.shedlock</groupId>
+    <artifactId>shedlock-provider-jdbc-template</artifactId>
+    <version>7.10.1</version>
+</dependency>
+```
+
+The lock table, as ShedLock’s README gives it for PostgreSQL:
+
+```sql
+CREATE TABLE shedlock (
+    name       VARCHAR(64)  NOT NULL,
+    lock_until TIMESTAMP    NOT NULL,
+    locked_at  TIMESTAMP    NOT NULL,
+    locked_by  VARCHAR(255) NOT NULL,
+    PRIMARY KEY (name)
+);
+```
+
+and for MySQL:
+
+```sql
+CREATE TABLE shedlock (
+    name       VARCHAR(64)  NOT NULL,
+    lock_until TIMESTAMP(3) NOT NULL,
+    locked_at  TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    locked_by  VARCHAR(255) NOT NULL,
+    PRIMARY KEY (name)
+);
+```
+
+Then a lock provider and the annotations:
+
+```java
+@Configuration
+@EnableScheduling
+@EnableSchedulerLock(defaultLockAtMostFor = "PT30S")
+class SchedulingConfig {
+
+    @Bean
+    LockProvider lockProvider(DataSource dataSource) {
+        return new JdbcTemplateLockProvider(JdbcTemplateLockProvider.Configuration.builder()
+                .withJdbcTemplate(new JdbcTemplate(dataSource))
+                .usingDbTime()
+                .build());
+    }
+}
+```
+
+```java
+@Scheduled(cron = "0 */10 * * * *")
+@SchedulerLock(name = "sendReminders", lockAtMostFor = "PT9M", lockAtLeastFor = "PT30S")
+public void sendReminders() {
+    // runs on one instance per 10-minute slot
+}
+```
+
+`usingDbTime()` makes ShedLock compare lock times with the database’s clock instead of each server’s. That keeps the lock honest. It doesn’t stop the schedulers themselves from firing on slightly different clocks, and that’s where the story twists.
+
+<Callout tone="bad" label="Plot twist">
+
+With ShedLock in place, one clock 300 ms behind and a 50 ms job, the job *still* ran twice. Every single time: 21 out of 21.
+
+</Callout>
+
+<H2 id="lock-at-least-for">Setting 1: lockAtLeastFor, the one people skip</H2>
+
+ShedLock releases the lock the moment the job finishes. If the job is quicker than the difference between your servers’ clocks, the late instance turns up after the lock is gone, finds it free and runs the same slot again.
+
+<Figure>
+<ClockSkewDiagram />
+<Caption>The mechanism behind 21 duplicates out of 21: a lock released after 50 ms is long gone when the late instance fires. Holding it for at least 5 s closes the gap.</Caption>
+</Figure>
+
+Clock skew isn’t the only way in. Even with identical clocks, the first run happened twice while one instance was still warming up: a slow start is just a late clock in disguise.
+
+`lockAtLeastFor` keeps the lock for a minimum time, even when the job finishes early. At 5 seconds, the duplicates vanished: 21 runs for 21 slots.
+
+**Rule of thumb:** longer than any clock difference or startup pause you can imagine, and shorter than the gap between runs. For a job every 10 minutes, 30 seconds is comfortable.
+
+<H2 id="lock-at-most-for">Setting 2: lockAtMostFor, the safety valve that can backfire</H2>
+
+`lockAtMostFor` is how long the lock survives if the instance holding it dies, so one crashed server can’t block the job forever. The catch: if the job runs longer than this, the lock expires mid-run, and another instance happily starts the job too.
+
+<Figure>
+<LockOverrunDiagram />
+<Caption>How the overlaps in our test happened, up to 15 s each. With `lockAtMostFor` above the longest run, instance B finds the lock held and skips.</Caption>
+</Figure>
+
+We ran a 25-second job every 10 seconds with `lockAtMostFor` at 8 seconds. In four minutes, the two instances ran the job at the same time 13 times, overlapping by up to 15 seconds. At 60 seconds: no overlap at all.
+
+**Rule of thumb:** comfortably above the longest the job has ever taken. Check your metrics rather than guessing, and alert when a run gets close to the limit.
+
+<H2 id="safe-to-run-twice">Assume it will run twice anyway</H2>
+
+A lock makes duplicates rare. It can’t make them impossible: a long garbage-collection pause, a database failover or a job that overruns its limit can each sneak a second run through. The durable fix lives in the job itself:
+
+- **Claim work atomically.** Give rows a status and move them in one statement: `UPDATE reminders SET status = 'sending' WHERE id = ? AND status = 'pending'`. Only one instance gets an update count of 1. For batches, `SELECT … FOR UPDATE SKIP LOCKED` (PostgreSQL 9.5+, MySQL 8.0+) lets instances take different rows without waiting on each other.
+- **Let the database reject duplicates.** A unique key on something like `(invoice_id, reminder_type)` turns a second insert into an error instead of a second email.
+- **Use idempotency keys with external APIs.** Many payment APIs accept one (Stripe calls it `Idempotency-Key`), so a retried request isn’t carried out twice.
+
+<H2 id="when-a-lock-is-not-enough">When a lock isn’t enough</H2>
+
+ShedLock is a great fit for a handful of jobs that should run once per slot. Once you need retries, run history or lots of jobs, a scheduler with cluster support does more of the heavy lifting:
+
+- **Quartz in clustered mode.** With a JDBC job store and `org.quartz.jobStore.isClustered=true`, Quartz nodes coordinate through the database and pick up each other’s work if one fails. In Spring Boot that’s `spring.quartz.job-store-type=jdbc`, plus the Quartz property under `spring.quartz.properties`.
+- **JobRunr.** It stores jobs in your database, elects one master server to schedule recurring jobs, and lets any server process them, with retries and a dashboard. (Versions before 5.2.0 could silently skip recurring runs; [here’s the detective story](/blog/jobrunr-skipping-recurring-jobs).)
+- **A scheduler outside the app.** A Kubernetes CronJob with `concurrencyPolicy: Forbid` starts one pod per run and skips a run if the previous one is still going. Kubernetes’ own documentation says a CronJob creates its Job “approximately once” per scheduled time and that jobs “should be idempotent”, so the section above still applies.
+
+<H2 id="checklist">Checklist</H2>
+
+1. Does the job have an effect outside the instance? If not, leave it as it is.
+2. Lock it: ShedLock with your database, or a clustered scheduler.
+3. Set `lockAtLeastFor` to seconds, not zero, and `lockAtMostFor` above the longest run.
+4. Make the work idempotent: atomic claims, unique keys, idempotency keys.
+5. Test with two instances before production does it for you.
+
+<PostFooter>
+
+**About ProdBuilds.** ProdBuilds is a software studio founded by a senior backend engineer. We design and build backend systems, cloud infrastructure and AI features that hold up in production. [Get in touch](/contact) if you’re working on something like this.
+
+<Sources>Sources: [ShedLock on GitHub](https://github.com/lukas-krecan/ShedLock) · [Spring Framework: task execution and scheduling](https://docs.spring.io/spring-framework/reference/integration/scheduling.html) · [Kubernetes: CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)</Sources>
+
+</PostFooter>
