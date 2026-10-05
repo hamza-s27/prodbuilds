@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>JobRunr Skipping Recurring Jobs? The Case of the Vanishing Runs | ProdBuilds</title>
+	<meta name="description" content="Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls." />
+	<meta name="author" content="ProdBuilds" />
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+	<meta name="theme-color" content="#0C0C0F" />
+	<link rel="canonical" href="https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	<link rel="alternate" type="application/rss+xml" title="ProdBuilds blog" href="https://prodbuilds.com/blog/feed.xml" />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs" />
+	<meta property="og:site_name" content="ProdBuilds" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="The case of the vanishing JobRunr runs" />
+	<meta property="og:description" content="Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls." />
+	<meta property="og:image" content="https://prodbuilds.com/images/blog/jobrunr-skipping-recurring-jobs.png" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="The case of the vanishing JobRunr runs — ProdBuilds blog" />
+	<meta property="article:published_time" content="2026-09-26" />
+	<meta property="article:modified_time" content="2026-09-26" />
+	<meta property="article:section" content="JobRunr" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="The case of the vanishing JobRunr runs" />
+	<meta name="twitter:description" content="Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls." />
+	<meta name="twitter:image" content="https://prodbuilds.com/images/blog/jobrunr-skipping-recurring-jobs.png" />
+	<meta name="twitter:image:alt" content="The case of the vanishing JobRunr runs — ProdBuilds blog" />
+
+	<!-- Structured Data -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "BlogPosting",
+				"@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#post",
+				"headline": "The case of the vanishing JobRunr runs",
+				"description": "Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls.",
+				"url": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+				"mainEntityOfPage": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+				"datePublished": "2026-09-26",
+				"dateModified": "2026-09-26",
+				"inLanguage": "en",
+				"image": "https://prodbuilds.com/images/blog/jobrunr-skipping-recurring-jobs.png",
+				"keywords": [
+					"JobRunr",
+					"recurring jobs",
+					"skipped jobs",
+					"time drift",
+					"job scheduler",
+					"Java"
+				],
+				"wordCount": 1010,
+				"author": {
+					"@id": "https://prodbuilds.com/#organization"
+				},
+				"publisher": {
+					"@id": "https://prodbuilds.com/#organization"
+				},
+				"isPartOf": {
+					"@id": "https://prodbuilds.com/blog#blog"
+				},
+				"breadcrumb": {
+					"@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#breadcrumb"
+				}
+			},
+			{
+				"@type": "BreadcrumbList",
+				"@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#breadcrumb",
+				"itemListElement": [
+					{
+						"@type": "ListItem",
+						"position": 1,
+						"name": "Home",
+						"item": "https://prodbuilds.com/"
+					},
+					{
+						"@type": "ListItem",
+						"position": 2,
+						"name": "Blog",
+						"item": "https://prodbuilds.com/blog"
+					},
+					{
+						"@type": "ListItem",
+						"position": 3,
+						"name": "Vanishing JobRunr runs",
+						"item": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs"
+					}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://prodbuilds.com/#organization",
+				"name": "ProdBuilds",
+				"url": "https://prodbuilds.com/",
+				"logo": "https://prodbuilds.com/favicon.svg"
+			}
+		]
+	}
+	</script>
+
+	<link rel="preload" href="/assets/fonts/roboto-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="/assets/fonts/roboto-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="/assets/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="stylesheet" href="/assets/css/site.css?v=b32131377f" />
+</head>
+<body>
+	<div class="read-progress" aria-hidden="true"></div>
+	<a class="skip" href="#main-content">Skip to content</a>
+
+	<header class="nav">
+		<a href="/" class="logo"><img src="/logo.svg" alt="ProdBuilds" width="155" height="24" /></a>
+		<nav class="nav-links" aria-label="Main">
+			<a href="/services">Services</a>
+			<a href="/how-we-work">How we work</a>
+			<a href="/blog">Blog</a>
+			<a href="/contact" class="nav-cta">Get in touch</a>
+		</nav>
+	</header>
+
+	<main id="main-content">
+
+		<div class="page-head post-head">
+			<nav aria-label="Breadcrumb">
+				<ol class="crumbs">
+					<li><a href="/">Home</a></li>
+					<li><a href="/blog">Blog</a></li>
+					<li aria-current="page">Vanishing JobRunr runs</li>
+				</ol>
+			</nav>
+			<h1>The case of the vanishing JobRunr runs</h1>
+			<p class="lead">Three schedulers counted the same every-minute job. Somewhere past 1,000 minutes, JobRunr fell one run behind, and nothing logged an error. The clue, the culprit and the fix.</p>
+			<p class="post-meta"><span class="post-topic">JobRunr</span><time datetime="2026-09-26">26 September 2026</time><span>4 min read</span></p>
+		</div>
+
+		<article class="post">
+<p class="lede">Three schedulers. One job. Every minute, on the minute. At 03:37 the counters read: Spring 1,076. Quartz 1,076. JobRunr 1,075.</p>
+<p>Somewhere, a run had vanished. No exception, no warning, nothing in the logs to say it had been skipped.</p>
+<p>Our founder found this in 2022 while comparing job schedulers, and reported it to JobRunr as issue #448, with logs and a reproduction. JobRunr&rsquo;s maintainer fixed it, and the fix shipped in 5.2.0 in September 2022. Here&rsquo;s how the case unfolded, and why the same mistake is easy to make in any scheduler that polls.</p>
+
+<ul class="stats">
+<li><strong class="stat-num plain">1,440</strong> <span class="stat-lbl">runs a day for a job that fires every minute</span></li>
+<li><strong class="stat-num bad">1</strong> <span class="stat-lbl">run that silently vanished</span></li>
+<li><strong class="stat-num bad">0</strong> <span class="stat-lbl">errors logged about it</span></li>
+</ul>
+
+<section class="tldr" aria-labelledby="in-short">
+<h2 id="in-short">In short</h2>
+<ul>
+<li><strong>Affected:</strong> JobRunr before 5.2.0. It was reported against 4.0.9 and also seen on version 5. The current stable line is 8.x.</li>
+<li><strong>Cause:</strong> each scheduling pass looked only 15 seconds ahead of the moment it ran, and started 15 seconds after the previous one finished. The windows didn&rsquo;t join up, and a run due in the gap between two of them was never scheduled.</li>
+<li><strong>Fix:</strong> JobRunr now remembers the last run it scheduled and schedules everything from there, so the windows join up, and it even catches up after a long garbage-collection pause.</li>
+<li><strong>Lesson:</strong> if your own code polls for due work, anchor each window to where the last one ended, not to &ldquo;now&rdquo;.</li>
+</ul>
+</section>
+
+<h2 id="how-it-showed-up">The scene: three schedulers, one job</h2>
+<p>The test was deliberately boring: one Spring Boot app running the same job three ways, each on the cron expression <code>0 * * * * *</code> (every minute, on the minute): Spring&rsquo;s <code>@Scheduled</code>, Quartz, and JobRunr 4.0.9 with in-memory storage. Each job counted its own runs.</p>
+<p>Spring and Quartz kept perfect time. Somewhere between 1,000 and 5,000 minutes in, JobRunr&rsquo;s count slipped one behind. This is the log from the original report, trimmed for width (times in UTC):</p>
+<pre tabindex="0"><code class="language-text">03:34:59.989  JobRunr  C: 1074
+03:35:00.000  Quartz   C: 1074
+03:35:00.000  Spring   C: 1074
+03:35:59.999  JobZooKeeper: Found 1 recurring jobs
+03:36:00.000  Spring   C: 1075
+03:36:00.001  Quartz   C: 1075
+03:36:45.018  JobRunr  C: 1075
+03:37:00.001  Spring   C: 1076
+03:37:00.001  Quartz   C: 1076</code></pre>
+
+<div class="callout" role="note">
+<p class="callout-label">The clue</p>
+<p>03:35:59.999. A JobRunr scheduling pass, one millisecond before the 03:36 run was due. After it: no 03:36 run.</p>
+</div>
+
+<p>Read the log closely and it tells the whole story. JobRunr&rsquo;s 03:35 run started 11&nbsp;ms early. The pass at 03:35:59.999 came and went, and there was no JobRunr run at 03:36. The run at 03:36:45 was the 03:37 run starting early: before 5.2.0, JobRunr started any job due within the next polling interval. From then on, JobRunr stayed one run behind.</p>
+
+<h2 id="what-caused-it">The culprit: windows that didn&rsquo;t quite touch</h2>
+<p>Before 5.2.0, JobRunr&rsquo;s scheduler woke up every 15 seconds (the default poll interval) and asked each recurring job two questions: when is your next run after now, and does it fall within the next 15 seconds? If so, it created a scheduled job for it.</p>
+<p>Two innocent-looking details made that unreliable:</p>
+<ul>
+<li><strong>The passes drifted.</strong> They were spaced with a fixed delay: each started 15 seconds after the previous one <em>finished</em>, not every 15 seconds by the clock. Every pass that took a few milliseconds pushed the next one a little later.</li>
+<li><strong>Each window started at &ldquo;now&rdquo;.</strong> A pass covered the 15 seconds after whatever moment it happened to run. Because the passes drifted, one window could end a sliver before the next one began.</li>
+</ul>
+<p>A run due in that sliver slipped through. The pass before it said &ldquo;not due yet&rdquo;; the pass after it was already past it, so &ldquo;the next run after now&rdquo; was a minute away:</p>
+<figure class="diagram">
+<svg viewBox="0 0 400 314" role="img" aria-labelledby="fig-gap-t fig-gap-d">
+<title id="fig-gap-t">Why a run due between two polling windows was never scheduled</title>
+<desc id="fig-gap-d">Before 5.2.0, pass A started at 10:00:44.990 and looked 15 seconds ahead, up to 10:00:59.990. Pass B started at 10:01:00.004 and looked 15 seconds ahead from there. The run due at 10:01:00.000 fell into the 14 millisecond gap between the two windows, so neither pass scheduled it, and pass B's next run after now was 10:02:00. From 5.2.0, each pass starts from the last run it scheduled, so the windows join up and the 10:01:00 run is scheduled.</desc>
+<text class="d-title" x="0" y="12">Before 5.2.0: each window starts at “now”</text>
+<text class="d-note" x="16" y="30">10:00:44.990</text>
+<text class="d-note" x="384" y="30" text-anchor="end">10:01:15.004</text>
+<rect class="d-lock" x="16" y="36" width="183.9" height="24"/>
+<rect class="d-lock" x="200.1" y="36" width="183.9" height="24"/>
+<text class="d-strong" x="24" y="52">Pass A: next 15 s</text>
+<text class="d-strong" x="248" y="52">Pass B: next 15 s</text>
+<path class="d-due" d="M200 32V64"/>
+<circle class="d-zoom" cx="200" cy="48" r="12"/>
+<path class="d-guide" d="M191 56L16 112M209 56L384 112"/>
+<rect class="d-inset" x="16" y="112" width="368" height="118"/>
+<text class="d-note" x="28" y="130">Zoomed in: 25 ms around 10:01:00</text>
+<text class="d-note" x="96.8" y="148" text-anchor="middle">59.990</text>
+<text class="d-note" x="289.4" y="148" text-anchor="middle">00.004</text>
+<rect class="d-lock" x="28" y="154" width="68.8" height="24"/>
+<rect class="d-gap" x="96.8" y="154" width="192.6" height="24"/>
+<rect class="d-lock" x="289.4" y="154" width="82.6" height="24"/>
+<text class="d-note d-bad" x="160" y="170" text-anchor="middle">14 ms gap</text>
+<path class="d-due" d="M234.4 150V184"/>
+<text class="d-note d-bad" x="234.4" y="198" text-anchor="middle">run due at 10:01:00: in neither window</text>
+<text class="d-note" x="28" y="219">Pass B’s next run after now: 10:02:00</text>
+<text class="d-title" x="0" y="256">5.2.0: each pass starts from the last run it scheduled</text>
+<rect class="d-lock" x="16" y="264" width="368" height="24"/>
+<text class="d-strong" x="24" y="280">Pass B: from the last scheduled run to now + 15 s</text>
+<path class="d-arrow" d="M200 288V297"/>
+<text class="d-note d-good" x="200" y="309" text-anchor="middle">10:01:00 scheduled</text>
+</svg>
+<figcaption>Round numbers for illustration, not from the log. The real miss had the same shape: a pass at 03:35:59.999, and no 03:36 run.</figcaption>
+</figure>
+<p>That&rsquo;s the pattern in the log: a pass one millisecond before 03:36, and no 03:36 run.</p>
+
+<h2 id="the-fix">The fix: start where the last window ended</h2>
+<p>The fix, by JobRunr&rsquo;s maintainer, changed the question. Instead of &ldquo;what&rsquo;s due after now?&rdquo;, JobRunr remembers the last run it scheduled for each recurring job and creates every run from that point up to the end of the current window. Consecutive windows now join up, so there&rsquo;s no sliver left to fall through.</p>
+<p>The same change handles a nastier version of the problem. If a long stop-the-world garbage collection freezes the server for minutes, the next pass creates all the runs it missed instead of quietly moving on. The <a href="https://github.com/jobrunr/jobrunr/releases/tag/v5.2.0">5.2.0 release notes</a> list it as &ldquo;Skipping Recurring Jobs due to timedrift&rdquo;.</p>
+
+<h2 id="are-you-affected">Are you affected?</h2>
+<ul>
+<li><strong>Check your version.</strong> Anything before 5.2.0 has the bug. In Maven: <code>mvn dependency:tree -Dincludes=org.jobrunr</code>.</li>
+<li><strong>Upgrade to a current release</strong>, not to 5.2.0 specifically. At the time of writing, the stable line is 8.x (8.8.2 on Maven Central).</li>
+<li><strong>If you can&rsquo;t upgrade yet,</strong> compare how many times a frequent recurring job should have run with how many times it did. A skipped run doesn&rsquo;t fail, so it leaves no error behind.</li>
+</ul>
+
+<h2 id="the-lesson">The moral: anchor to the last window, not to now</h2>
+<p>This isn&rsquo;t really a JobRunr story. Any code that wakes up every N seconds and asks &ldquo;what&rsquo;s due in the next N seconds?&rdquo; has the same gap, because wake-ups drift: fixed delays, garbage-collection pauses, a busy CPU. A simplified sketch of the idea (not JobRunr&rsquo;s code):</p>
+<pre tabindex="0"><code class="language-java">// Fragile: each window starts wherever this pass happens to run.
+Instant next = cron.next(now);
+if (next.isBefore(now.plus(pollInterval))) {
+    schedule(job, next);
+}
+
+// Robust: start from the last run you scheduled, so the windows join up.
+Instant from = lastScheduled.getOrDefault(job.id(), now);
+Instant upTo = now.plus(pollInterval);
+for (Instant t = cron.next(from); t.isBefore(upTo); t = cron.next(t)) {
+    schedule(job, t);
+    lastScheduled.put(job.id(), t);
+}</code></pre>
+<p>Two more habits help. Make scheduling idempotent: a unique key on the job and its run time means an overlapping pass can&rsquo;t create the same run twice. And alert on missed runs, not only failed ones: a skipped run never fails, so an error alert will never see it.</p>
+<p>If your scheduled jobs also run on more than one instance, you may have <a href="/blog/spring-boot-scheduled-jobs-multiple-instances">the opposite problem: every run happening twice</a>.</p>
+
+<div class="post-footer">
+<p><strong>About ProdBuilds.</strong> ProdBuilds is a software studio founded by a senior backend engineer. We design and build backend systems, cloud infrastructure and AI features that hold up in production. <a href="/contact">Get in touch</a> if you&rsquo;re working on something like this.</p>
+<p class="sources">Sources: <a href="https://github.com/jobrunr/jobrunr/releases/tag/v5.2.0">JobRunr 5.2.0 release notes</a></p>
+</div>
+		</article>
+
+	</main>
+
+	<footer class="footer">
+		<a href="/" class="logo"><img src="/logo.svg" alt="ProdBuilds" width="155" height="24" /></a>
+		<nav class="footer-links" aria-label="Footer">
+			<a href="/services">Services</a>
+			<a href="/how-we-work">How we work</a>
+			<a href="/blog">Blog</a>
+			<a href="/contact">Contact</a>
+			<a href="/privacy">Privacy</a>
+			<a href="/terms">Terms</a>
+			<a href="/cdn-cgi/l/email-protection#f49c9198989bb484869b9096819d989087da979b99"><span class="__cf_email__" data-cfemail="83ebe6efefecc3f3f1ece7e1f6eaefe7f0ade0ecee">[email&#160;protected]</span></a>
+		</nav>
+		<p class="footer-copy">&copy; ProdBuilds</p>
+	</footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-10-05",
+  "source": "curl against https://prodbuilds.com (Cloudflare Pages clean-URL behaviour)",
+  "responses": [
+    { "path": "/", "status": 200, "contentType": "text/html" },
+    { "path": "/services", "status": 200, "contentType": "text/html" },
+    { "path": "/services/", "status": 308, "location": "/services" },
+    { "path": "/services.html", "status": 308, "location": "/services" },
+    { "path": "/index.html", "status": 308, "location": "/" },
+    { "path": "/blog", "status": 200, "contentType": "text/html" },
+    { "path": "/blog/", "status": 308, "location": "/blog" },
+    { "path": "/blog/feed.xml", "status": 200, "contentType": "application/xml" },
+    { "path": "/sitemap.xml", "status": 200, "contentType": "application/xml" },
+    { "path": "/logo.svg", "status": 200, "contentType": "image/svg+xml" },
+    { "path": "/favicon.svg", "status": 200, "contentType": "image/svg+xml" },
+    { "path": "/does-not-exist", "status": 404, "contentType": "text/html" }
+  ],
+  "headers": {
+    "cache-control": "public, max-age=0, must-revalidate",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin"
+  },
+  "notes": [
+    "No CSP, HSTS, X-Frame-Options or Permissions-Policy are sent today.",
+    "www.prodbuilds.com has no DNS record."
+  ]
+}

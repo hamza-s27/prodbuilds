@@ -1,0 +1,1896 @@
+{
+  "source": "https://prodbuilds.com, crawled 2026-10-05",
+  "pages": [
+    {
+      "path": "/",
+      "lang": "en",
+      "title": "ProdBuilds | Backend, Cloud & AI Software Development",
+      "description": "ProdBuilds designs and builds backend systems, APIs, cloud infrastructure and AI integrations that hold up in production, from a first MVP to the platform you already run.",
+      "keywords": "ProdBuilds, custom software development, backend development, API development, Java, Spring Boot, Node.js, cloud infrastructure, AWS, scaling, automation, AI integration, MCP",
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/",
+      "rssHref": null,
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "ProdBuilds | Backend, Cloud & AI Software Development",
+        "og:description": "ProdBuilds designs and builds backend systems, APIs, cloud infrastructure and AI integrations that hold up in production, from a first MVP to the platform you already run.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "ProdBuilds | Backend, Cloud & AI Software Development",
+        "twitter:description": "ProdBuilds designs and builds backend systems, APIs, cloud infrastructure and AI integrations that hold up in production, from a first MVP to the platform you already run.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/",
+              "logo": "https://prodbuilds.com/favicon.svg",
+              "description": "ProdBuilds designs and builds backend systems, APIs, cloud infrastructure and AI integrations that hold up in production.",
+              "email": "hello@prodbuilds.com",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "hello@prodbuilds.com",
+                "contactType": "sales",
+                "url": "https://prodbuilds.com/contact"
+              },
+              "knowsAbout": [
+                "Backend development",
+                "API design",
+                "Java",
+                "Spring Boot",
+                "Node.js",
+                "Distributed systems",
+                "Caching",
+                "Message queues",
+                "Cloud infrastructure",
+                "Amazon Web Services",
+                "Docker",
+                "Kubernetes",
+                "Firebase",
+                "Web automation",
+                "Robotic process automation",
+                "Large language models",
+                "Model Context Protocol"
+              ],
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Services",
+                "url": "https://prodbuilds.com/services",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "APIs and backend systems",
+                      "description": "Services, APIs and data models in Java, Spring Boot and Node.js, designed to grow without a rewrite.",
+                      "url": "https://prodbuilds.com/services#backend",
+                      "provider": {
+                        "@id": "https://prodbuilds.com/#organization"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Scaling and modernisation",
+                      "description": "Caching, queues and stateless services that steady a struggling system, and a way out of the monolith that isn’t a rewrite.",
+                      "url": "https://prodbuilds.com/services#scaling",
+                      "provider": {
+                        "@id": "https://prodbuilds.com/#organization"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Cloud infrastructure",
+                      "description": "AWS, Docker and Kubernetes set up properly: deployments, CDN, domains and the operational basics.",
+                      "url": "https://prodbuilds.com/services#cloud",
+                      "provider": {
+                        "@id": "https://prodbuilds.com/#organization"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "MVPs and web apps",
+                      "description": "React and Node.js products, and real-time features on Firebase, from first release to production.",
+                      "url": "https://prodbuilds.com/services#product",
+                      "provider": {
+                        "@id": "https://prodbuilds.com/#organization"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Automation and integrations",
+                      "description": "Web automation, background jobs and third-party integrations that run reliably and on schedule.",
+                      "url": "https://prodbuilds.com/services#automation",
+                      "provider": {
+                        "@id": "https://prodbuilds.com/#organization"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "AI integrations",
+                      "description": "LLM features and MCP servers that connect AI assistants to your data and tools, with limits you control.",
+                      "url": "https://prodbuilds.com/services#ai",
+                      "provider": {
+                        "@id": "https://prodbuilds.com/#organization"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://prodbuilds.com/#website",
+              "url": "https://prodbuilds.com/",
+              "name": "ProdBuilds",
+              "inLanguage": "en",
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "Organization",
+        "WebSite"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/#website"
+      ],
+      "h1": "Software that holds up in production.",
+      "headings": [
+        {
+          "level": 1,
+          "id": "hero-heading",
+          "text": "Software that holds up in production."
+        },
+        {
+          "level": 2,
+          "id": "services-heading",
+          "text": "Backend, cloud and AI work, from first version to production scale."
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "APIs & backend systems"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Scaling & modernisation"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Cloud infrastructure"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "MVPs & web apps"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Automation & integrations"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "AI integrations"
+        },
+        {
+          "level": 2,
+          "id": "data-heading",
+          "text": "Your data stays yours."
+        },
+        {
+          "level": 2,
+          "id": "how-heading",
+          "text": "From first call to production, in four steps."
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Scope & strategy"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Architecture & plan"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Iterative delivery"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Launch & support"
+        },
+        {
+          "level": 2,
+          "id": "blog-heading",
+          "text": "Engineering notes."
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "The case of the vanishing JobRunr runs"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Going, going, gone: closing Firebase auctions on time"
+        },
+        {
+          "level": 2,
+          "id": "cta-heading",
+          "text": "Ready to build something?"
+        }
+      ],
+      "ids": [
+        "blog",
+        "blog-heading",
+        "cta-email",
+        "cta-heading",
+        "cta-note",
+        "cta-status",
+        "data-heading",
+        "hero-email",
+        "hero-heading",
+        "hero-note",
+        "hero-status",
+        "how-heading",
+        "how-we-work",
+        "main-content",
+        "services",
+        "services-heading"
+      ]
+    },
+    {
+      "path": "/blog",
+      "lang": "en",
+      "title": "Blog | ProdBuilds",
+      "description": "Engineering write-ups from ProdBuilds on scheduling, background jobs and Firebase, with tested code and measured results.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/blog",
+      "rssHref": "https://prodbuilds.com/blog/feed.xml",
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/blog",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Blog | ProdBuilds",
+        "og:description": "Engineering write-ups from ProdBuilds on scheduling, background jobs and Firebase, with tested code and measured results.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Blog | ProdBuilds",
+        "twitter:description": "Engineering write-ups from ProdBuilds on scheduling, background jobs and Firebase, with tested code and measured results.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Blog",
+              "@id": "https://prodbuilds.com/blog#blog",
+              "url": "https://prodbuilds.com/blog",
+              "name": "ProdBuilds blog",
+              "description": "Engineering write-ups from ProdBuilds on scheduling, background jobs and Firebase, with tested code and measured results.",
+              "inLanguage": "en",
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/blog#breadcrumb"
+              },
+              "blogPost": [
+                {
+                  "@type": "BlogPosting",
+                  "@id": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances#post",
+                  "headline": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)",
+                  "url": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances",
+                  "datePublished": "2026-09-26"
+                },
+                {
+                  "@type": "BlogPosting",
+                  "@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#post",
+                  "headline": "The case of the vanishing JobRunr runs",
+                  "url": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+                  "datePublished": "2026-09-26"
+                },
+                {
+                  "@type": "BlogPosting",
+                  "@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#post",
+                  "headline": "Going, going, gone: closing Firebase auctions on time",
+                  "url": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+                  "datePublished": "2026-09-26"
+                }
+              ]
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/blog#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://prodbuilds.com/blog"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/",
+              "logo": "https://prodbuilds.com/favicon.svg"
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "Blog",
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/blog#blog",
+        "https://prodbuilds.com/blog#breadcrumb"
+      ],
+      "h1": "Engineering notes.",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Engineering notes."
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "The case of the vanishing JobRunr runs"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Going, going, gone: closing Firebase auctions on time"
+        }
+      ],
+      "ids": [
+        "main-content"
+      ]
+    },
+    {
+      "path": "/blog/firebase-auction-close-on-time",
+      "lang": "en",
+      "title": "Closing Firebase Auctions On Time with Cloud Tasks and Firestore | ProdBuilds",
+      "description": "Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+      "rssHref": "https://prodbuilds.com/blog/feed.xml",
+      "og": {
+        "og:type": "article",
+        "og:url": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Going, going, gone: closing Firebase auctions on time",
+        "og:description": "Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close.",
+        "og:image": "https://prodbuilds.com/images/blog/firebase-auction-close-on-time.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Going, going, gone: closing Firebase auctions on time — ProdBuilds blog"
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Going, going, gone: closing Firebase auctions on time",
+        "twitter:description": "Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close.",
+        "twitter:image": "https://prodbuilds.com/images/blog/firebase-auction-close-on-time.png",
+        "twitter:image:alt": "Going, going, gone: closing Firebase auctions on time — ProdBuilds blog"
+      },
+      "article": {
+        "article:published_time": "2026-09-26",
+        "article:modified_time": "2026-09-26",
+        "article:section": "Firebase"
+      },
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#post",
+              "headline": "Going, going, gone: closing Firebase auctions on time",
+              "description": "Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close.",
+              "url": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+              "mainEntityOfPage": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+              "datePublished": "2026-09-26",
+              "dateModified": "2026-09-26",
+              "inLanguage": "en",
+              "image": "https://prodbuilds.com/images/blog/firebase-auction-close-on-time.png",
+              "keywords": [
+                "Firebase",
+                "Cloud Functions",
+                "Cloud Tasks",
+                "Firestore transactions",
+                "auction",
+                "task queue functions"
+              ],
+              "wordCount": 1540,
+              "author": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/blog#blog"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#breadcrumb"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://prodbuilds.com/blog"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Closing Firebase auctions on time",
+                  "item": "https://prodbuilds.com/blog/firebase-auction-close-on-time"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/",
+              "logo": "https://prodbuilds.com/favicon.svg"
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/blog/firebase-auction-close-on-time#breadcrumb",
+        "https://prodbuilds.com/blog/firebase-auction-close-on-time#post"
+      ],
+      "h1": "Going, going, gone: closing Firebase auctions on time",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Going, going, gone: closing Firebase auctions on time"
+        },
+        {
+          "level": 2,
+          "id": "in-short",
+          "text": "In short"
+        },
+        {
+          "level": 2,
+          "id": "why-not-a-sweep",
+          "text": "Why a cron sweep closes auctions late"
+        },
+        {
+          "level": 2,
+          "id": "deadline-in-the-transaction",
+          "text": "Rule 1: the deadline lives in the bid transaction"
+        },
+        {
+          "level": 2,
+          "id": "one-task-per-auction",
+          "text": "Rule 2: one Cloud Task per auction"
+        },
+        {
+          "level": 2,
+          "id": "idempotent-close",
+          "text": "Rule 3: closing twice must be harmless"
+        },
+        {
+          "level": 2,
+          "id": "safety-net",
+          "text": "Rule 4: keep a sweep as a safety net"
+        },
+        {
+          "level": 2,
+          "id": "busy-auctions",
+          "text": "The bidding war: expect ABORTED"
+        },
+        {
+          "level": 2,
+          "id": "countdowns",
+          "text": "Countdowns are for display"
+        },
+        {
+          "level": 2,
+          "id": "checklist",
+          "text": "Checklist"
+        }
+      ],
+      "ids": [
+        "busy-auctions",
+        "checklist",
+        "countdowns",
+        "deadline-in-the-transaction",
+        "fig-extend-d",
+        "fig-extend-t",
+        "idempotent-close",
+        "in-short",
+        "main-content",
+        "one-task-per-auction",
+        "safety-net",
+        "why-not-a-sweep"
+      ]
+    },
+    {
+      "path": "/blog/jobrunr-skipping-recurring-jobs",
+      "lang": "en",
+      "title": "JobRunr Skipping Recurring Jobs? The Case of the Vanishing Runs | ProdBuilds",
+      "description": "Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+      "rssHref": "https://prodbuilds.com/blog/feed.xml",
+      "og": {
+        "og:type": "article",
+        "og:url": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "The case of the vanishing JobRunr runs",
+        "og:description": "Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls.",
+        "og:image": "https://prodbuilds.com/images/blog/jobrunr-skipping-recurring-jobs.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "The case of the vanishing JobRunr runs — ProdBuilds blog"
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "The case of the vanishing JobRunr runs",
+        "twitter:description": "Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls.",
+        "twitter:image": "https://prodbuilds.com/images/blog/jobrunr-skipping-recurring-jobs.png",
+        "twitter:image:alt": "The case of the vanishing JobRunr runs — ProdBuilds blog"
+      },
+      "article": {
+        "article:published_time": "2026-09-26",
+        "article:modified_time": "2026-09-26",
+        "article:section": "JobRunr"
+      },
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#post",
+              "headline": "The case of the vanishing JobRunr runs",
+              "description": "Before 5.2.0, JobRunr could silently skip a recurring run after hours of uptime. The clue in the log, the gap behind it, and the lesson for any scheduler that polls.",
+              "url": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+              "mainEntityOfPage": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs",
+              "datePublished": "2026-09-26",
+              "dateModified": "2026-09-26",
+              "inLanguage": "en",
+              "image": "https://prodbuilds.com/images/blog/jobrunr-skipping-recurring-jobs.png",
+              "keywords": [
+                "JobRunr",
+                "recurring jobs",
+                "skipped jobs",
+                "time drift",
+                "job scheduler",
+                "Java"
+              ],
+              "wordCount": 1010,
+              "author": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/blog#blog"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#breadcrumb"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://prodbuilds.com/blog"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Vanishing JobRunr runs",
+                  "item": "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/",
+              "logo": "https://prodbuilds.com/favicon.svg"
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#breadcrumb",
+        "https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs#post"
+      ],
+      "h1": "The case of the vanishing JobRunr runs",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "The case of the vanishing JobRunr runs"
+        },
+        {
+          "level": 2,
+          "id": "in-short",
+          "text": "In short"
+        },
+        {
+          "level": 2,
+          "id": "how-it-showed-up",
+          "text": "The scene: three schedulers, one job"
+        },
+        {
+          "level": 2,
+          "id": "what-caused-it",
+          "text": "The culprit: windows that didn’t quite touch"
+        },
+        {
+          "level": 2,
+          "id": "the-fix",
+          "text": "The fix: start where the last window ended"
+        },
+        {
+          "level": 2,
+          "id": "are-you-affected",
+          "text": "Are you affected?"
+        },
+        {
+          "level": 2,
+          "id": "the-lesson",
+          "text": "The moral: anchor to the last window, not to now"
+        }
+      ],
+      "ids": [
+        "are-you-affected",
+        "fig-gap-d",
+        "fig-gap-t",
+        "how-it-showed-up",
+        "in-short",
+        "main-content",
+        "the-fix",
+        "the-lesson",
+        "what-caused-it"
+      ]
+    },
+    {
+      "path": "/blog/spring-boot-scheduled-jobs-multiple-instances",
+      "lang": "en",
+      "title": "Spring Boot @Scheduled Running Twice on Multiple Instances? What Stops It | ProdBuilds",
+      "description": "Add a second instance and every Spring Boot @Scheduled job runs twice. We tested ShedLock six ways: what stops duplicates, and the two settings that decide it.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances",
+      "rssHref": "https://prodbuilds.com/blog/feed.xml",
+      "og": {
+        "og:type": "article",
+        "og:url": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)",
+        "og:description": "Add a second instance and every Spring Boot @Scheduled job runs twice. We tested ShedLock six ways: what stops duplicates, and the two settings that decide it.",
+        "og:image": "https://prodbuilds.com/images/blog/spring-boot-scheduled-jobs-multiple-instances.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it) — ProdBuilds blog"
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)",
+        "twitter:description": "Add a second instance and every Spring Boot @Scheduled job runs twice. We tested ShedLock six ways: what stops duplicates, and the two settings that decide it.",
+        "twitter:image": "https://prodbuilds.com/images/blog/spring-boot-scheduled-jobs-multiple-instances.png",
+        "twitter:image:alt": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it) — ProdBuilds blog"
+      },
+      "article": {
+        "article:published_time": "2026-09-26",
+        "article:modified_time": "2026-09-26",
+        "article:section": "Spring Boot"
+      },
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances#post",
+              "headline": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)",
+              "description": "Add a second instance and every Spring Boot @Scheduled job runs twice. We tested ShedLock six ways: what stops duplicates, and the two settings that decide it.",
+              "url": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances",
+              "mainEntityOfPage": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances",
+              "datePublished": "2026-09-26",
+              "dateModified": "2026-09-26",
+              "inLanguage": "en",
+              "image": "https://prodbuilds.com/images/blog/spring-boot-scheduled-jobs-multiple-instances.png",
+              "keywords": [
+                "Spring Boot",
+                "@Scheduled",
+                "ShedLock",
+                "distributed scheduling",
+                "horizontal scaling",
+                "cron jobs"
+              ],
+              "wordCount": 1393,
+              "author": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/blog#blog"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances#breadcrumb"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://prodbuilds.com/blog"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "@Scheduled jobs running twice",
+                  "item": "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/",
+              "logo": "https://prodbuilds.com/favicon.svg"
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances#breadcrumb",
+        "https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances#post"
+      ],
+      "h1": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Why your Spring Boot @Scheduled job runs twice (and what actually stops it)"
+        },
+        {
+          "level": 2,
+          "id": "in-short",
+          "text": "In short"
+        },
+        {
+          "level": 2,
+          "id": "what-we-tested",
+          "text": "The experiment: two instances, one job, six setups"
+        },
+        {
+          "level": 2,
+          "id": "why-scheduled-runs-everywhere",
+          "text": "Why Spring runs it twice"
+        },
+        {
+          "level": 2,
+          "id": "the-fix",
+          "text": "The fix: one lock, in the database you already have"
+        },
+        {
+          "level": 2,
+          "id": "lock-at-least-for",
+          "text": "Setting 1: lockAtLeastFor, the one people skip"
+        },
+        {
+          "level": 2,
+          "id": "lock-at-most-for",
+          "text": "Setting 2: lockAtMostFor, the safety valve that can backfire"
+        },
+        {
+          "level": 2,
+          "id": "safe-to-run-twice",
+          "text": "Assume it will run twice anyway"
+        },
+        {
+          "level": 2,
+          "id": "when-a-lock-is-not-enough",
+          "text": "When a lock isn’t enough"
+        },
+        {
+          "level": 2,
+          "id": "checklist",
+          "text": "Checklist"
+        }
+      ],
+      "ids": [
+        "checklist",
+        "fig-overrun-d",
+        "fig-overrun-t",
+        "fig-skew-d",
+        "fig-skew-t",
+        "in-short",
+        "lock-at-least-for",
+        "lock-at-most-for",
+        "main-content",
+        "safe-to-run-twice",
+        "the-fix",
+        "what-we-tested",
+        "when-a-lock-is-not-enough",
+        "why-scheduled-runs-everywhere"
+      ]
+    },
+    {
+      "path": "/contact",
+      "lang": "en",
+      "title": "Contact ProdBuilds | Start a Software or AI Project",
+      "description": "Contact ProdBuilds about custom software, AI, or cloud work. Leave your email or write to hello@prodbuilds.com and we'll reply to set up a call.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/contact",
+      "rssHref": null,
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/contact",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Contact ProdBuilds | Start a Software or AI Project",
+        "og:description": "Contact ProdBuilds about custom software, AI, or cloud work. Leave your email or write to hello@prodbuilds.com and we'll reply to set up a call.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Contact ProdBuilds | Start a Software or AI Project",
+        "twitter:description": "Contact ProdBuilds about custom software, AI, or cloud work. Leave your email or write to hello@prodbuilds.com and we'll reply to set up a call.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "ContactPage",
+              "@id": "https://prodbuilds.com/contact#webpage",
+              "url": "https://prodbuilds.com/contact",
+              "name": "Contact ProdBuilds",
+              "inLanguage": "en",
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/#website"
+              },
+              "about": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/contact#breadcrumb"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/contact#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Contact",
+                  "item": "https://prodbuilds.com/contact"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/",
+              "email": "hello@prodbuilds.com",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "hello@prodbuilds.com",
+                "contactType": "sales",
+                "url": "https://prodbuilds.com/contact"
+              }
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ContactPage",
+        "Organization"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/contact#breadcrumb",
+        "https://prodbuilds.com/contact#webpage"
+      ],
+      "h1": "Tell us what you’re building.",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Tell us what you’re building."
+        },
+        {
+          "level": 2,
+          "id": "form-heading",
+          "text": "Leave your email"
+        },
+        {
+          "level": 2,
+          "id": "direct-heading",
+          "text": "Prefer to write?"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "What happens next"
+        }
+      ],
+      "ids": [
+        "contact-email",
+        "contact-note",
+        "contact-status",
+        "direct-heading",
+        "form-heading",
+        "main-content"
+      ]
+    },
+    {
+      "path": "/how-we-work",
+      "lang": "en",
+      "title": "How We Work: From First Call to Production | ProdBuilds",
+      "description": "How a ProdBuilds project runs: discovery, design, iterative delivery with automated tests, and launch and support, with direct access to the engineer building your software.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/how-we-work",
+      "rssHref": null,
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/how-we-work",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "How we work | ProdBuilds",
+        "og:description": "How a ProdBuilds project runs: discovery, design, iterative delivery with automated tests, and launch and support, with direct access to the engineer building your software.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "How we work | ProdBuilds",
+        "twitter:description": "How a ProdBuilds project runs: discovery, design, iterative delivery with automated tests, and launch and support, with direct access to the engineer building your software.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://prodbuilds.com/how-we-work#webpage",
+              "url": "https://prodbuilds.com/how-we-work",
+              "name": "How we work",
+              "inLanguage": "en",
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/#website"
+              },
+              "about": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/how-we-work#breadcrumb"
+              }
+            },
+            {
+              "@type": "FAQPage",
+              "@id": "https://prodbuilds.com/how-we-work#faq",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Can you work on an existing codebase?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. We can start from your existing code, even with little handover, and improve it in place rather than rewriting it."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Who owns the code?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "That’s set out in the written agreement for your project, which we agree before work starts."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How do you handle our data?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Only as your agreement and instructions allow. We don’t sell it, use it for advertising or train models on it, and we delete it on request or within 30 days of the agreement ending. See our privacy policy."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How do we start?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Leave your email on the contact page or write to hello@prodbuilds.com. We’ll reply by email to set up a short call."
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/how-we-work#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "How we work",
+                  "item": "https://prodbuilds.com/how-we-work"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/"
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "FAQPage",
+        "Organization",
+        "WebPage"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/how-we-work#breadcrumb",
+        "https://prodbuilds.com/how-we-work#faq",
+        "https://prodbuilds.com/how-we-work#webpage"
+      ],
+      "h1": "From first call to production, with no surprises.",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "From first call to production, with no surprises."
+        },
+        {
+          "level": 2,
+          "id": "step-1",
+          "text": "Scope & strategy"
+        },
+        {
+          "level": 2,
+          "id": "step-2",
+          "text": "Architecture & plan"
+        },
+        {
+          "level": 2,
+          "id": "step-3",
+          "text": "Iterative delivery"
+        },
+        {
+          "level": 2,
+          "id": "step-4",
+          "text": "Launch & support"
+        },
+        {
+          "level": 2,
+          "id": "principles-heading",
+          "text": "What you can expect."
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Built to grow without a rewrite"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Tested end to end"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Direct access"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Honest scoping"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Works with your team"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Your data stays yours"
+        },
+        {
+          "level": 2,
+          "id": "faq-heading",
+          "text": "Common questions."
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Can you work on an existing codebase?"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Who owns the code?"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "How do you handle our data?"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "How do we start?"
+        },
+        {
+          "level": 2,
+          "id": "cta-heading",
+          "text": "Ready to talk it through?"
+        }
+      ],
+      "ids": [
+        "cta-heading",
+        "faq-heading",
+        "main-content",
+        "principles-heading",
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ]
+    },
+    {
+      "path": "/privacy",
+      "lang": "en",
+      "title": "Privacy Policy | ProdBuilds",
+      "description": "How ProdBuilds handles personal data on this website and in the software we build and host for our clients.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/privacy",
+      "rssHref": null,
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/privacy",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Privacy Policy | ProdBuilds",
+        "og:description": "How ProdBuilds handles personal data on this website and in the software we build and host for our clients.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Privacy Policy | ProdBuilds",
+        "twitter:description": "How ProdBuilds handles personal data on this website and in the software we build and host for our clients.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://prodbuilds.com/privacy#webpage",
+              "url": "https://prodbuilds.com/privacy",
+              "name": "Privacy Policy",
+              "inLanguage": "en",
+              "dateModified": "2026-09-26",
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/#website"
+              },
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/privacy#breadcrumb"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/privacy#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Privacy Policy",
+                  "item": "https://prodbuilds.com/privacy"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/privacy#breadcrumb",
+        "https://prodbuilds.com/privacy#webpage"
+      ],
+      "h1": "Privacy Policy",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Privacy Policy"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "What we collect"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "How we use it"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Third parties"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Google user data"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Security and retention"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Your rights"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Cookies"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Contact"
+        }
+      ],
+      "ids": [
+        "main-content"
+      ]
+    },
+    {
+      "path": "/services",
+      "lang": "en",
+      "title": "Services: Backend, Cloud, Automation & AI | ProdBuilds",
+      "description": "APIs and backend systems, scaling and modernisation, cloud infrastructure, MVPs and web apps, automation and integrations, and AI integrations, from ProdBuilds.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/services",
+      "rssHref": null,
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/services",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Services | ProdBuilds",
+        "og:description": "APIs and backend systems, scaling and modernisation, cloud infrastructure, MVPs and web apps, automation and integrations, and AI integrations, from ProdBuilds.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Services | ProdBuilds",
+        "twitter:description": "APIs and backend systems, scaling and modernisation, cloud infrastructure, MVPs and web apps, automation and integrations, and AI integrations, from ProdBuilds.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://prodbuilds.com/services#webpage",
+              "url": "https://prodbuilds.com/services",
+              "name": "Services",
+              "inLanguage": "en",
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/#website"
+              },
+              "about": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/services#breadcrumb"
+              },
+              "mainEntity": {
+                "@id": "https://prodbuilds.com/services#catalog"
+              }
+            },
+            {
+              "@type": "OfferCatalog",
+              "@id": "https://prodbuilds.com/services#catalog",
+              "name": "ProdBuilds services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "APIs and backend systems",
+                    "description": "Services, APIs and data models in Java, Spring Boot and Node.js, designed to grow without a rewrite.",
+                    "url": "https://prodbuilds.com/services#backend",
+                    "provider": {
+                      "@id": "https://prodbuilds.com/#organization"
+                    }
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Scaling and modernisation",
+                    "description": "Caching, queues and stateless services that steady a struggling system, and a way out of the monolith that isn’t a rewrite.",
+                    "url": "https://prodbuilds.com/services#scaling",
+                    "provider": {
+                      "@id": "https://prodbuilds.com/#organization"
+                    }
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Cloud infrastructure",
+                    "description": "AWS, Docker and Kubernetes set up properly: deployments, CDN, domains and the operational basics.",
+                    "url": "https://prodbuilds.com/services#cloud",
+                    "provider": {
+                      "@id": "https://prodbuilds.com/#organization"
+                    }
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "MVPs and web apps",
+                    "description": "React and Node.js products, and real-time features on Firebase, from first release to production.",
+                    "url": "https://prodbuilds.com/services#product",
+                    "provider": {
+                      "@id": "https://prodbuilds.com/#organization"
+                    }
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Automation and integrations",
+                    "description": "Web automation, background jobs and third-party integrations that run reliably and on schedule.",
+                    "url": "https://prodbuilds.com/services#automation",
+                    "provider": {
+                      "@id": "https://prodbuilds.com/#organization"
+                    }
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "AI integrations",
+                    "description": "LLM features and MCP servers that connect AI assistants to your data and tools, with limits you control.",
+                    "url": "https://prodbuilds.com/services#ai",
+                    "provider": {
+                      "@id": "https://prodbuilds.com/#organization"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/services#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Services",
+                  "item": "https://prodbuilds.com/services"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://prodbuilds.com/#organization",
+              "name": "ProdBuilds",
+              "url": "https://prodbuilds.com/"
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "OfferCatalog",
+        "Organization",
+        "WebPage"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/#organization",
+        "https://prodbuilds.com/services#breadcrumb",
+        "https://prodbuilds.com/services#catalog",
+        "https://prodbuilds.com/services#webpage"
+      ],
+      "h1": "Backend, cloud and AI work that holds up in production.",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Backend, cloud and AI work that holds up in production."
+        },
+        {
+          "level": 2,
+          "id": "backend-heading",
+          "text": "APIs & backend systems"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "What’s included"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Typical stack"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Related reading"
+        },
+        {
+          "level": 2,
+          "id": "scaling-heading",
+          "text": "Scaling & modernisation"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "What’s included"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Typical stack"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Related reading"
+        },
+        {
+          "level": 2,
+          "id": "cloud-heading",
+          "text": "Cloud infrastructure"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "What’s included"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Typical stack"
+        },
+        {
+          "level": 2,
+          "id": "product-heading",
+          "text": "MVPs & web apps"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "What’s included"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Typical stack"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Related reading"
+        },
+        {
+          "level": 2,
+          "id": "automation-heading",
+          "text": "Automation & integrations"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "What’s included"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Typical stack"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Related reading"
+        },
+        {
+          "level": 2,
+          "id": "ai-heading",
+          "text": "AI integrations"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "What’s included"
+        },
+        {
+          "level": 3,
+          "id": null,
+          "text": "Typical stack"
+        },
+        {
+          "level": 2,
+          "id": "cta-heading",
+          "text": "Not sure which of these you need?"
+        }
+      ],
+      "ids": [
+        "ai",
+        "ai-heading",
+        "automation",
+        "automation-heading",
+        "backend",
+        "backend-heading",
+        "cloud",
+        "cloud-heading",
+        "cta-heading",
+        "main-content",
+        "product",
+        "product-heading",
+        "scaling",
+        "scaling-heading"
+      ]
+    },
+    {
+      "path": "/terms",
+      "lang": "en",
+      "title": "Terms and Conditions | ProdBuilds",
+      "description": "The terms that govern your use of prodbuilds.com.",
+      "keywords": null,
+      "author": "ProdBuilds",
+      "robots": "index, follow",
+      "themeColor": "#0C0C0F",
+      "canonical": "https://prodbuilds.com/terms",
+      "rssHref": null,
+      "og": {
+        "og:type": "website",
+        "og:url": "https://prodbuilds.com/terms",
+        "og:site_name": "ProdBuilds",
+        "og:locale": "en_US",
+        "og:title": "Terms and Conditions | ProdBuilds",
+        "og:description": "The terms that govern your use of prodbuilds.com.",
+        "og:image": "https://prodbuilds.com/images/og.png",
+        "og:image:type": "image/png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "twitter": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Terms and Conditions | ProdBuilds",
+        "twitter:description": "The terms that govern your use of prodbuilds.com.",
+        "twitter:image": "https://prodbuilds.com/images/og.png",
+        "twitter:image:alt": "ProdBuilds: Software that holds up in production. Backend, cloud and AI development."
+      },
+      "article": {},
+      "jsonLd": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://prodbuilds.com/terms#webpage",
+              "url": "https://prodbuilds.com/terms",
+              "name": "Terms and Conditions",
+              "inLanguage": "en",
+              "dateModified": "2026-09-26",
+              "isPartOf": {
+                "@id": "https://prodbuilds.com/#website"
+              },
+              "publisher": {
+                "@id": "https://prodbuilds.com/#organization"
+              },
+              "breadcrumb": {
+                "@id": "https://prodbuilds.com/terms#breadcrumb"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://prodbuilds.com/terms#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://prodbuilds.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Terms and Conditions",
+                  "item": "https://prodbuilds.com/terms"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "jsonLdIds": [
+        "https://prodbuilds.com/terms#breadcrumb",
+        "https://prodbuilds.com/terms#webpage"
+      ],
+      "h1": "Terms and Conditions",
+      "headings": [
+        {
+          "level": 1,
+          "id": null,
+          "text": "Terms and Conditions"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Use of this site"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Intellectual property"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "No warranty and liability"
+        },
+        {
+          "level": 2,
+          "id": null,
+          "text": "Contact"
+        }
+      ],
+      "ids": [
+        "main-content"
+      ]
+    }
+  ]
+}

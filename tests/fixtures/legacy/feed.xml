@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ProdBuilds blog</title>
+    <link>https://prodbuilds.com/blog</link>
+    <description>Engineering write-ups from ProdBuilds, with tested code and measured results.</description>
+    <language>en</language>
+    <lastBuildDate>Sat, 26 Sep 2026 12:00:00 +0000</lastBuildDate>
+    <atom:link href="https://prodbuilds.com/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why your Spring Boot @Scheduled job runs twice (and what actually stops it)</title>
+      <link>https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances</link>
+      <guid isPermaLink="true">https://prodbuilds.com/blog/spring-boot-scheduled-jobs-multiple-instances</guid>
+      <pubDate>Sat, 26 Sep 2026 12:00:00 +0000</pubDate>
+      <category>Spring Boot</category>
+      <description>Add a second instance and every @Scheduled job runs twice. We counted the duplicates across six setups: ShedLock fixes it, but only with two settings that are easy to get wrong.</description>
+    </item>
+    <item>
+      <title>The case of the vanishing JobRunr runs</title>
+      <link>https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs</link>
+      <guid isPermaLink="true">https://prodbuilds.com/blog/jobrunr-skipping-recurring-jobs</guid>
+      <pubDate>Sat, 26 Sep 2026 12:00:00 +0000</pubDate>
+      <category>JobRunr</category>
+      <description>Spring, Quartz and JobRunr ran the same job every minute, and JobRunr quietly lost a run. The log line that gave it away, the gap behind it and the 5.2.0 fix.</description>
+    </item>
+    <item>
+      <title>Going, going, gone: closing Firebase auctions on time</title>
+      <link>https://prodbuilds.com/blog/firebase-auction-close-on-time</link>
+      <guid isPermaLink="true">https://prodbuilds.com/blog/firebase-auction-close-on-time</guid>
+      <pubDate>Sat, 26 Sep 2026 12:00:00 +0000</pubDate>
+      <category>Firebase</category>
+      <description>Bids pile up in the last seconds, and a once-a-minute sweep closes auctions late. The pattern we recommend: the deadline in the bid transaction, one Cloud Task per auction and an idempotent close.</description>
+    </item>
+  </channel>
+</rss>

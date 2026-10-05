@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* The site is dark-only; <html> carries `.dark` so registry components pick their dark styles. */
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-roboto);
+  --font-mono: var(--font-plex-mono);
+  --font-heading: var(--font-roboto);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-body: var(--body);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --ease-out-expo: var(--ease-out-expo);
+}
+
+/* Brand palette carried over from prodbuilds.com (site.css). */
+:root {
+  --brand-bg: #0c0c0f;
+  --brand-surface: #141419;
+  --brand-teal: #1cb495;
+  --brand-text: #ecebe6;
+  --brand-body: #c8c7c2;
+  --brand-muted: #8b8b94;
+  --brand-border: #24242d;
+  --brand-field: #62626c;
+  --brand-bad: #ff6b5b;
+
+  --background: var(--brand-bg);
+  --foreground: var(--brand-text);
+  --body: var(--brand-body);
+  --card: var(--brand-surface);
+  --card-foreground: var(--brand-text);
+  --popover: var(--brand-surface);
+  --popover-foreground: var(--brand-text);
+  --primary: var(--brand-teal);
+  --primary-foreground: var(--brand-bg);
+  --secondary: var(--brand-surface);
+  --secondary-foreground: var(--brand-text);
+  --muted: var(--brand-surface);
+  --muted-foreground: var(--brand-muted);
+  --accent: var(--brand-border);
+  --accent-foreground: var(--brand-text);
+  --destructive: var(--brand-bad);
+  --border: var(--brand-border);
+  --input: var(--brand-field);
+  --ring: var(--brand-teal);
+  --chart-1: var(--brand-teal);
+  --chart-2: #5fd3bb;
+  --chart-3: #138a72;
+  --chart-4: var(--brand-muted);
+  --chart-5: var(--brand-field);
+  --radius: 0.625rem;
+  --sidebar: var(--brand-surface);
+  --sidebar-foreground: var(--brand-text);
+  --sidebar-primary: var(--brand-teal);
+  --sidebar-primary-foreground: var(--brand-bg);
+  --sidebar-accent: var(--brand-border);
+  --sidebar-accent-foreground: var(--brand-text);
+  --sidebar-border: var(--brand-border);
+  --sidebar-ring: var(--brand-teal);
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

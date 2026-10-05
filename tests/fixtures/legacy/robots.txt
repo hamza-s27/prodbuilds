@@ -1,0 +1,5 @@
+# Search engines and AI assistants are welcome to crawl the whole site
+User-agent: *
+Allow: /
+
+Sitemap: https://prodbuilds.com/sitemap.xml

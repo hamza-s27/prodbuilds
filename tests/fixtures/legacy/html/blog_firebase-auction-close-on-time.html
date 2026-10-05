@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Closing Firebase Auctions On Time with Cloud Tasks and Firestore | ProdBuilds</title>
+	<meta name="description" content="Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close." />
+	<meta name="author" content="ProdBuilds" />
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+	<meta name="theme-color" content="#0C0C0F" />
+	<link rel="canonical" href="https://prodbuilds.com/blog/firebase-auction-close-on-time" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	<link rel="alternate" type="application/rss+xml" title="ProdBuilds blog" href="https://prodbuilds.com/blog/feed.xml" />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://prodbuilds.com/blog/firebase-auction-close-on-time" />
+	<meta property="og:site_name" content="ProdBuilds" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="Going, going, gone: closing Firebase auctions on time" />
+	<meta property="og:description" content="Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close." />
+	<meta property="og:image" content="https://prodbuilds.com/images/blog/firebase-auction-close-on-time.png" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="Going, going, gone: closing Firebase auctions on time — ProdBuilds blog" />
+	<meta property="article:published_time" content="2026-09-26" />
+	<meta property="article:modified_time" content="2026-09-26" />
+	<meta property="article:section" content="Firebase" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Going, going, gone: closing Firebase auctions on time" />
+	<meta name="twitter:description" content="Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close." />
+	<meta name="twitter:image" content="https://prodbuilds.com/images/blog/firebase-auction-close-on-time.png" />
+	<meta name="twitter:image:alt" content="Going, going, gone: closing Firebase auctions on time — ProdBuilds blog" />
+
+	<!-- Structured Data -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "BlogPosting",
+				"@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#post",
+				"headline": "Going, going, gone: closing Firebase auctions on time",
+				"description": "Scheduled functions run at most once a minute. How to close Firebase auctions on time: the deadline in the bid transaction, one Cloud Task per auction, an idempotent close.",
+				"url": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+				"mainEntityOfPage": "https://prodbuilds.com/blog/firebase-auction-close-on-time",
+				"datePublished": "2026-09-26",
+				"dateModified": "2026-09-26",
+				"inLanguage": "en",
+				"image": "https://prodbuilds.com/images/blog/firebase-auction-close-on-time.png",
+				"keywords": [
+					"Firebase",
+					"Cloud Functions",
+					"Cloud Tasks",
+					"Firestore transactions",
+					"auction",
+					"task queue functions"
+				],
+				"wordCount": 1540,
+				"author": {
+					"@id": "https://prodbuilds.com/#organization"
+				},
+				"publisher": {
+					"@id": "https://prodbuilds.com/#organization"
+				},
+				"isPartOf": {
+					"@id": "https://prodbuilds.com/blog#blog"
+				},
+				"breadcrumb": {
+					"@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#breadcrumb"
+				}
+			},
+			{
+				"@type": "BreadcrumbList",
+				"@id": "https://prodbuilds.com/blog/firebase-auction-close-on-time#breadcrumb",
+				"itemListElement": [
+					{
+						"@type": "ListItem",
+						"position": 1,
+						"name": "Home",
+						"item": "https://prodbuilds.com/"
+					},
+					{
+						"@type": "ListItem",
+						"position": 2,
+						"name": "Blog",
+						"item": "https://prodbuilds.com/blog"
+					},
+					{
+						"@type": "ListItem",
+						"position": 3,
+						"name": "Closing Firebase auctions on time",
+						"item": "https://prodbuilds.com/blog/firebase-auction-close-on-time"
+					}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://prodbuilds.com/#organization",
+				"name": "ProdBuilds",
+				"url": "https://prodbuilds.com/",
+				"logo": "https://prodbuilds.com/favicon.svg"
+			}
+		]
+	}
+	</script>
+
+	<link rel="preload" href="/assets/fonts/roboto-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="/assets/fonts/roboto-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="/assets/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="stylesheet" href="/assets/css/site.css?v=b32131377f" />
+</head>
+<body>
+	<div class="read-progress" aria-hidden="true"></div>
+	<a class="skip" href="#main-content">Skip to content</a>
+
+	<header class="nav">
+		<a href="/" class="logo"><img src="/logo.svg" alt="ProdBuilds" width="155" height="24" /></a>
+		<nav class="nav-links" aria-label="Main">
+			<a href="/services">Services</a>
+			<a href="/how-we-work">How we work</a>
+			<a href="/blog">Blog</a>
+			<a href="/contact" class="nav-cta">Get in touch</a>
+		</nav>
+	</header>
+
+	<main id="main-content">
+
+		<div class="page-head post-head">
+			<nav aria-label="Breadcrumb">
+				<ol class="crumbs">
+					<li><a href="/">Home</a></li>
+					<li><a href="/blog">Blog</a></li>
+					<li aria-current="page">Closing Firebase auctions on time</li>
+				</ol>
+			</nav>
+			<h1>Going, going, gone: closing Firebase auctions on time</h1>
+			<p class="lead">Bids pile up in the final seconds, and a once-a-minute cron job can’t keep up. The pattern we recommend: the deadline in the bid transaction, one Cloud Task per auction and a safety net.</p>
+			<p class="post-meta"><span class="post-topic">Firebase</span><time datetime="2026-09-26">26 September 2026</time><span>7 min read</span></p>
+		</div>
+
+		<article class="post">
+<p class="lede">Going once. Going twice. An auction is the rare feature where a few seconds really matter: bids pile up in the final moments, and your backend has to answer two questions exactly. When did it end? And who won?</p>
+<p>Our founder built the backend for a real-time auction platform on Firebase Functions and Firestore, with event-driven workflows and scheduled jobs. This post is the approach we recommend today for closing auctions on time. The code type-checks against <code>firebase-functions</code> 7.4.0 and <code>firebase-admin</code> 14.5.0, and we tested it against the Firestore emulator.</p>
+
+<section class="tldr" aria-labelledby="in-short">
+<h2 id="in-short">In short</h2>
+<ul>
+<li>Enforce the end time inside the bid transaction, using the server&rsquo;s clock. Then a close that runs late can&rsquo;t let a late bid in.</li>
+<li>Schedule one Cloud Task per auction, for its end time. Scheduled functions use cron syntax, so they run at most once a minute.</li>
+<li>Tasks can&rsquo;t be edited, and a task ID can&rsquo;t be reused for about an hour. When a bid extends an auction, enqueue a new task and let the old one find nothing to do.</li>
+<li>Make the close idempotent. In our test, five simultaneous close attempts produced one close and one &ldquo;closed&rdquo; event.</li>
+<li>Keep a slow scheduled sweep as a safety net, and treat <code>ABORTED</code> as &ldquo;try again&rdquo; on busy auctions.</li>
+</ul>
+</section>
+
+<h2 id="why-not-a-sweep">Why a cron sweep closes auctions late</h2>
+<p>The obvious approach is a scheduled function that runs every minute and closes whatever has ended. The catch is in the schedule: Firebase&rsquo;s <code>onSchedule</code> takes Unix crontab or App Engine syntax, and cron&rsquo;s smallest unit is a minute. An auction that ends just after a sweep waits almost a minute for the next one, plus however long the function takes to start. Meanwhile, bidders are staring at an auction that should be over.</p>
+<p>A sweep is still useful. It&rsquo;s the safety net, not the mechanism.</p>
+
+<h2 id="deadline-in-the-transaction">Rule 1: the deadline lives in the bid transaction</h2>
+<p>If closing is what stops bids, a close that runs late lets late bids in. So take that job away from the close: check the end time in the same transaction that accepts the bid, using the server&rsquo;s clock. Client clocks can be minutes off.</p>
+<pre tabindex="0"><code class="language-typescript">import { initializeApp } from "firebase-admin/app";
+import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
+import { HttpsError } from "firebase-functions/v2/https";
+
+initializeApp();
+const db = getFirestore();
+
+const EXTEND_WINDOW_MS = 30_000; // a bid in the last 30 seconds...
+const EXTEND_TO_MS = 30_000;     // ...moves the end to 30 seconds after that bid
+
+export async function placeBid(auctionId: string, bidderId: string, amount: number) {
+  const ref = db.collection("auctions").doc(auctionId);
+  return db.runTransaction(async (tx) =&gt; {
+    const auction = (await tx.get(ref)).data();
+    if (!auction) throw new HttpsError("not-found", "No such auction.");
+    const now = Date.now();
+    const endsAt = auction.endsAt.toMillis();
+    if (auction.status !== "open" || now &gt;= endsAt) {
+      throw new HttpsError("failed-precondition", "This auction has ended.");
+    }
+    if (amount &lt; auction.price + auction.minIncrement) {
+      throw new HttpsError("failed-precondition", "Bid is below the minimum.");
+    }
+    const extended = endsAt - now &lt; EXTEND_WINDOW_MS;
+    const newEndsAt = extended ? now + EXTEND_TO_MS : endsAt;
+    tx.update(ref, {
+      price: amount,
+      leader: bidderId,
+      bidCount: FieldValue.increment(1),
+      endsAt: Timestamp.fromMillis(newEndsAt),
+    });
+    tx.create(ref.collection("bids").doc(), { bidderId, amount, at: Timestamp.fromMillis(now) });
+    return { extended, endsAt: newEndsAt };
+  });
+}</code></pre>
+<p>The same transaction runs a soft close: a bid in the last 30 seconds moves the end to 30 seconds after that bid, which takes the fun out of sniping. Bids go through a callable function, so the server always has the final word:</p>
+<pre tabindex="0"><code class="language-typescript">import { onCall, HttpsError } from "firebase-functions/v2/https";
+
+export const bid = onCall&lt;{ auctionId: string; amount: number }&gt;(async (request) =&gt; {
+  if (!request.auth) throw new HttpsError("unauthenticated", "Sign in to bid.");
+  const result = await placeBid(request.data.auctionId, request.auth.uid, request.data.amount);
+  if (result.extended) await scheduleClose(request.data.auctionId, result.endsAt);
+  return result;
+});</code></pre>
+<p>Clients never write to auctions directly. The Admin SDK in your functions bypasses security rules, so the rules can shut every client write out:</p>
+<pre tabindex="0"><code class="language-text">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /auctions/{auctionId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}</code></pre>
+<p>In our emulator tests, a bid placed after the end was rejected before anything had closed the auction, and a bid 10 seconds before the end moved it to 30 seconds after the bid.</p>
+
+<h2 id="one-task-per-auction">Rule 2: one Cloud Task per auction</h2>
+<p><a href="https://firebase.google.com/docs/functions/task-functions">Task queue functions</a> put Cloud Tasks behind an ordinary function. You enqueue a task with a <code>scheduleTime</code>, and Cloud Tasks calls the function then: seconds after the end, not up to a minute.</p>
+<pre tabindex="0"><code class="language-typescript">import { getFunctions } from "firebase-admin/functions";
+import { createHash } from "node:crypto";
+
+export async function scheduleClose(auctionId: string, endsAtMs: number) {
+  const id = createHash("sha256").update(`${auctionId}:${endsAtMs}`).digest("hex");
+  try {
+    await getFunctions()
+      .taskQueue("closeAuction")
+      .enqueue({ auctionId }, { scheduleTime: new Date(endsAtMs), id });
+  } catch (err) {
+    if ((err as { code?: string }).code !== "functions/task-already-exists") throw err;
+  }
+}</code></pre>
+<p>Three details from the Admin SDK&rsquo;s own documentation shaped that code:</p>
+<ul>
+<li><strong>Tasks can&rsquo;t be updated after they&rsquo;re created.</strong> An extension can&rsquo;t move the existing task, so each end time gets its own.</li>
+<li><strong>An ID can&rsquo;t be reused for about an hour</strong> after the task runs or is deleted; trying throws <code>functions/task-already-exists</code>. Deriving the ID from the auction and its end time makes enqueuing the same close twice harmless.</li>
+<li><strong>Sequential IDs slow the queue down.</strong> The documentation warns against IDs with sequential prefixes, such as timestamps, and recommends hashes.</li>
+</ul>
+<p>Call <code>scheduleClose</code> when an auction is created and whenever a bid extends it. You could delete the superseded task with <code>taskQueue.delete(id)</code>, but you don&rsquo;t need to: when it fires, it sees the end has moved and does nothing.</p>
+<figure class="diagram">
+<svg viewBox="0 0 400 180" role="img" aria-labelledby="fig-extend-t fig-extend-d">
+<title id="fig-extend-t">How a soft close moves the end of an auction</title>
+<desc id="fig-extend-d">A bid lands 10 seconds before the scheduled end, T. The bid transaction moves the end to T plus 20 seconds, 30 seconds after the bid, and a second Cloud Task is enqueued for the new end. The first task fires at T, finds the auction is not due yet and does nothing. The second task fires at T plus 20 seconds and closes the auction.</desc>
+<text class="d-title" x="0" y="12">A bid in the last 30 s moves the end</text>
+<text x="0" y="40">Bids</text>
+<circle class="d-run" cx="104" cy="36" r="6"/>
+<text class="d-note" x="114" y="40">bid at T−10 s</text>
+<text x="0" y="74">Auction ends</text>
+<circle class="d-skip" cx="176" cy="70" r="5"/>
+<circle class="d-run" cx="320" cy="70" r="5"/>
+<path class="d-arrow" d="M184 70H310M304 65l6 5-6 5"/>
+<text class="d-note d-good" x="248" y="60" text-anchor="middle">end moves to T+20 s</text>
+<path class="d-guide" d="M176 78V92M320 78V92"/>
+<text x="0" y="106">Cloud Tasks</text>
+<path class="d-skip" d="M176 94l8 8-8 8-8-8z"/>
+<path class="d-run" d="M320 94l8 8-8 8-8-8z"/>
+<text class="d-note" x="176" y="128" text-anchor="middle">task 1: not due,</text>
+<text class="d-note" x="176" y="142" text-anchor="middle">does nothing</text>
+<text class="d-note d-good" x="320" y="128" text-anchor="middle">task 2: closes</text>
+<text class="d-note d-good" x="320" y="142" text-anchor="middle">the auction</text>
+<path class="d-axis" d="M104 156H392M104 156v4M176 156v4M248 156v4M320 156v4M392 156v4"/>
+<text class="d-note" x="104" y="172" text-anchor="middle">T−10</text>
+<text class="d-note" x="176" y="172" text-anchor="middle">T</text>
+<text class="d-note" x="248" y="172" text-anchor="middle">T+10</text>
+<text class="d-note" x="320" y="172" text-anchor="middle">T+20</text>
+<text class="d-note" x="392" y="172" text-anchor="end">T+30</text>
+</svg>
+<figcaption>What our emulator test showed: a bid 10&nbsp;s before the end moved it to 30&nbsp;s after the bid, and a close attempt after the extension returned <code>not-due</code>.</figcaption>
+</figure>
+
+<h2 id="idempotent-close">Rule 3: closing twice must be harmless</h2>
+<p>Task queue functions retry failures (up to three attempts by default), a sweep may reach the same auction, and after an extension the old task still fires. The close has to be safe to run any number of times, early or late:</p>
+<pre tabindex="0"><code class="language-typescript">import { onTaskDispatched } from "firebase-functions/v2/tasks";
+
+export async function closeIfDue(auctionId: string): Promise&lt;"closed" | "already-closed" | "not-due"&gt; {
+  const ref = db.collection("auctions").doc(auctionId);
+  return db.runTransaction(async (tx) =&gt; {
+    const auction = (await tx.get(ref)).data();
+    if (!auction || auction.status !== "open") return "already-closed";
+    if (Date.now() &lt; auction.endsAt.toMillis()) return "not-due"; // extended: a later task owns it
+    tx.update(ref, { status: "closed", winner: auction.leader ?? null, closedAt: FieldValue.serverTimestamp() });
+    tx.create(db.collection("auctionEvents").doc(`${auctionId}-closed`), {
+      type: "closed", auctionId, winner: auction.leader ?? null, price: auction.price,
+    });
+    return "closed";
+  });
+}
+
+export const closeAuction = onTaskDispatched&lt;{ auctionId: string }&gt;(
+  { retryConfig: { maxAttempts: 5, minBackoffSeconds: 5 } },
+  async (request) =&gt; { await closeIfDue(request.data.auctionId); },
+);</code></pre>
+<p>Writing the &ldquo;closed&rdquo; event in the same transaction as the status change means you can&rsquo;t close without telling anyone, or tell anyone twice. Emails and push notifications go out from a Firestore trigger on <code>auctionEvents</code>. Triggers can also fire more than once, so record what you&rsquo;ve sent.</p>
+<p>In our tests, five simultaneous close attempts returned one <code>closed</code> and four <code>already-closed</code>, with exactly one event written. A close attempt right after an extension returned <code>not-due</code> and changed nothing.</p>
+
+<h2 id="safety-net">Rule 4: keep a sweep as a safety net</h2>
+<p>If enqueuing a task ever fails, through a bad deploy, a network error or a bug, nothing else would close that auction. A sweep every few minutes catches it, and because the close is idempotent, it can&rsquo;t do any damage:</p>
+<pre tabindex="0"><code class="language-typescript">import { onSchedule } from "firebase-functions/v2/scheduler";
+
+export const sweepEndedAuctions = onSchedule("every 5 minutes", async () =&gt; {
+  const due = await db.collection("auctions")
+    .where("status", "==", "open")
+    .where("endsAt", "&lt;=", Timestamp.now())
+    .limit(200)
+    .get();
+  await Promise.all(due.docs.map((doc) =&gt; closeIfDue(doc.id)));
+});</code></pre>
+
+<div class="callout bad" role="note">
+<p class="callout-label">Gotcha</p>
+<p>This query needs a composite index on <code>status</code> and <code>endsAt</code>. The emulator doesn&rsquo;t ask for one. Production does.</p>
+</div>
+
+<h2 id="busy-auctions">The bidding war: expect ABORTED</h2>
+<p>Every bid on an auction writes the same document, so bids on a hot auction queue up behind each other. The Admin SDK retries a contended transaction a few times; after that, the bid fails with <code>ABORTED</code>.</p>
+<p>So we staged a bidding war: 50 simultaneous bids at one auction, eight times over, in the emulator.</p>
+
+<ul class="stats">
+<li><strong class="stat-num">8/8</strong> <span class="stat-lbl">bursts ended consistent: the price matched the highest accepted bid, and the count matched the bids stored</span></li>
+<li><strong class="stat-num">7/8</strong> <span class="stat-lbl">bursts where every bid was accepted or cleanly rejected as too low</span></li>
+<li><strong class="stat-num bad">27</strong> <span class="stat-lbl">bids failed with <code>ABORTED</code> in the other burst, including the highest</span></li>
+</ul>
+
+<p>The emulator handles contention differently from production, so read those numbers as an illustration, not a benchmark. The lesson holds either way: show <code>ABORTED</code> to the bidder as &ldquo;try again&rdquo;, never as a lost bid, and if an auction really is that busy, consider queueing bids instead.</p>
+
+<h2 id="countdowns">Countdowns are for display</h2>
+<p>Show a countdown from the auction&rsquo;s <code>endsAt</code>, and listen to the document so an extension updates it straight away. Just remember: the countdown is theatre; the transaction is the law. A bidder whose clock is ten seconds fast sees the wrong countdown, not a lost bid.</p>
+
+<h2 id="checklist">Checklist</h2>
+<ol>
+<li>Reject late bids inside the bid transaction, with the server&rsquo;s clock.</li>
+<li>Enqueue one Cloud Task per end time, with a hashed ID.</li>
+<li>Make the close idempotent, and write the &ldquo;closed&rdquo; event in the same transaction.</li>
+<li>Run a slow sweep as a safety net, with its composite index.</li>
+<li>Treat <code>ABORTED</code> as &ldquo;try again&rdquo; in the client.</li>
+</ol>
+
+<div class="post-footer">
+<p><strong>About ProdBuilds.</strong> ProdBuilds is a software studio founded by a senior backend engineer. We design and build backend systems, cloud infrastructure and AI features that hold up in production. <a href="/contact">Get in touch</a> if you&rsquo;re working on something like this.</p>
+<p class="sources">Sources: <a href="https://firebase.google.com/docs/functions/task-functions">Firebase: Enqueue functions with Cloud Tasks</a> &middot; <a href="https://firebase.google.com/docs/functions/schedule-functions">Firebase: Schedule functions</a> &middot; <a href="https://firebase.google.com/docs/firestore/manage-data/transactions">Firestore: Transactions and batched writes</a></p>
+</div>
+		</article>
+
+	</main>
+
+	<footer class="footer">
+		<a href="/" class="logo"><img src="/logo.svg" alt="ProdBuilds" width="155" height="24" /></a>
+		<nav class="footer-links" aria-label="Footer">
+			<a href="/services">Services</a>
+			<a href="/how-we-work">How we work</a>
+			<a href="/blog">Blog</a>
+			<a href="/contact">Contact</a>
+			<a href="/privacy">Privacy</a>
+			<a href="/terms">Terms</a>
+			<a href="/cdn-cgi/l/email-protection#18707d74747758686a777c7a6d71747c6b367b7775"><span class="__cf_email__" data-cfemail="b7dfd2dbdbd8f7c7c5d8d3d5c2dedbd3c499d4d8da">[email&#160;protected]</span></a>
+		</nav>
+		<p class="footer-copy">&copy; ProdBuilds</p>
+	</footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
