@@ -6,3 +6,4 @@ tests/fixtures
 package-lock.json
 # Long-form content: Prettier would reformat code samples inside fenced blocks.
 *.mdx
+graphify-out

@@ -1,6 +1,6 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import type { ComponentType } from "react";
-import { legalUpdated, pages } from "@/content/pages";
+import { pages } from "@/content/pages";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { formatDate } from "@/lib/content/format-date";
 import { pageGraph } from "@/lib/seo/page-graphs";
@@ -21,7 +21,7 @@ export function LegalPage({ path, Body }: LegalPageProps) {
         <JsonLd data={pageGraph(path)} />
         <PageHead crumbs={[{ label: "Home", href: "/" }, { label: page.crumbLabel }]} title={page.name}>
           <p className="hud mt-8">
-            Last updated <time dateTime={legalUpdated}>{formatDate(legalUpdated)}</time>
+            Last updated <time dateTime={page.updated}>{formatDate(page.updated)}</time>
           </p>
         </PageHead>
         <div className="page-grid pb-(--space-section-major)">

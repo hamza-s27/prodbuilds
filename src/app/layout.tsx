@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { SITE_NAME, SITE_URL, THEME_COLOR } from "@/content/site";
+import { MOTION_BOOT_SCRIPT } from "@/lib/motion/motion-preference";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -33,7 +34,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${archivo.variable} ${plexMono.variable} dark`}>
+    <html
+      lang="en"
+      className={`${archivo.variable} ${plexMono.variable} dark`}
+      // The boot script may set data-motion before React hydrates.
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Applies a stored "motion off" before first paint; hashed into each page's CSP. */}
+        <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT_SCRIPT }} />
+      </head>
       <body className="flex min-h-dvh flex-col">
         <SkipLink />
         {children}

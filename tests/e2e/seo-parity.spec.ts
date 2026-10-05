@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { expectedJsonLd } from "../fixtures/expected-legacy";
 import { desktopOnly, legacyPages, readHead } from "./helpers";
 
 desktopOnly();
@@ -35,7 +36,7 @@ for (const legacy of legacyPages) {
       await page.goto(legacy.path);
       const head = await readHead(page);
 
-      expect(head.jsonLd).toEqual(legacy.jsonLd);
+      expect(head.jsonLd).toEqual(expectedJsonLd(legacy.path));
       expect(head.h1).toBe(legacy.h1);
       expect(head.ids).toEqual(expect.arrayContaining(legacy.ids));
     });

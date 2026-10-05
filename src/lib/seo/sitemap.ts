@@ -1,4 +1,4 @@
-import { legalUpdated, type StaticPath } from "@/content/pages";
+import { pages, type StaticPath } from "@/content/pages";
 import { posts } from "@/content/posts";
 import { SITE_URL } from "@/content/site";
 
@@ -20,14 +20,8 @@ const STATIC_ORDER: readonly StaticPath[] = [
 
 /** Every indexable URL: static pages, then posts (newest first). */
 export function sitemapEntries(): SitemapEntry[] {
-  const newestPost =
-    posts
-      .map((post) => post.dateModified)
-      .sort()
-      .at(-1) ?? legalUpdated;
-  const siteUpdated = newestPost > legalUpdated ? newestPost : legalUpdated;
   return [
-    ...STATIC_ORDER.map((path) => ({ path, lastModified: siteUpdated })),
+    ...STATIC_ORDER.map((path) => ({ path, lastModified: pages[path].updated })),
     ...posts.map((post) => ({ path: `/blog/${post.slug}`, lastModified: post.dateModified })),
   ];
 }

@@ -13,6 +13,7 @@ export default defineConfig({
         "src/lib/**/*.{ts,tsx}",
         "src/content/**/*.ts",
         "src/hooks/**/*.{ts,tsx}",
+        "src/components/hero/*.ts",
         "scripts/lib/**/*.mjs",
       ],
       thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 },

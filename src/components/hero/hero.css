@@ -1,0 +1,150 @@
+/* Hero visual: static poster underneath, WebGL canvas on top once running,
+   scrim above both so the headline keeps AA contrast. */
+.hero-visual {
+  position: absolute;
+  inset: 0;
+  --pillar-x: 50%;
+  --teal-a: color-mix(in oklab, var(--brand-teal) 95%, transparent);
+  --teal-b: color-mix(in oklab, var(--brand-teal) 50%, transparent);
+  --text-a: color-mix(in oklab, var(--brand-text) 90%, transparent);
+}
+
+.hero-visual__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-poster__beam {
+  position: absolute;
+  inset-block: 0;
+  left: var(--pillar-x);
+  width: 1px;
+  translate: -50% 0;
+  background: linear-gradient(
+    to top,
+    transparent 0%,
+    var(--teal-a) 35%,
+    var(--text-a) 55%,
+    var(--teal-b) 75%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 18px 4px color-mix(in oklab, var(--brand-teal) 45%, transparent),
+    0 0 80px 24px color-mix(in oklab, var(--brand-teal) 18%, transparent);
+  transition: opacity var(--duration-slow) ease;
+}
+
+.hero-poster__bloom {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 22% 60% at var(--pillar-x) 55%,
+      color-mix(in oklab, var(--brand-teal) 22%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 30% at var(--pillar-x) 100%,
+      color-mix(in oklab, var(--brand-teal) 16%, transparent),
+      transparent 70%
+    );
+  transition: opacity var(--duration-slow) ease;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out-expo);
+}
+
+/* Once the pillar is drawing, it replaces the poster. */
+.hero-visual:is([data-render-state="running"], [data-render-state="paused"]) .hero-canvas {
+  opacity: 1;
+}
+
+.hero-visual:is([data-render-state="running"], [data-render-state="paused"])
+  :is(.hero-poster__beam, .hero-poster__bloom) {
+  opacity: 0;
+}
+
+.hero-poster__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--brand-bg) 0%,
+    color-mix(in oklab, var(--brand-bg) 70%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+@media (min-width: 48rem) {
+  .hero-poster__scrim {
+    background: linear-gradient(
+      to right,
+      var(--brand-bg) 0%,
+      color-mix(in oklab, var(--brand-bg) 20%, transparent) 40%,
+      transparent 100%
+    );
+  }
+}
+
+.hero-pause {
+  position: absolute;
+  z-index: 20;
+  right: var(--gutter);
+  bottom: 1.5rem;
+  gap: 0.5rem;
+  min-height: 2rem;
+  padding-inline: 0.875rem;
+  background: color-mix(in oklab, var(--brand-bg) 70%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* Principle chips: a hairline reaching back to the pillar (lg+), and a slow
+   float only while the pillar runs (never without JS, never with motion off). */
+@media (min-width: 64rem) {
+  .hero-chip {
+    position: relative;
+  }
+  .hero-chip::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    width: clamp(1.5rem, 5vw, 5rem);
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--brand-teal));
+    opacity: 0.6;
+  }
+  .hero-chip::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 2px);
+    right: calc(100% - 2px);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--brand-teal);
+    box-shadow: 0 0 8px var(--brand-teal-glow);
+  }
+}
+
+[data-hero-motion="running"] .hero-chip {
+  animation: hero-chip-float 7s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -1.75s);
+}
+
+@keyframes hero-chip-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}

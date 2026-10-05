@@ -1,19 +1,24 @@
+import type { CSSProperties } from "react";
+import { HeroVisual } from "@/components/hero/HeroVisual";
+import { LeadForm } from "@/components/lead-form/LeadForm";
 import { hero } from "@/content/home";
 import { principles } from "@/content/principles";
-import { LeadForm } from "@/components/lead-form/LeadForm";
-import { HeroPoster } from "./HeroPoster";
 
 const featured = principles.filter((principle) => principle.featuredInHero);
 
 /**
  * Text is server-rendered with no entrance animation so the h1 is the LCP
- * element. The visual is a static poster; the WebGL pillar replaces it in Phase 2.
+ * element. The visual starts as a static poster; the WebGL pillar takes over
+ * after idle (see HeroVisual).
  */
 export function Hero() {
   return (
-    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden">
-      <HeroPoster className="absolute inset-y-0 right-0 -z-10 w-full md:w-3/5" />
-      <div className="page-grid min-h-[calc(100svh-var(--header-h))] content-center gap-y-10 py-16 md:py-24">
+    <section aria-labelledby="hero-heading" data-hero className="relative isolate overflow-hidden">
+      {/* No z-index here: the content below paints over the visual, while the pause button (z-20) stays clickable. */}
+      <div className="absolute inset-y-0 right-0 w-full md:w-3/5">
+        <HeroVisual />
+      </div>
+      <div className="page-grid relative min-h-[calc(100svh-var(--header-h))] content-center gap-y-10 py-16 md:py-24">
         <div className="col-span-12 md:col-span-8">
           <p className="hud text-primary">{hero.eyebrow}</p>
           <h1 id="hero-heading" className="display mt-6 text-(length:--text-hero)">
@@ -27,7 +32,7 @@ export function Hero() {
           className="col-span-12 grid grid-cols-2 gap-3 md:col-span-4 md:col-start-9 md:grid-cols-1 md:self-end lg:col-span-3 lg:col-start-10"
         >
           {featured.map((principle, index) => (
-            <li key={principle.title}>
+            <li key={principle.title} className="hero-chip" style={{ "--i": index } as CSSProperties}>
               <a
                 href="/how-we-work#principles-heading"
                 className="surface group flex h-full items-start gap-3 rounded-hud px-4 py-3 text-sm backdrop-blur-sm transition-colors hover:border-primary"

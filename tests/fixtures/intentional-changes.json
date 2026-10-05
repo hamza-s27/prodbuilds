@@ -1,0 +1,9 @@
+{
+  "$comment": "Deliberate differences from the legacy site. Parity tests apply these to the legacy fixtures before comparing.",
+  "pageUpdated": {
+    "/privacy": {
+      "date": "2026-10-06",
+      "reason": "Privacy policy now names Google Apps Script as the service that receives form submissions."
+    }
+  }
+}

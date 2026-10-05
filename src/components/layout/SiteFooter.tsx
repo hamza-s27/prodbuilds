@@ -1,3 +1,4 @@
+import { MotionToggle } from "@/components/motion/MotionToggle";
 import { footerNav } from "@/content/site";
 import { Logo } from "./Logo";
 
@@ -21,10 +22,11 @@ export function SiteFooter() {
           </ul>
         </nav>
         <div className="col-span-12 rule-ticks" aria-hidden />
-        <p className="hud col-span-12 -mt-6 flex flex-wrap justify-between gap-4">
-          <span>&copy; ProdBuilds</span>
-          <span>No tracking cookies · Built to hold up in production</span>
-        </p>
+        <div className="hud col-span-12 -mt-6 flex flex-wrap items-center justify-between gap-4">
+          <p>&copy; ProdBuilds</p>
+          <MotionToggle />
+          <p>No tracking cookies · Built to hold up in production</p>
+        </div>
       </div>
     </footer>
   );

@@ -1,6 +1,6 @@
 // The structured data each page ships, composed from content modules.
 import { faq } from "@/content/faq";
-import { legalUpdated, pages, type StaticPath } from "@/content/pages";
+import { pages, type StaticPath } from "@/content/pages";
 import { getPost, posts } from "@/content/posts";
 import { services } from "@/content/services";
 import {
@@ -41,7 +41,7 @@ function servicesGraph(): JsonLdNode[] {
 }
 
 const legalGraph = (path: "/privacy" | "/terms"): JsonLdNode[] => [
-  webPage({ path, name: pages[path].name, dateModified: legalUpdated }),
+  webPage({ path, name: pages[path].name, dateModified: pages[path].updated }),
   pageCrumbs(path),
 ];
 

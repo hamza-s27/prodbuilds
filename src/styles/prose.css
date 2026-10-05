@@ -300,7 +300,7 @@
 
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
-    .reading-progress {
+    :root:not([data-motion="off"]) .reading-progress {
       display: block;
       animation: reading-progress linear both;
       animation-timeline: scroll(root);

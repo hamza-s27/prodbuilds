@@ -8,7 +8,7 @@ Animated rebuild of https://prodbuilds.com (backend, cloud & AI engineering stud
 
 - Next.js 16 App Router, `output: "export"` (static `out/`, hosted on Cloudflare), React Compiler on.
 - Tailwind v4 + shadcn (radix base, `nova` preset). `cn()` comes from shadcn's `cn` package.
-- Motion: prefer CSS scroll-driven animations, IntersectionObserver and small rAF utilities; `ogl` (lazy, after idle) for WebGL. `motion`, `gsap` + `@gsap/react` and `lenis` are installed but the 150 kb budget leaves ~20 kb above the framework, so use them only where `npm run budget` proves they fit (plan §13). Never `three`.
+- Motion: prefer CSS scroll-driven animations, IntersectionObserver and small rAF utilities; WebGL via the tiny `src/lib/webgl/fullscreen-pass.ts` (lazy, after idle), no WebGL library. `motion`, `gsap` + `@gsap/react` and `lenis` are installed but the 150 kb budget leaves ~20 kb above the framework, so use them only where `npm run budget` proves they fit (plan §13). Never `three`.
 - Every animation must respect `prefers-reduced-motion`.
 
 ## Component registries (built into the shadcn CLI)
@@ -31,6 +31,17 @@ Search with `npx shadcn@latest search @magicui -q <term>`.
 - No `cn()` in client components (~10 kb of class tables); fine in server components.
 - Content lives in `src/content/*` (typed) and MDX (`src/content/posts`, `src/content/legal`). Post heading ids are explicit `<H2 id>`; never let them change. MDX is excluded from Prettier (it would reformat code samples).
 - Lead form endpoint lives in `src/content/lead-endpoint.json`; the CSP pins it from there.
+
+## Code graph (graphify)
+
+A local knowledge graph of the code, docs and tests lives in `graphify-out/` (gitignored): `graph.json`, `graph.html` (open in a browser) and `GRAPH_REPORT.md` (hubs and communities). Use it before touching unfamiliar code:
+
+- `graphify query "<question>"`: find relevant code
+- `graphify explain "usePillarEngine()"`: a node and its neighbours
+- `graphify affected "createPillarRenderer()" --depth 3`: what a change impacts
+- `graphify path "A" "B"`: how two pieces connect
+
+Rebuild after code changes with `graphify update .` (local AST parsing, no API cost).
 
 ## Guardrails
 

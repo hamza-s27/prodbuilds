@@ -1,4 +1,5 @@
 import type { PageSeo } from "@/lib/seo/metadata";
+import { posts } from "./posts";
 
 export type StaticPath = "/" | "/services" | "/how-we-work" | "/contact" | "/privacy" | "/terms" | "/blog";
 
@@ -10,14 +11,19 @@ export interface StaticPage {
   readonly schemaCrumb?: string;
   /** Visible breadcrumb label. */
   readonly crumbLabel: string;
+  /** ISO date the page content last changed (sitemap lastmod, legal "Last updated"). */
+  readonly updated: string;
 }
 
-const LEGAL_UPDATED = "2026-09-26";
+const LAUNCH_CONTENT = "2026-09-26";
+/** Pages that list posts change whenever a post does. */
+const LATEST_POST = posts.map((post) => post.dateModified).reduce((a, b) => (b > a ? b : a), LAUNCH_CONTENT);
 
 export const pages: Readonly<Record<StaticPath, StaticPage>> = {
   "/": {
     name: "Home",
     crumbLabel: "Home",
+    updated: LATEST_POST,
     seo: {
       path: "/",
       title: "ProdBuilds | Backend, Cloud & AI Software Development",
@@ -30,6 +36,7 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
   "/services": {
     name: "Services",
     crumbLabel: "Services",
+    updated: LAUNCH_CONTENT,
     seo: {
       path: "/services",
       title: "Services: Backend, Cloud, Automation & AI | ProdBuilds",
@@ -41,6 +48,7 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
   "/how-we-work": {
     name: "How we work",
     crumbLabel: "How we work",
+    updated: LAUNCH_CONTENT,
     seo: {
       path: "/how-we-work",
       title: "How We Work: From First Call to Production | ProdBuilds",
@@ -53,6 +61,7 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
     name: "Contact ProdBuilds",
     schemaCrumb: "Contact",
     crumbLabel: "Contact",
+    updated: LAUNCH_CONTENT,
     seo: {
       path: "/contact",
       title: "Contact ProdBuilds | Start a Software or AI Project",
@@ -63,6 +72,7 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
   "/privacy": {
     name: "Privacy Policy",
     crumbLabel: "Privacy",
+    updated: "2026-10-06",
     seo: {
       path: "/privacy",
       title: "Privacy Policy | ProdBuilds",
@@ -74,6 +84,7 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
   "/terms": {
     name: "Terms and Conditions",
     crumbLabel: "Terms",
+    updated: LAUNCH_CONTENT,
     seo: {
       path: "/terms",
       title: "Terms and Conditions | ProdBuilds",
@@ -84,6 +95,7 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
   "/blog": {
     name: "Blog",
     crumbLabel: "Blog",
+    updated: LATEST_POST,
     seo: {
       path: "/blog",
       title: "Blog | ProdBuilds",
@@ -93,5 +105,3 @@ export const pages: Readonly<Record<StaticPath, StaticPage>> = {
     },
   },
 };
-
-export const legalUpdated = LEGAL_UPDATED;

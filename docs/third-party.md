@@ -12,7 +12,7 @@ Checked 2026-10-05. Copy-paste component sources live in our repo once added, so
 | Aceternity UI (`@aceternity/*`) | Aceternity Licence (published terms cover paid items; free-tier terms unstated) | **Avoid copying.**                                       | Paid terms forbid redistributing source or derivatives as templates. Because the free-tier terms are unclear, write our own Tracing Beam (it is a small `useScroll` + SVG path) instead of copying theirs |
 | Uiverse                         | MIT                                                                             | Allowed for one-off pieces                               | Keep the notice                                                                                                                                                                                           |
 
-The LightPillar hero shader is re-implemented on `ogl` from the React Bits idea, not copied line for line; credit React Bits in a source comment anyway.
+The light-pillar hero shader is original work (raw WebGL, no library) inspired by the React Bits LightPillar idea; React Bits is credited in a source comment.
 
 ## Runtime and build dependencies
 
@@ -22,7 +22,6 @@ The LightPillar hero shader is re-implemented on `ogl` from the React Bits idea,
 | motion                                  | MIT                                                                                                                                                      |
 | gsap, @gsap/react                       | GSAP Standard "no charge" licence (free for commercial use since 2025; may not be used in a product that competes with Webflow's visual animation tools) |
 | lenis                                   | MIT                                                                                                                                                      |
-| ogl                                     | Unlicense                                                                                                                                                |
 | lucide-react                            | ISC                                                                                                                                                      |
 | radix-ui                                | MIT                                                                                                                                                      |
 | shadcn, cn, tw-animate-css, tailwindcss | MIT                                                                                                                                                      |

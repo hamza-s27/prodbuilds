@@ -845,3 +845,11 @@ Shipped as planned, with these deviations:
 - Security headers: per-route sha256 CSP plus a script-less baseline CSP on `/*` (covers the 404 page); `connect-src`/`form-action` pinned to the exact Apps Script URL; HSTS without `includeSubDomains` until subdomains are audited; COOP same-origin.
 - Lead form: validation matches native `type=email`; `credentials: "omit"` (no Google cookies sent); `maxLength` 254.
 - Open for the user: the privacy policy does not name Google (Apps Script) as the processor of submitted emails; Apps Script should length-cap input, neutralise spreadsheet formula injection and throttle.
+
+### Phase 2 outcome (2026-10-06)
+
+- Footer motion switch (localStorage, never a cookie) plus an inline `<head>` boot script so a stored "off" applies before first paint; scroll reveals and reading progress respect it and the OS setting.
+- Hero light pillar: original GLSL in one fullscreen pass, on raw WebGL (`src/lib/webgl/fullscreen-pass.ts`). `ogl` was dropped: it pushed home to 150.8 kb; now 139.4 kb incl. the lazy chunk.
+- Loads only after idle, in view and with motion allowed; pauses offscreen, in hidden tabs and via a pause button (WCAG 2.2.2); adaptive render scale, poster fallback on slow frames, no hardware WebGL, Save-Data or context loss.
+- Review fixes before commit: redraw on resize while paused; import race could leave the hero on the poster; no GL probe during hydration; `pow()` with a negative base in the shader; footer toggle no longer makes a claim in static HTML; constant toggle names.
+- Privacy policy now names Google Apps Script; per-page `updated` dates (home and blog follow the newest post).
