@@ -5,6 +5,7 @@ import { LEAD_ENDPOINT } from "@/content/site";
 import { EMAIL_MAX_LENGTH } from "@/lib/lead/submit-lead";
 import { LeadStatus } from "./LeadStatus";
 import { useLeadForm } from "./use-lead-form";
+import "./beam.css";
 
 interface LeadFormProps {
   /** Prefix for element ids, e.g. "hero" → hero-email, hero-status, hero-note. */
@@ -46,19 +47,24 @@ export function LeadForm({
             <label className="sr-only" htmlFor={ids.email}>
               Email address
             </label>
-            <input
-              ref={inputRef}
-              id={ids.email}
-              name="email"
-              type="email"
-              required
-              maxLength={EMAIL_MAX_LENGTH}
-              autoComplete="email"
-              placeholder="you@company.com"
-              aria-describedby={`${ids.status} ${ids.note}`}
-              aria-invalid={state === "invalid" || undefined}
-              className="h-12 w-full min-w-0 rounded-full border border-input bg-background/60 px-5 text-foreground placeholder:text-muted-foreground focus-visible:border-primary sm:flex-1"
-            />
+            <span className="beam-field min-w-0 sm:flex-1">
+              <input
+                ref={inputRef}
+                id={ids.email}
+                name="email"
+                type="email"
+                required
+                maxLength={EMAIL_MAX_LENGTH}
+                autoComplete="email"
+                placeholder="you@company.com"
+                aria-describedby={`${ids.status} ${ids.note}`}
+                aria-invalid={state === "invalid" || undefined}
+                className="h-12 w-full min-w-0 rounded-full border border-input bg-background/60 px-5 text-foreground placeholder:text-muted-foreground focus-visible:border-primary"
+              />
+              <span aria-hidden className="beam-ring">
+                <span className="beam-spinner" />
+              </span>
+            </span>
             <button type="submit" className="btn-primary" disabled={state === "sending"}>
               {state === "sending" ? "Sending…" : submitLabel}
             </button>

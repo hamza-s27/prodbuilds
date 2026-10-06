@@ -1,0 +1,52 @@
+/* Stack marquee. The base is a static wrapped list (reduced motion, toggle
+   off); with motion allowed the list scrolls, doubled by an aria-hidden copy
+   so the loop is seamless. Pauses on hover, on focus and with its checkbox. */
+.marquee-track {
+  display: flex;
+}
+
+.marquee-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.marquee-copy,
+.marquee-pause {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="off"]) {
+    & .marquee {
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    }
+    & .marquee-track {
+      width: max-content;
+      animation: marquee-scroll 50s linear infinite;
+    }
+    & .marquee-pause {
+      display: inline-flex;
+    }
+    & .marquee:hover .marquee-track,
+    & .marquee-block:focus-within .marquee-track,
+    & .marquee-block:has(.marquee-pause input:checked) .marquee-track {
+      animation-play-state: paused;
+    }
+    & .marquee-list {
+      flex-wrap: nowrap;
+      /* Same as the gap, so the copy starts exactly one gap after the list. */
+      padding-inline-end: 0.5rem;
+    }
+    & .marquee-copy {
+      display: flex;
+    }
+  }
+}
+
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}

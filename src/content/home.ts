@@ -11,6 +11,7 @@ export const homeSections = {
   services: {
     label: "Services",
     heading: "Backend, cloud and AI work, from first version to production scale.",
+    stackLabel: "Technologies we work with",
     footLink: { href: "/services", label: "All services" },
   },
   data: {

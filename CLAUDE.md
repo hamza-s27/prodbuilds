@@ -32,6 +32,12 @@ Search with `npx shadcn@latest search @magicui -q <term>`.
 - Content lives in `src/content/*` (typed) and MDX (`src/content/posts`, `src/content/legal`). Post heading ids are explicit `<H2 id>`; never let them change. MDX is excluded from Prettier (it would reformat code samples).
 - Lead form endpoint lives in `src/content/lead-endpoint.json`; the CSP pins it from there.
 
+## Conventions (Phase 3)
+
+- Once-in-view effects use `usePlayProgress(ref, durationMs)` (`src/hooks/usePlayProgress.ts`): null = final state (server HTML, reduced motion, toggle off), 0 = armed, then 0→1 once seen. Frames come from pure functions in `src/lib/motion/` (no randomness in render).
+- CSS-only motion is gated like `.reveal`: `@media (prefers-reduced-motion: no-preference) { :root:not([data-motion="off"]) … }`, with the static state as the base styles.
+- Real text stays in the DOM; animated copies are `aria-hidden`. Anything that moves for more than 5 s needs its own pause control (WCAG 2.2.2).
+
 ## Code graph (graphify)
 
 A local knowledge graph of the code, docs and tests lives in `graphify-out/` (gitignored): `graph.json`, `graph.html` (open in a browser) and `GRAPH_REPORT.md` (hubs and communities). Use it before touching unfamiliar code:

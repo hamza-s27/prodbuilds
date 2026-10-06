@@ -1,0 +1,15 @@
+/* Solid cursor (no blinking). An empty inline anchor adds no line-break
+   opportunity, and the block itself is out of flow, so it never reflows text. */
+.terminal-cursor {
+  position: relative;
+}
+
+.terminal-cursor::after {
+  content: "";
+  position: absolute;
+  top: -0.05em;
+  left: 2px;
+  width: 0.55em;
+  height: 1.15em;
+  background: var(--brand-teal);
+}

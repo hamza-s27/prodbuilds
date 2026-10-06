@@ -1,0 +1,58 @@
+/* Border beam: a light that runs round the email field while it's hovered
+   or focused. A rotating conic gradient (transform only), masked to a 1px
+   ring. With reduced motion or the toggle off it never renders; the field's
+   own teal focus border remains. */
+.beam-field {
+  position: relative;
+  display: block;
+  border-radius: 999px;
+}
+
+.beam-ring {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="off"]) {
+    & .beam-ring {
+      position: absolute;
+      inset: 0;
+      display: block;
+      padding: 1px;
+      overflow: hidden;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--duration-normal) ease;
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#000 0 0) content-box exclude,
+        linear-gradient(#000 0 0);
+    }
+    & .beam-field:is(:hover, :focus-within) .beam-ring {
+      opacity: 1;
+    }
+    & .beam-field:is(:hover, :focus-within) .beam-spinner {
+      animation: beam-spin 2.4s linear infinite;
+    }
+  }
+}
+
+.beam-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(transparent 0 65%, var(--brand-teal-dim) 85%, #5fd3bb 97%, transparent);
+}
+
+@keyframes beam-spin {
+  to {
+    rotate: 1turn;
+  }
+}

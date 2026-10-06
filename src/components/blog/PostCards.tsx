@@ -1,22 +1,24 @@
+import type { ReactNode } from "react";
 import type { PostMeta } from "@/content/types";
 import { cn } from "@/lib/utils";
 
 interface PostCardsProps {
   readonly posts: readonly PostMeta[];
+  /** Shown beside the lead post; the other posts sit side by side below. */
+  readonly aside: ReactNode;
 }
 
-/** Editorial layout: the newest post large, the next two stacked beside it. */
-export function PostCards({ posts }: PostCardsProps) {
+/** Editorial layout: the newest post large with the aside beside it, then the next two. */
+export function PostCards({ posts, aside }: PostCardsProps) {
   const [lead, ...rest] = posts;
   if (!lead) return null;
   return (
-    <div className="grid gap-4 lg:grid-cols-12">
-      <PostCard post={lead} featured className="lg:col-span-7" />
-      <div className="grid gap-4 lg:col-span-5">
-        {rest.map((post) => (
-          <PostCard key={post.slug} post={post} />
-        ))}
-      </div>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
+      <PostCard post={lead} featured className="md:col-span-2 lg:col-span-7" />
+      <div className="grid md:col-span-2 lg:col-span-5">{aside}</div>
+      {rest.map((post) => (
+        <PostCard key={post.slug} post={post} className="lg:col-span-6" />
+      ))}
     </div>
   );
 }

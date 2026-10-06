@@ -853,3 +853,14 @@ Shipped as planned, with these deviations:
 - Loads only after idle, in view and with motion allowed; pauses offscreen, in hidden tabs and via a pause button (WCAG 2.2.2); adaptive render scale, poster fallback on slow frames, no hardware WebGL, Save-Data or context loss.
 - Review fixes before commit: redraw on resize while paused; import race could leave the hero on the poster; no GL probe during hydration; `pow()` with a negative base in the shader; footer toggle no longer makes a claim in static HTML; constant toggle names.
 - Privacy policy now names Google Apps Script; per-page `updated` dates (home and blog follow the newest post).
+
+### Phase 3 outcome (2026-10-06)
+
+- No registry components or `motion`: the home page had ~10 kb of JS headroom, so every effect is CSS plus one shared hook (`usePlayProgress`: once, in view, motion allowed) and pure frame functions in `src/lib/motion/`. Home initial JS 139.3 kb (cap 140), ~142 kb with the lazy WebGL chunk.
+- `StackMarquee`: CSS only, built from `stackUnion(services)`; a static wrapped list unless motion is allowed; `aria-hidden` copy; pauses on hover, on focus and with a CSS-only "Pause scrolling" checkbox (WCAG 2.2.2 without relying on the footer toggle).
+- `DataFacts`: "Never" decrypts (letters of the same case only, clipped, so it never spills), "30" counts up. The real value stays in the DOM, transparent while an `aria-hidden` overlay plays.
+- `ProcessPipeline`: stages run queued → running → passed (`data-stage-state`), 700 ms each; per-stage connector segments fill with `transform`, exact in both orientations.
+- `FindingsTerminal`: types measured results from the three posts (`src/content/findings.ts`; commands illustrative, results verbatim) in ~4.3 s (unit-tested under 5 s); solid cursor, no blinking; every character is always laid out, so typing never shifts layout.
+- Border beam on the lead form's email field: rotating conic gradient masked to a 1 px ring, only on hover/focus.
+- Review fixes before commit: pipeline status labels share one grid cell (no wrap/CLS mid-run at 1024 px, e2e-checked); re-enabling motion mid-run restarts cleanly instead of flashing a stale frame; the in-view hook reads the latest IntersectionObserver entry; facts print their real values; the local static server drops `upgrade-insecure-requests` (WebKit applies it to `http://localhost`; production is https-only).
+- Tests: `reduced-motion.spec.ts` (OS setting and toggle off: final content, no running animations, axe) and `home-motion.spec.ts` (start states, runs, hover pause, beam, axe with motion on).

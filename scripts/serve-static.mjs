@@ -59,11 +59,25 @@ function exists(relativeFile) {
   }
 }
 
+/**
+ * This server is plain http. Chromium and Firefox exempt localhost from
+ * `upgrade-insecure-requests`; WebKit doesn't, and would fetch every asset
+ * over https and fail. Production is https-only, where the directive is a no-op.
+ */
+const withoutUpgrade = (headers) =>
+  Object.fromEntries(
+    Object.entries(headers).map(([name, value]) =>
+      name.toLowerCase() === "content-security-policy"
+        ? [name, value.replace(/\s*upgrade-insecure-requests;?/g, "")]
+        : [name, value],
+    ),
+  );
+
 function responseHeaders(relativeFile, pathname) {
   return {
     "content-type": CONTENT_TYPES[extname(relativeFile)] ?? "application/octet-stream",
     "cache-control": DEFAULT_CACHE_CONTROL,
-    ...headersFor(rules, pathname),
+    ...withoutUpgrade(headersFor(rules, pathname)),
   };
 }
 

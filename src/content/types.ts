@@ -58,10 +58,21 @@ export interface FaqItem {
   readonly answer: RichText;
 }
 
+/** How a fact's value animates in: a count up from 0, or a decrypt into the word. */
+export type FactEffect = "count" | "decrypt";
+
 export interface PrivacyFact {
   readonly value: string;
   readonly unit?: string;
   readonly label: string;
+  readonly effect?: FactEffect;
+}
+
+/** One line of the findings terminal on the home page. */
+export interface TerminalLine {
+  readonly kind: "command" | "output";
+  readonly text: string;
+  readonly tone?: "good" | "bad" | "muted";
 }
 
 export interface PostMeta {
