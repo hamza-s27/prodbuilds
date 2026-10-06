@@ -4,6 +4,7 @@ import { pages } from "@/content/pages";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { formatDate } from "@/lib/content/format-date";
 import { pageGraph } from "@/lib/seo/page-graphs";
+import { VaultHero } from "@/components/hero/scene-heroes/VaultHero";
 import { PageHead } from "./PageHead";
 import "@/styles/prose.css";
 
@@ -19,7 +20,12 @@ export function LegalPage({ path, Body }: LegalPageProps) {
       <SiteHeader currentPath={path} />
       <main id="main-content" tabIndex={-1}>
         <JsonLd data={pageGraph(path)} />
-        <PageHead crumbs={[{ label: "Home", href: "/" }, { label: page.crumbLabel }]} title={page.name}>
+        <PageHead
+          crumbs={[{ label: "Home", href: "/" }, { label: page.crumbLabel }]}
+          title={page.name}
+          visual={<VaultHero />}
+          visualSize="compact"
+        >
           <p className="hud mt-8">
             Last updated <time dateTime={page.updated}>{formatDate(page.updated)}</time>
           </p>

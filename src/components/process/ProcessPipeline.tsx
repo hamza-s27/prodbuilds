@@ -2,8 +2,8 @@
 
 import { type CSSProperties, useRef } from "react";
 import type { ProcessStep } from "@/content/types";
-import { usePlayProgress } from "@/hooks/usePlayProgress";
-import { activeStage, type StageState, stageState } from "@/lib/motion/pipeline";
+import { useStageRun } from "@/hooks/useStageRun";
+import type { StageState } from "@/lib/motion/pipeline";
 import "./pipeline.css";
 
 /** Time each stage spends "running"; the whole run is steps × this. */
@@ -18,26 +18,28 @@ const STATUS: Readonly<Record<StageState, string>> = {
 
 interface ProcessPipelineProps {
   readonly steps: readonly ProcessStep[];
+  /** Extra classes on the <ol> (the home page's horizontal band). */
+  readonly listClassName?: string;
 }
 
 /**
- * The four steps as CI stages: horizontal from 1024px, vertical below. Once
- * seen they run queued → running → passed; the static state is all passed.
+ * The four steps as CI stages: horizontal from 1024px, vertical below. Each
+ * runs queued → running → passed once it's in view, in order; the static
+ * state is all passed.
  */
-export function ProcessPipeline({ steps }: ProcessPipelineProps) {
+export function ProcessPipeline({ steps, listClassName }: ProcessPipelineProps) {
   const ref = useRef<HTMLOListElement>(null);
-  const progress = usePlayProgress(ref, steps.length * STAGE_MS);
-  // Progress 0 (armed, or the run's first frame) means nothing has started yet.
-  const active = progress === null ? steps.length : progress <= 0 ? -1 : activeStage(progress, steps.length);
+  // Each stage runs once it's in view (on the home band they slide in one by one).
+  const states = useStageRun(ref, steps.length, STAGE_MS);
 
   return (
     <ol
       ref={ref}
-      className="grid gap-10 lg:grid-cols-4 lg:gap-8"
+      className={`grid gap-10 lg:grid-cols-4 lg:gap-8 ${listClassName ?? ""}`}
       style={{ "--stage-ms": `${STAGE_MS}ms` } as CSSProperties}
     >
       {steps.map((step, index) => {
-        const state = stageState(index, active);
+        const state = states?.[index] ?? "passed";
         return (
           <li
             key={step.id}

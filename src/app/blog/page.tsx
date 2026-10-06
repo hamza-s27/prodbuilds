@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { PostList } from "@/components/blog/PostList";
+import { ArchiveHero } from "@/components/hero/scene-heroes/ArchiveHero";
 import { PageHead } from "@/components/layout/PageHead";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { blogPage } from "@/content/inner-pages";
@@ -20,6 +21,7 @@ export default function BlogPage() {
           crumbs={[{ label: "Home", href: "/" }, { label: pages["/blog"].crumbLabel }]}
           title={blogPage.heading}
           lead={blogPage.lead}
+          visual={<ArchiveHero />}
         />
         <div className="page-grid pb-(--space-section-major)">
           <div className="col-span-12 lg:col-span-10 lg:col-start-2">

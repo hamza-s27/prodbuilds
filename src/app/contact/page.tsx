@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { LeadForm } from "@/components/lead-form/LeadForm";
+import { HandshakeHero } from "@/components/hero/scene-heroes/HandshakeHero";
 import { PageHead } from "@/components/layout/PageHead";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { contactPage } from "@/content/inner-pages";
@@ -22,6 +23,8 @@ export default function ContactPage() {
           crumbs={[{ label: "Home", href: "/" }, { label: pages["/contact"].crumbLabel }]}
           title={contactPage.heading}
           lead={contactPage.lead}
+          visual={<HandshakeHero />}
+          visualSize="compact"
         />
         <div className="page-grid gap-y-16 pb-(--space-section-major)">
           <section

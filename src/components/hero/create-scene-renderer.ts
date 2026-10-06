@@ -4,16 +4,17 @@ import { webglContextAttributes } from "@/lib/webgl/capability";
 import { createFullscreenPass, type FullscreenPass } from "@/lib/webgl/fullscreen-pass";
 import type { RenderQuality } from "@/lib/webgl/quality";
 import { createFrameLoop } from "./frame-loop";
-import { PILLAR_FRAGMENT, PILLAR_VERTEX } from "./light-pillar-shaders";
+import { type HeroScene, SCENE_VERTEX } from "./scenes/types";
 
 type GL = WebGLRenderingContext | WebGL2RenderingContext;
 
-export interface PillarRendererOptions {
+const TIME_WRAP_SECONDS = 3600;
+
+export interface SceneRendererOptions {
+  readonly scene: HeroScene;
   readonly quality: RenderQuality;
   /** sRGB 0–1. */
   readonly color: readonly [number, number, number];
-  /** Pillar position across the canvas, 0–1. */
-  readonly pillarX: number;
   /** Tests only: accept software WebGL (headless browsers have no GPU). */
   readonly allowSoftware?: boolean;
   /** Frame times normalised to a 60 fps budget, one window at a time. */
@@ -22,7 +23,7 @@ export interface PillarRendererOptions {
   readonly onContextLost: () => void;
 }
 
-export interface PillarRenderer {
+export interface SceneRenderer {
   setRunning(running: boolean): void;
   setQuality(quality: RenderQuality): void;
   destroy(): void;
@@ -40,12 +41,12 @@ function releaseContext(gl: GL): void {
   if (!gl.isContextLost()) gl.getExtension("WEBGL_lose_context")?.loseContext();
 }
 
-function createPass(gl: GL, options: PillarRendererOptions): FullscreenPass {
+function createPass(gl: GL, options: SceneRendererOptions): FullscreenPass {
   try {
-    const pass = createFullscreenPass(gl, PILLAR_VERTEX, PILLAR_FRAGMENT);
+    const pass = createFullscreenPass(gl, SCENE_VERTEX, options.scene.fragment);
     pass.setVec3("uColor", options.color);
-    pass.setFloat("uPillarX", options.pillarX);
     pass.setFloat("uIntensity", 1);
+    options.scene.init?.(pass);
     return pass;
   } catch (error) {
     // e.g. highp unsupported on an old mobile GPU: don't leak the context.
@@ -54,10 +55,7 @@ function createPass(gl: GL, options: PillarRendererOptions): FullscreenPass {
   }
 }
 
-export function createPillarRenderer(
-  canvas: HTMLCanvasElement,
-  options: PillarRendererOptions,
-): PillarRenderer {
+export function createSceneRenderer(canvas: HTMLCanvasElement, options: SceneRendererOptions): SceneRenderer {
   let quality = options.quality;
   const gl = getContext(canvas, options.allowSoftware === true);
   gl.clearColor(0, 0, 0, 0);
@@ -80,7 +78,8 @@ export function createPillarRenderer(
   const loop = createFrameLoop({
     maxFps: () => quality.maxFps,
     render: (elapsedSeconds) => {
-      pass.setFloat("uTime", elapsedSeconds);
+      // Wrapped hourly: float32 hashes of a growing time lose precision and band.
+      pass.setFloat("uTime", elapsedSeconds % TIME_WRAP_SECONDS);
       pass.draw();
     },
     onFirstFrame: options.onFirstFrame,

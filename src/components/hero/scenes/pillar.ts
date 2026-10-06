@@ -1,18 +1,12 @@
-// Light pillar: a column of teal light rising through drifting motes, drawn
-// in one fullscreen pass. Original shader; the idea (a vertical light column)
-// is credited to React Bits' LightPillar. GLSL ES 1.0 so WebGL 1 works too.
+// Light pillar (home): a column of teal light rising through drifting motes.
+// Original shader; the idea (a vertical light column) is credited to React
+// Bits' LightPillar.
+import type { HeroScene } from "./types";
 
-export const PILLAR_VERTEX = /* glsl */ `
-attribute vec2 position;
-varying vec2 vUv;
+/** Pillar position across the visual, matching the CSS poster (--pillar-x). */
+export const PILLAR_X = 0.5;
 
-void main() {
-  vUv = position * 0.5 + 0.5;
-  gl_Position = vec4(position, 0.0, 1.0);
-}
-`;
-
-export const PILLAR_FRAGMENT = /* glsl */ `
+const PILLAR_FRAGMENT = /* glsl */ `
 precision highp float;
 
 uniform float uTime;
@@ -95,3 +89,8 @@ void main() {
   gl_FragColor = vec4(min(color, vec3(alpha)), alpha);
 }
 `;
+
+export const pillarScene: HeroScene = {
+  fragment: PILLAR_FRAGMENT,
+  init: (pass) => pass.setFloat("uPillarX", PILLAR_X),
+};

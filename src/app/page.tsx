@@ -6,6 +6,7 @@ import { Hero } from "@/components/home/Hero";
 import { DataFacts } from "@/components/privacy/DataFacts";
 import { ProcessPipeline } from "@/components/process/ProcessPipeline";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { StackAssembly } from "@/components/services/StackAssembly";
 import { StackList } from "@/components/services/StackList";
 import { StackMarquee } from "@/components/services/StackMarquee";
 import { SectionFootLink } from "@/components/ui/SectionFootLink";
@@ -40,9 +41,17 @@ export default function HomePage() {
             headingId="services-heading"
             heading={servicesCopy.heading}
           />
-          <div className="page-grid mt-14">
-            <div className="reveal col-span-12">
+          {/* Pinned chapter: the stack builds beside the list as each row scrolls through. */}
+          <div className="stack-chapter page-grid mt-14">
+            <div className="hidden lg:col-span-4 lg:block">
+              <div className="sticky top-[calc(var(--header-h)+4rem)] pr-6">
+                <StackAssembly services={orderedByDepth(services)} />
+              </div>
+            </div>
+            <div className="reveal col-span-12 lg:col-span-8">
               <StackList services={orderedByDepth(services)} />
+            </div>
+            <div className="col-span-12">
               <StackMarquee items={stackUnion(services)} label={servicesCopy.stackLabel} className="mt-12" />
               <SectionFootLink {...servicesCopy.footLink} />
             </div>
@@ -59,12 +68,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="how-we-work" aria-labelledby="how-heading" className="py-(--space-section)">
-          <SectionHead index="03" label={process.label} headingId="how-heading" heading={process.heading} />
-          <div className="page-grid mt-14">
-            <div className="reveal col-span-12">
-              <ProcessPipeline steps={processSteps} />
-              <SectionFootLink {...process.footLink} />
+        {/* Horizontal band: on wide screens the section pins and the stages slide sideways. */}
+        <section id="how-we-work" aria-labelledby="how-heading" className="hband py-(--space-section)">
+          <div className="hband-pin">
+            <SectionHead index="03" label={process.label} headingId="how-heading" heading={process.heading} />
+            <div className="page-grid mt-14">
+              <div className="hband-viewport reveal col-span-12">
+                <ProcessPipeline steps={processSteps} listClassName="hband-track" />
+                <SectionFootLink {...process.footLink} />
+              </div>
             </div>
           </div>
         </section>

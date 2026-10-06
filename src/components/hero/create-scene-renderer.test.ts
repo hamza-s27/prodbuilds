@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { createPillarRenderer, type PillarRendererOptions } from "./create-pillar-renderer";
+import { createSceneRenderer, type SceneRendererOptions } from "./create-scene-renderer";
 
 const loseContext = vi.fn();
 let lost = false;
@@ -46,10 +46,11 @@ const gl = {
 };
 
 let resizeCallback: () => void = () => {};
-const options: PillarRendererOptions = {
+const sceneInit = vi.fn();
+const options: SceneRendererOptions = {
+  scene: { fragment: "void main() {}", init: sceneInit },
   quality: { dpr: 1, renderScale: 0.5, maxFps: 60 },
   color: [0.1, 0.7, 0.6],
-  pillarX: 0.5,
   onSample: () => {},
   onFirstFrame: () => {},
   onContextLost: vi.fn(),
@@ -79,11 +80,18 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("createPillarRenderer", () => {
+describe("createSceneRenderer", () => {
+  it("sets the scene's own uniforms once the program is ready", () => {
+    createSceneRenderer(canvasWith(gl), options);
+
+    expect(sceneInit).toHaveBeenCalledTimes(1);
+    expect(sceneInit).toHaveBeenCalledWith(expect.objectContaining({ setFloat: expect.any(Function) }));
+  });
+
   it("sizes the drawing buffer to the render scale and draws straight away", () => {
     const canvas = canvasWith(gl);
 
-    createPillarRenderer(canvas, options);
+    createSceneRenderer(canvas, options);
 
     expect([canvas.width, canvas.height]).toEqual([400, 300]);
     expect(gl.viewport).toHaveBeenLastCalledWith(0, 0, 400, 300);
@@ -91,7 +99,7 @@ describe("createPillarRenderer", () => {
   });
 
   it("redraws on resize even while paused, so the hero never goes blank", () => {
-    createPillarRenderer(canvasWith(gl), options);
+    createSceneRenderer(canvasWith(gl), options);
 
     resizeCallback();
 
@@ -101,7 +109,7 @@ describe("createPillarRenderer", () => {
   it("asks for hardware WebGL only, unless software is explicitly allowed", () => {
     const canvas = canvasWith(gl);
 
-    createPillarRenderer(canvas, options);
+    createSceneRenderer(canvas, options);
 
     expect(canvas.getContext).toHaveBeenCalledWith(
       "webgl2",
@@ -110,12 +118,12 @@ describe("createPillarRenderer", () => {
   });
 
   it("throws when no hardware context is available", () => {
-    expect(() => createPillarRenderer(canvasWith(null), options)).toThrow("WebGL unavailable");
+    expect(() => createSceneRenderer(canvasWith(null), options)).toThrow("WebGL unavailable");
   });
 
   it("forwards context loss and destroys only once", () => {
     const canvas = canvasWith(gl);
-    const renderer = createPillarRenderer(canvas, options);
+    const renderer = createSceneRenderer(canvas, options);
 
     canvas.dispatchEvent(new Event("webglcontextlost", { cancelable: true }));
     renderer.destroy();
@@ -126,7 +134,7 @@ describe("createPillarRenderer", () => {
   });
 
   it("does not lose an already-lost context again", () => {
-    const renderer = createPillarRenderer(canvasWith(gl), options);
+    const renderer = createSceneRenderer(canvasWith(gl), options);
     lost = true;
 
     renderer.destroy();

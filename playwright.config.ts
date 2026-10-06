@@ -19,10 +19,14 @@ const chromiumProjects = VIEWPORTS.map(({ name, width, height }) => ({
   use: { ...devices["Desktop Chrome"], viewport: { width, height } },
 }));
 
-// Firefox and WebKit run only tests tagged @smoke.
+// Firefox and WebKit run only tests tagged @smoke. One retry: under parallel
+// load Playwright's Firefox occasionally never gets the first response for a
+// navigation from the local test server (measured 2026-10-07: 7 of 200 runs at
+// 8 workers stalled before DOMContentLoaded, 0 of 60 run one at a time). It's
+// the local harness, not the site, which is served by Cloudflare.
 const crossBrowserProjects = [
-  { name: "firefox", use: { ...devices["Desktop Firefox"] }, grep: /@smoke/ },
-  { name: "webkit", use: { ...devices["Desktop Safari"] }, grep: /@smoke/ },
+  { name: "firefox", use: { ...devices["Desktop Firefox"] }, grep: /@smoke/, retries: 1 },
+  { name: "webkit", use: { ...devices["Desktop Safari"] }, grep: /@smoke/, retries: 1 },
 ];
 
 export default defineConfig({

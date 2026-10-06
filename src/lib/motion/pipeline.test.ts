@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { activeStage, stageState } from "./pipeline";
+import { activeStage, pipelineStates, stageState } from "./pipeline";
 
 const states = (active: number) => [0, 1, 2, 3].map((index) => stageState(index, active));
 
@@ -28,5 +28,20 @@ describe("activeStage", () => {
   it("clamps out-of-range progress", () => {
     expect(activeStage(-0.5, 4)).toBe(0);
     expect(activeStage(3, 4)).toBe(4);
+  });
+});
+
+describe("pipelineStates", () => {
+  it("queues everything before any stage is seen", () => {
+    expect(pipelineStates(3, 0, [false, false, false])).toEqual(["queued", "queued", "queued"]);
+  });
+
+  it("runs the next stage only once it has been seen", () => {
+    expect(pipelineStates(3, 1, [true, false, false])).toEqual(["passed", "queued", "queued"]);
+    expect(pipelineStates(3, 1, [true, true, false])).toEqual(["passed", "running", "queued"]);
+  });
+
+  it("passes everything at the end", () => {
+    expect(pipelineStates(3, 3, [true, true, true])).toEqual(["passed", "passed", "passed"]);
   });
 });

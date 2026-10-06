@@ -1,0 +1,60 @@
+/* The home services chapter's stack. Static: fully built. Its scroll-linked
+   assembly lives in src/styles/scroll-scenes.css. */
+.stack-assembly {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem;
+  gap: 1.75rem;
+}
+
+.assembly-stack {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+}
+
+/* The beam through every layer. */
+.assembly-stack::before {
+  content: "";
+  position: absolute;
+  inset-block: -1.5rem;
+  left: 46%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--brand-teal), var(--brand-teal-dim), transparent);
+  box-shadow: 0 0 12px var(--brand-teal-glow);
+}
+
+.assembly-slab {
+  position: relative;
+  padding-left: calc(var(--depth, 0) * 0.875rem);
+}
+
+.assembly-slab-shape {
+  display: block;
+  height: 1.75rem;
+  margin-right: calc(var(--depth, 0) * 0.5rem);
+  border: 1px solid var(--brand-teal-dim);
+  border-radius: 3px;
+  background: color-mix(in oklab, var(--brand-teal) 9%, var(--brand-surface));
+  box-shadow:
+    inset 0 1px 0 rgb(236 235 230 / 0.08),
+    0 6px 0 -2px var(--brand-surface-2);
+  transform: skewX(-32deg);
+}
+
+.assembly-slab-label {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.6875rem;
+}
+
+.assembly-rail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--brand-teal);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--brand-teal) 10%, var(--brand-surface));
+  box-shadow: 0 0 16px var(--brand-teal-glow);
+  writing-mode: vertical-rl;
+  transform-origin: top;
+}

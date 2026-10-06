@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type CSSProperties, Fragment, type ReactNode } from "react";
 
 interface SectionHeadProps {
   /** Two-digit section index, e.g. "02". */
@@ -24,7 +24,15 @@ export function SectionHead({ index, label, headingId, heading, children }: Sect
       </p>
       <div className="col-span-12 md:col-span-9">
         <h2 id={headingId} className="display text-(length:--text-h2)">
-          {heading}
+          {/* One span per word, so each can fill in as it scrolls up (scroll-scenes.css). */}
+          {heading.split(" ").map((word, index) => (
+            <Fragment key={index}>
+              {index > 0 && " "}
+              <span className="scroll-word" style={{ "--w": index } as CSSProperties}>
+                {word}
+              </span>
+            </Fragment>
+          ))}
         </h2>
         {children}
       </div>

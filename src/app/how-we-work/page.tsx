@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { PipelineHero } from "@/components/hero/scene-heroes/PipelineHero";
 import { PageHead } from "@/components/layout/PageHead";
 import { FaqList } from "@/components/process/FaqList";
 import { PrinciplesGrid } from "@/components/process/PrinciplesGrid";
@@ -26,6 +27,7 @@ export default function HowWeWorkPage() {
           crumbs={[{ label: "Home", href: "/" }, { label: pages["/how-we-work"].crumbLabel }]}
           title={howWeWorkPage.heading}
           lead={howWeWorkPage.lead}
+          visual={<PipelineHero />}
         />
         <ProcessTimeline steps={processSteps} />
 

@@ -67,14 +67,21 @@ test.describe("once seen", () => {
     await expect(facts).toHaveText(["Never", "30"]);
   });
 
-  test("the pipeline stages run queued → running → passed", async ({ page }) => {
+  test("the pipeline stages run queued → running → passed as each slides into view", async ({ page }) => {
     const stages = page.locator("[data-stage-state]");
     await expect(stages.first()).toHaveAttribute("data-stage-state", "queued");
 
-    await scrollToCentre(page, "[data-stage-state]");
+    // Scroll through the pinned band the way a visitor would.
+    const band = await page.locator("#how-we-work").evaluate((el) => ({
+      top: el.getBoundingClientRect().top + window.scrollY,
+      height: el.getBoundingClientRect().height,
+    }));
+    for (const at of [0.15, 0.35, 0.55, 0.75, 0.95]) {
+      await page.evaluate((y) => window.scrollTo(0, y), band.top + band.height * at - 200);
+      await page.waitForTimeout(250);
+    }
 
-    await expect(page.locator('[data-stage-state="running"]')).toHaveCount(1);
-    await expect(page.locator('[data-stage-state="passed"]')).toHaveCount(4);
+    await expect(page.locator('[data-stage-state="passed"]')).toHaveCount(4, { timeout: 8000 });
   });
 
   test("the findings terminal types out every line, then holds", async ({ page }) => {
@@ -104,7 +111,10 @@ test.describe("once seen", () => {
       timeout: 6000,
     });
     // Scroll reveals would be measured mid-fade; they're covered by the reduced-motion run.
-    await page.addStyleTag({ content: ".reveal { animation: none !important; }" });
+    await page.addStyleTag({
+      content:
+        ".reveal, .scroll-word, .assembly-slab, .assembly-rail, [data-hero] .hero-visual__layer, [data-hero] .hero-copy { animation: none !important; }",
+    });
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
@@ -114,20 +124,25 @@ test.describe("once seen", () => {
   });
 });
 
-test("the pipeline keeps its height through the run (no layout shift)", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "laptop-1024", "the status labels are tightest at 1024px");
-  const list = page.locator("ol:has([data-stage-state])");
-  await expect(list.locator("[data-stage-state]").first()).toHaveAttribute("data-stage-state", "queued");
+test.describe("below the band's minimum height", () => {
+  // 600px tall: too short for the pinned band, so the pipeline is a plain 4-column row.
+  test.use({ viewport: { width: 1024, height: 600 } });
 
-  const heights = await list.evaluate(async (el) => {
-    const seen = new Set<number>();
-    el.scrollIntoView({ block: "center" });
-    while (el.querySelectorAll('[data-stage-state="passed"]').length < 4) {
-      seen.add(el.getBoundingClientRect().height);
-      await new Promise(requestAnimationFrame);
-    }
-    return [...seen];
+  test("the pipeline keeps its height through the run (no layout shift)", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "laptop-1024", "the status labels are tightest at 1024px");
+    const list = page.locator("ol:has([data-stage-state])");
+    await expect(list.locator("[data-stage-state]").first()).toHaveAttribute("data-stage-state", "queued");
+
+    const heights = await list.evaluate(async (el) => {
+      const seen = new Set<number>();
+      el.scrollIntoView({ block: "center" });
+      while (el.querySelectorAll('[data-stage-state="passed"]').length < 4) {
+        seen.add(el.getBoundingClientRect().height);
+        await new Promise(requestAnimationFrame);
+      }
+      return [...seen];
+    });
+
+    expect(heights).toHaveLength(1);
   });
-
-  expect(heights).toHaveLength(1);
 });

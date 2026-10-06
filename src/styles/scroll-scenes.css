@@ -1,0 +1,180 @@
+/* Scroll scenes: CSS scroll timelines only (no JavaScript). The static layout
+   is the base; every scene is gated on support, prefers-reduced-motion and the
+   footer motion toggle, so Firefox, reduced motion and "Motion off" get the
+   plain page. */
+
+/* Named timelines, declared unconditionally (inert without an animation). */
+[data-hero] {
+  view-timeline: --hero block;
+  view-timeline-inset: 0px;
+}
+
+.stack-chapter {
+  timeline-scope:
+    --layer-product, --layer-backend, --layer-scaling, --layer-automation, --layer-cloud, --layer-ai;
+}
+
+.stack-row[data-layer="product"] {
+  view-timeline: --layer-product block;
+}
+.stack-row[data-layer="backend"] {
+  view-timeline: --layer-backend block;
+}
+.stack-row[data-layer="scaling"] {
+  view-timeline: --layer-scaling block;
+}
+.stack-row[data-layer="automation"] {
+  view-timeline: --layer-automation block;
+}
+.stack-row[data-layer="cloud"] {
+  view-timeline: --layer-cloud block;
+}
+.stack-row[data-layer="ai"] {
+  view-timeline: --layer-ai block;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) {
+      /* 1. Hero hand-off: as you leave the hero, its scene sinks back and dims
+         and the copy lifts away, so the next section arrives over it. Only the
+         picture layer animates: an animated .hero-visual would become a
+         stacking context and trap the pause button under the copy. */
+      & [data-hero] .hero-visual__layer {
+        animation: scene-recede linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 100%;
+      }
+      & [data-hero] .hero-copy {
+        animation: scene-copy-out linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 75%;
+      }
+
+      /* 2. Scroll-lit headings: each word fills in as it rises, one after another. */
+      & .scroll-word {
+        animation: scene-word-lit linear both;
+        animation-timeline: view(block 0px);
+        animation-range: cover calc(6% + var(--w, 0) * 1.5%) cover calc(24% + var(--w, 0) * 1.5%);
+      }
+
+      /* 3. Pinned chapter (home services): each slab drops into the stack as its
+         service row scrolls through. */
+      & .assembly-slab,
+      & .assembly-rail {
+        animation: scene-slab-in linear both;
+        animation-range: entry 40% cover 55%;
+      }
+      & .assembly-slab[data-layer="product"] {
+        animation-timeline: --layer-product;
+      }
+      & .assembly-slab[data-layer="backend"] {
+        animation-timeline: --layer-backend;
+      }
+      & .assembly-slab[data-layer="scaling"] {
+        animation-timeline: --layer-scaling;
+      }
+      & .assembly-slab[data-layer="automation"] {
+        animation-timeline: --layer-automation;
+      }
+      & .assembly-slab[data-layer="cloud"] {
+        animation-timeline: --layer-cloud;
+      }
+      & .assembly-rail {
+        animation-name: scene-rail-in;
+        animation-timeline: --layer-ai;
+      }
+    }
+  }
+}
+
+/* 4. Horizontal band (home process, wide and tall enough screens): the section
+   pins and its stages slide sideways as you scroll down. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 64rem) and (min-height: 40rem) {
+    :root:not([data-motion="off"]) {
+      & .hband {
+        height: 240vh;
+        padding-block: 0;
+        view-timeline: --band block;
+        view-timeline-inset: 0px;
+      }
+      & .hband-pin {
+        position: sticky;
+        top: var(--header-h);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: calc(100svh - var(--header-h));
+        /* clip, not hidden: a hidden box can be scrolled (find-in-page), which would misalign the band. */
+        overflow: clip;
+      }
+      & .hband-viewport {
+        container-type: inline-size;
+      }
+      & .hband-track {
+        grid-template-columns: repeat(4, clamp(20rem, 36vw, 30rem));
+        width: max-content;
+        animation: scene-band-slide linear both;
+        animation-timeline: --band;
+        animation-range: contain 5% contain 95%;
+      }
+    }
+  }
+}
+
+@keyframes scene-recede {
+  to {
+    opacity: 0.15;
+    transform: translateY(14%) scale(0.92);
+  }
+}
+
+@keyframes scene-copy-out {
+  to {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+}
+
+@keyframes scene-word-lit {
+  from {
+    opacity: 0.16;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scene-slab-in {
+  from {
+    opacity: 0.08;
+    transform: translateX(-2.5rem);
+  }
+  60% {
+    opacity: 1;
+    transform: none;
+    filter: drop-shadow(0 0 12px var(--brand-teal-glow));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scene-rail-in {
+  from {
+    opacity: 0.08;
+    transform: scaleY(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scene-band-slide {
+  to {
+    transform: translateX(calc(-100% + 100cqw));
+  }
+}

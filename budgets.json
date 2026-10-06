@@ -9,6 +9,10 @@
     "/blog/*": {
       "$comment": "Posts ship no animation runtime: framework + tiny islands (TOC, copy buttons). motion's smallest set (~5 kb) or gsap would break this.",
       "initialJsKb": 136
+    },
+    "/": {
+      "$comment": "Home carries the most islands (hero, facts, terminal, per-stage pipeline). The landing rule is total JS incl. the lazy hero chunk <= 150 kb, asserted in tests/e2e/hero-webgl.spec.ts (143.4 kb on 2026-10-07).",
+      "initialJsKb": 141
     }
   }
 }

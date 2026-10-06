@@ -18,6 +18,17 @@ function fakeGl({ compileOk = true, linkOk = true }: FakeOptions = {}) {
     FLOAT: 7,
     TRIANGLES: 8,
     COLOR_BUFFER_BIT: 9,
+    TEXTURE0: 100,
+    TEXTURE_2D: 10,
+    UNPACK_FLIP_Y_WEBGL: 11,
+    RGB: 12,
+    UNSIGNED_BYTE: 13,
+    TEXTURE_MIN_FILTER: 14,
+    TEXTURE_MAG_FILTER: 15,
+    TEXTURE_WRAP_S: 16,
+    TEXTURE_WRAP_T: 17,
+    LINEAR: 18,
+    CLAMP_TO_EDGE: 19,
   };
   const gl = {
     ...constants,
@@ -47,6 +58,14 @@ function fakeGl({ compileOk = true, linkOk = true }: FakeOptions = {}) {
     drawArrays: vi.fn(),
     deleteBuffer: vi.fn(),
     deleteProgram: vi.fn(),
+    createTexture: vi.fn(() => ({ texture: true })),
+    activeTexture: vi.fn(),
+    bindTexture: vi.fn(),
+    pixelStorei: vi.fn(),
+    texImage2D: vi.fn(),
+    texParameteri: vi.fn(),
+    uniform1i: vi.fn(),
+    deleteTexture: vi.fn(),
   };
   return gl;
 }
@@ -90,6 +109,31 @@ describe("createFullscreenPass", () => {
 
     expect(gl.clear).toHaveBeenCalledWith(gl.COLOR_BUFFER_BIT);
     expect(gl.drawArrays).toHaveBeenCalledWith(gl.TRIANGLES, 0, 3);
+  });
+
+  it("uploads an image as a clamped, linear, flipped texture bound to its sampler", () => {
+    const gl = fakeGl();
+    const pass = createFullscreenPass(asGl(gl), "v", "f");
+    const image = {} as TexImageSource;
+
+    pass.setTexture("uImage", image, 1);
+
+    expect(gl.activeTexture).toHaveBeenCalledWith(gl.TEXTURE0 + 1);
+    expect(gl.pixelStorei).toHaveBeenCalledWith(gl.UNPACK_FLIP_Y_WEBGL, true);
+    expect(gl.texImage2D).toHaveBeenCalledWith(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    expect(gl.texParameteri).toHaveBeenCalledWith(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    expect(gl.texParameteri).toHaveBeenCalledWith(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    expect(gl.uniform1i).toHaveBeenCalledWith({ name: "uImage" }, 1);
+  });
+
+  it("frees textures on dispose", () => {
+    const gl = fakeGl();
+    const pass = createFullscreenPass(asGl(gl), "v", "f");
+    pass.setTexture("uImage", {} as TexImageSource);
+
+    pass.dispose();
+
+    expect(gl.deleteTexture).toHaveBeenCalledWith({ texture: true });
   });
 
   it("frees the buffer and program on dispose", () => {

@@ -38,6 +38,12 @@ Search with `npx shadcn@latest search @magicui -q <term>`.
 - CSS-only motion is gated like `.reveal`: `@media (prefers-reduced-motion: no-preference) { :root:not([data-motion="off"]) … }`, with the static state as the base styles.
 - Real text stays in the DOM; animated copies are `aria-hidden`. Anything that moves for more than 5 s needs its own pause control (WCAG 2.2.2).
 
+## Hero scenes and scroll scenes
+
+- Home: the light pillar shader. Inner pages: cinemagraphs, the Google Flow stills (`public/images/heroes/*.webp`) brought to life by `scenes/cinemagraph.ts` (smoke flow, travelling light with volumetric shafts, motes, glints, slow push-in), configured per page in `scenes/*.ts`. Never replace a still with hand-drawn line shaders; the user wants the concept itself animated. Still placement (focus, per-page shift) lives in `hero-stills.ts`, shared by the poster <img> and the shader.
+- All heroes go through `HeroVisual` (poster first, lazy chunk after idle, pause button, quality/fallback). Add one as a tiny client wrapper in `scene-heroes/` (one per scene, so a page ships only its own loader) and pass it to `PageHead`'s `visual`.
+- Scroll scenes are CSS scroll timelines in `src/styles/scroll-scenes.css` (hero hand-off, `.scroll-word` headings, the home stack chapter, the home process band), all gated on support + reduced motion + the toggle; no JS.
+
 ## Code graph (graphify)
 
 A local knowledge graph of the code, docs and tests lives in `graphify-out/` (gitignored): `graph.json`, `graph.html` (open in a browser) and `GRAPH_REPORT.md` (hubs and communities). Use it before touching unfamiliar code:

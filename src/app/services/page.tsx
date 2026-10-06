@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { PageHead } from "@/components/layout/PageHead";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { StackHero } from "@/components/hero/scene-heroes/StackHero";
 import { StackDive } from "@/components/services/StackDive";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { servicesPage } from "@/content/inner-pages";
@@ -22,6 +23,7 @@ export default function ServicesPage() {
           crumbs={[{ label: "Home", href: "/" }, { label: pages["/services"].crumbLabel }]}
           title={servicesPage.heading}
           lead={servicesPage.lead}
+          visual={<StackHero />}
         />
         <StackDive services={orderedByDepth(services)} />
         <CtaBand heading={servicesPage.cta.heading} lead={servicesPage.cta.lead} />

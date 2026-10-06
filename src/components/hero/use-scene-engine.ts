@@ -3,15 +3,16 @@
 import { type RefObject, useEffect, useRef, useState } from "react";
 import { softwareWebGLAllowed } from "@/lib/webgl/capability";
 import { initialQuality, nextQuality, type RenderQuality } from "@/lib/webgl/quality";
-import type { PillarRenderer } from "./create-pillar-renderer";
+import type { SceneRenderer } from "./create-scene-renderer";
 import type { EngineStatus } from "./render-state";
+import type { HeroScene } from "./scenes/types";
 
 /** Brand teal #1CB495 as 0–1 RGB. */
 const TEAL: readonly [number, number, number] = [28 / 255, 180 / 255, 149 / 255];
-/** Pillar position across the visual, matching the CSS poster (--pillar-x). */
-export const PILLAR_X = 0.5;
 
-interface EngineOptions {
+export interface EngineOptions {
+  /** Imports the scene's shader (its own lazy chunk). */
+  readonly loadScene: () => Promise<HeroScene>;
   /** Load and create the renderer the first time this is true (idle, in view, motion allowed). */
   readonly enabled: boolean;
   /** Draw frames while true. */
@@ -30,12 +31,12 @@ const deviceInfo = () => ({
  * engine is created if the component is still mounted, whatever `enabled` did
  * meanwhile; `running` then starts and stops it.
  */
-export function usePillarEngine(
+export function useSceneEngine(
   canvasRef: RefObject<HTMLCanvasElement | null>,
-  { enabled, running }: EngineOptions,
+  { loadScene, enabled, running }: EngineOptions,
 ): EngineStatus {
   const [status, setStatus] = useState<EngineStatus>("idle");
-  const engineRef = useRef<PillarRenderer | null>(null);
+  const engineRef = useRef<SceneRenderer | null>(null);
   const qualityRef = useRef<RenderQuality | null>(null);
   const mountedRef = useRef(false);
   const requestedRef = useRef(false);
@@ -70,15 +71,15 @@ export function usePillarEngine(
       engineRef.current?.setQuality(next);
     };
 
-    import("./create-pillar-renderer")
-      .then(({ createPillarRenderer }) => {
+    Promise.all([import("./create-scene-renderer"), loadScene()])
+      .then(([{ createSceneRenderer }, scene]) => {
         const canvas = canvasRef.current;
         if (!mountedRef.current || !canvas || engineRef.current) return;
         qualityRef.current = initialQuality(deviceInfo());
-        engineRef.current = createPillarRenderer(canvas, {
+        engineRef.current = createSceneRenderer(canvas, {
+          scene,
           quality: qualityRef.current,
           color: TEAL,
-          pillarX: PILLAR_X,
           allowSoftware: softwareWebGLAllowed(),
           onSample: adapt,
           onFirstFrame: () => setStatus("ready"),
@@ -88,7 +89,7 @@ export function usePillarEngine(
         engineRef.current.setRunning(true);
       })
       .catch(fail);
-  }, [enabled, canvasRef]);
+  }, [enabled, canvasRef, loadScene]);
 
   useEffect(() => {
     if (status === "ready") engineRef.current?.setRunning(running);

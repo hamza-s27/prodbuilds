@@ -1,24 +1,32 @@
 "use client";
 
 import { Pause, Play } from "lucide-react";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useIdle } from "@/hooks/useIdle";
 import { useInView } from "@/hooks/useInView";
 import { useMotionAllowed } from "@/hooks/useMotionAllowed";
 import { usePageVisible } from "@/hooks/usePageVisible";
 import { prefersSavingData } from "@/lib/webgl/capability";
 import { deriveRenderState } from "./render-state";
-import { usePillarEngine } from "./use-pillar-engine";
+import type { HeroScene } from "./scenes/types";
+import { useSceneEngine } from "./use-scene-engine";
 import "./hero.css";
 
 const neverChanges = () => () => {};
 
+interface HeroVisualProps {
+  /** Imports the scene's shader; a module-level function, so it's stable. */
+  readonly loadScene: () => Promise<HeroScene>;
+  /** Static picture: shown first, and for good with reduced motion or no WebGL. */
+  readonly poster: ReactNode;
+}
+
 /**
  * Hero background: the static poster first (also the reduced-motion / no-WebGL
- * fallback), then the WebGL light pillar once the page is idle and the hero in
- * view. Pauses offscreen, in hidden tabs and on request.
+ * fallback), then the WebGL scene once the page is idle and the hero in view.
+ * Pauses offscreen, in hidden tabs and on request.
  */
-export function HeroVisual() {
+export function HeroVisual({ loadScene, poster }: HeroVisualProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { allowed } = useMotionAllowed();
@@ -31,7 +39,8 @@ export function HeroVisual() {
   const [userPaused, setUserPaused] = useState(false);
 
   const running = allowed && inView && pageVisible && !userPaused;
-  const status = usePillarEngine(canvasRef, {
+  const status = useSceneEngine(canvasRef, {
+    loadScene,
     enabled: allowed && idle && inView && webglSupported,
     running,
   });
@@ -47,8 +56,7 @@ export function HeroVisual() {
   return (
     <div ref={containerRef} className="hero-visual" data-render-state={renderState}>
       <div aria-hidden className="hero-visual__layer">
-        <div className="hero-poster__beam" />
-        <div className="hero-poster__bloom" />
+        <div className="hero-poster">{poster}</div>
         <canvas ref={canvasRef} className="hero-canvas" />
         <div className="hero-poster__scrim" />
       </div>

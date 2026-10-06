@@ -13,3 +13,14 @@ export function activeStage(progress: number, count: number): number {
   const clamped = Math.min(1, Math.max(0, progress));
   return Math.min(count, Math.floor(clamped * count));
 }
+
+/**
+ * Stage states when stages run one by one as each comes into view: the first
+ * `passed` have passed; the next runs only once it has been seen.
+ */
+export function pipelineStates(count: number, passed: number, seen: readonly boolean[]): StageState[] {
+  return Array.from({ length: count }, (_, index) => {
+    if (index < passed) return "passed";
+    return index === passed && seen[index] ? "running" : "queued";
+  });
+}

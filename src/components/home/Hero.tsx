@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { HeroVisual } from "@/components/hero/HeroVisual";
+import { PillarHero } from "@/components/hero/scene-heroes/PillarHero";
 import { LeadForm } from "@/components/lead-form/LeadForm";
 import { hero } from "@/content/home";
 import { principles } from "@/content/principles";
@@ -16,10 +16,10 @@ export function Hero() {
     <section aria-labelledby="hero-heading" data-hero className="relative isolate overflow-hidden">
       {/* No z-index here: the content below paints over the visual, while the pause button (z-20) stays clickable. */}
       <div className="absolute inset-y-0 right-0 w-full md:w-3/5">
-        <HeroVisual />
+        <PillarHero />
       </div>
       <div className="page-grid relative min-h-[calc(100svh-var(--header-h))] content-center gap-y-10 py-16 md:py-24">
-        <div className="col-span-12 md:col-span-8">
+        <div className="hero-copy col-span-12 md:col-span-8">
           <p className="hud text-primary">{hero.eyebrow}</p>
           <h1 id="hero-heading" className="display mt-6 text-(length:--text-hero)">
             {hero.heading}

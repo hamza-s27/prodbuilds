@@ -124,3 +124,50 @@ test(`home ships at most ${LANDING_JS_BUDGET_KB} kb of JS, including the lazy We
   console.log(`home JS incl. lazy chunks: ${gzippedKb.toFixed(1)} kb gz`);
   expect(gzippedKb).toBeLessThanOrEqual(LANDING_JS_BUDGET_KB);
 });
+
+const PAGE_HEROES = ["/services", "/how-we-work", "/contact", "/blog", "/privacy", "/terms"] as const;
+
+for (const path of PAGE_HEROES) {
+  test(`${path} runs its own hero scene, loaded lazily`, async ({ page }) => {
+    await allowSoftwareWebGL(page);
+    const requested = scriptUrls(page);
+    // The scripts the static HTML asks for (the live DOM also gains the lazy chunks' tags).
+    const html = await (await page.request.get(path)).text();
+    const initial = [...html.matchAll(/<script[^>]*\ssrc="([^"]+)"/g)].map(
+      ([, src]) => new URL(src!, "http://localhost").pathname,
+    );
+    await page.goto(path);
+
+    await expect(heroVisual(page)).toHaveAttribute("data-render-state", "running", { timeout: 15_000 });
+    expect(requested.filter((url) => !initial.includes(url)).length).toBeGreaterThan(0);
+  });
+}
+
+test("with reduced motion an inner-page hero keeps its concept still", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/services");
+
+  await expect(heroVisual(page)).toHaveAttribute("data-render-state", "off");
+  await expect(page.locator(".hero-poster__image")).toBeVisible();
+  await expect(page.locator(".hero-canvas")).toHaveCSS("opacity", "0");
+});
+
+test("the pause button takes a real click on an inner-page hero", async ({ page }) => {
+  await allowSoftwareWebGL(page);
+  await page.goto("/how-we-work");
+  await expect(heroVisual(page)).toHaveAttribute("data-render-state", "running", { timeout: 15_000 });
+  const button = page.getByRole("button", { name: "Pause animation" });
+  const box = (await button.boundingBox())!;
+  const centre = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+
+  // Nothing (the copy, a stacking context) may sit over it.
+  const onTop = await page.evaluate(
+    ({ x, y }) => document.elementFromPoint(x, y)?.closest("button")?.textContent,
+    centre,
+  );
+  expect(onTop).toContain("Pause animation");
+  await page.mouse.click(centre.x, centre.y);
+
+  await expect(button).toHaveAttribute("aria-pressed", "true");
+  await expect(heroVisual(page)).toHaveAttribute("data-render-state", "paused");
+});

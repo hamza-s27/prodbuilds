@@ -61,14 +61,38 @@
   transition: opacity var(--duration-slow) var(--ease-out-expo);
 }
 
-/* Once the pillar is drawing, it replaces the poster. */
+/* Once the scene is drawing, it replaces the poster. */
 .hero-visual:is([data-render-state="running"], [data-render-state="paused"]) .hero-canvas {
   opacity: 1;
 }
 
-.hero-visual:is([data-render-state="running"], [data-render-state="paused"])
-  :is(.hero-poster__beam, .hero-poster__bloom) {
+.hero-poster {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--duration-slow) ease;
+}
+
+.hero-visual:is([data-render-state="running"], [data-render-state="paused"]) .hero-poster {
   opacity: 0;
+}
+
+/* Concept stills: placed exactly as the cinemagraph shader draws them
+   (hero-stills.ts): cover at 70%, moved right on wide heroes. */
+.hero-visual__layer {
+  container-type: size;
+}
+
+.hero-poster__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 50%;
+}
+
+@container (min-aspect-ratio: 6 / 5) {
+  .hero-poster__image {
+    translate: calc(var(--still-shift, 0) * 100%) 0;
+  }
 }
 
 .hero-poster__scrim {
@@ -146,5 +170,37 @@
   }
   50% {
     transform: translateY(-5px);
+  }
+}
+
+/* Heroes fade out at the bottom, so the next section takes over softly and a
+   receding scene never shows a hard edge. (The picture only: never the pause button.) */
+[data-hero] .hero-visual__layer {
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+}
+
+/* Inner-page heroes (PageHead with a visual): full-bleed behind the heading,
+   dimmed on small screens where the text sits on top of the subject. */
+.page-hero .hero-visual__layer {
+  opacity: 0.45;
+}
+
+@media (min-width: 48rem) {
+  .page-hero .hero-visual__layer {
+    opacity: 1;
+  }
+}
+
+/* Inner pages: the copy sits over the left of the picture from 768px up, so
+   the scrim holds it dark well past the text column. */
+@media (min-width: 48rem) {
+  .page-hero .hero-poster__scrim {
+    background: linear-gradient(
+      to right,
+      var(--brand-bg) 0%,
+      color-mix(in oklab, var(--brand-bg) 85%, transparent) 30%,
+      color-mix(in oklab, var(--brand-bg) 45%, transparent) 55%,
+      transparent 78%
+    );
   }
 }
