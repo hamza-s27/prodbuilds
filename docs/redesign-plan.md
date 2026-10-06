@@ -873,3 +873,12 @@ Shipped as planned, with these deviations:
 - Sections stay in normal flow (nothing pinned); legacy ids and `aria-labelledby` unchanged.
 - Review fixes before commit: the active line moved from the centre to 30% (at 1440×2000 a deep link to `#product` marked Backend and `#ai` marked nothing); the sticky nav is capped to the viewport height and scrolls inside itself (on screens under ~545px tall the lower layers were unreachable); the readout wraps at 1024px; the needle hides while the AI rail is active; the scroll-linked progress fill was dropped (it disagreed with the needle); no flash of plain text between readout changes; a stable observer key.
 - Tests: `services-dive.spec.ts` (deep links for every layer, link navigation, stickiness, keyboard focus not under the header, CLS, reduced motion, no-JS, 1440×2000 and 1024×480 viewports, glyphs below 1024px).
+
+### Phase 5 outcome (2026-10-07)
+
+- `/how-we-work`: the timeline beam fills to the viewport centre as you read and each step's node lights as it's passed, with CSS scroll timelines only (`view(block 0px)`: the default inset would take the page's `scroll-padding-top` and run ~100 px ahead). No `motion`/tracing-beam runtime. Static full beam with reduced motion, the toggle off or no support (Firefox).
+- `PrinciplesGrid` is a real bento (4·2 / 2·4 / 3·3) and the section has `id="principles"`. FAQ height animation and icon rotation are now gated on the toggle as well as the OS setting; closed answers are in the HTML (e2e-checked).
+- `/contact`: "What happens next" as a static pipeline.
+- Posts: previous/next links (`PostPager`); an "On this page" list from 1280px (`PostToc`, before the article in the DOM, `aria-current="location"`), driven by `useScrollSpy`, which reads real heading positions on each observer trigger so instant jumps can't leave it stale and a short last section still activates at the page end; a copy button per code block (`CopyCodeButton` island, live region outside the button). Diagram draw-in was left out.
+- `budgets.json` caps `/blog/*` at 136 kb initial JS, so an animation runtime on posts fails the build check (posts 132.9 kb); a prod e2e test asserts posts load no script after the initial ones.
+- Test infra: tests tagged `@smoke` inside `desktopOnly()` files now really run on firefox/webkit; the local static server keeps idle sockets open 65 s (Node's 5 s default raced Firefox's connection reuse and occasionally stalled `load`).

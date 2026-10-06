@@ -58,13 +58,21 @@ export default function ContactPage() {
               {CONTACT_EMAIL}
             </a>
             <h2 className="hud mt-14">{next.heading}</h2>
-            <ol className="mt-6 space-y-5">
+            {/* A static pipeline: nodes joined by a hairline, the first one live. */}
+            <ol className="mt-6">
               {next.steps.map((step, index) => (
-                <li key={step.strong} className="flex gap-4 text-body">
-                  <span aria-hidden className="hud mt-1 text-primary">
-                    {String(index + 1).padStart(2, "0")}
+                <li
+                  key={step.strong}
+                  className="relative pb-7 pl-9 text-body before:absolute before:top-5 before:bottom-0 before:left-[5px] before:w-px before:bg-gradient-to-b before:from-primary before:to-border last:pb-0 last:before:hidden"
+                >
+                  <span
+                    aria-hidden
+                    className={`absolute top-1.5 left-0 size-[11px] rounded-full border-2 border-primary ${index === 0 ? "bg-primary shadow-[0_0_10px_var(--brand-teal-glow)]" : "bg-background"}`}
+                  />
+                  <span aria-hidden className="hud block text-primary">
+                    Step {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span>
+                  <span className="mt-1 block">
                     <strong className="font-semibold text-foreground">{step.strong}</strong>
                     {step.rest}
                   </span>

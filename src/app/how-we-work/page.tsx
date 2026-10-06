@@ -29,7 +29,7 @@ export default function HowWeWorkPage() {
         />
         <ProcessTimeline steps={processSteps} />
 
-        <section aria-labelledby="principles-heading" className="py-(--space-section)">
+        <section id="principles" aria-labelledby="principles-heading" className="py-(--space-section)">
           <SectionHead
             index="01"
             label={howWeWorkPage.principles.label}

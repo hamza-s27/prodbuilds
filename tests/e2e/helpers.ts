@@ -4,11 +4,17 @@ import inventory from "../fixtures/legacy/inventory.json";
 export type LegacyPage = (typeof inventory.pages)[number];
 export const legacyPages: readonly LegacyPage[] = inventory.pages;
 
-/** Viewport-independent checks only need one project. */
+const CROSS_BROWSER = new Set(["firefox", "webkit"]);
+
+/**
+ * Viewport-independent checks only need one Chromium project. Tests tagged
+ * @smoke also run on the firefox and webkit projects (desktop-sized).
+ */
 export function desktopOnly(): void {
   // Playwright requires a destructuring pattern for the fixtures argument.
   test.beforeEach(({}, testInfo) => {
-    testInfo.skip(testInfo.project.name !== "desktop-1440", "runs on desktop-1440 only");
+    const isSmokeRun = CROSS_BROWSER.has(testInfo.project.name) && testInfo.tags.includes("@smoke");
+    testInfo.skip(testInfo.project.name !== "desktop-1440" && !isSmokeRun, "runs on desktop-1440 only");
   });
 }
 

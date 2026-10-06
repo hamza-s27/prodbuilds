@@ -118,6 +118,12 @@ const server = createServer((req, res) => {
   }
 });
 
+// Node closes idle keep-alive sockets after 5 s, racing browsers that reuse
+// them (Firefox then waits on a dead socket, and `load` never fires). CDNs keep
+// them open far longer; match that.
+server.keepAliveTimeout = 65_000;
+server.headersTimeout = 66_000;
+
 server.listen(PORT, () => {
   console.log(`[serve-static] ${ROOT} on http://localhost:${PORT}`);
 });

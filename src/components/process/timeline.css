@@ -1,0 +1,69 @@
+/* /how-we-work beam. Static (no support, reduced motion, toggle off): a full
+   gradient beam. With motion: a dim track that fills to the viewport centre as
+   you read, and each step's node lights as it passes. CSS scroll timelines
+   only: no JavaScript. */
+.timeline-beam {
+  background: linear-gradient(to bottom, var(--brand-teal), var(--brand-teal-dim), transparent);
+}
+
+.timeline-beam-fill,
+.timeline-node::after {
+  display: none;
+}
+
+.timeline-node::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: var(--brand-teal);
+  box-shadow: 0 0 12px var(--brand-teal-glow);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) {
+      & .timeline-beam {
+        background: var(--brand-border);
+      }
+      & .timeline-beam-fill {
+        display: block;
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, var(--brand-teal), var(--brand-teal-dim));
+        transform-origin: top;
+        animation: timeline-fill linear both;
+        /* Zero inset: the default would take the page's scroll-padding-top and run ahead. */
+        animation-timeline: view(block 0px);
+        /* From the beam's top reaching mid-viewport to its bottom leaving it. */
+        animation-range: cover 50vh cover calc(100% - 50vh);
+      }
+      & .timeline-node::after {
+        display: block;
+        animation: timeline-node-on linear both;
+        animation-timeline: view(block 0px);
+        animation-range: cover 50vh cover calc(50vh + 12px);
+      }
+    }
+  }
+}
+
+@keyframes timeline-fill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes timeline-node-on {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

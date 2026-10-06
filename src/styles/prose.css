@@ -101,6 +101,48 @@
   line-height: 1.7;
 }
 
+.prose .code-block {
+  position: relative;
+}
+
+.prose .code-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  min-height: 1.75rem;
+  padding: 0 0.625rem;
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-hud);
+  background: var(--brand-surface-2);
+  color: var(--brand-body);
+  transition:
+    border-color var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.prose .code-copy:hover {
+  border-color: var(--brand-teal-dim);
+  color: var(--brand-text);
+}
+
+/* Touch: the button is always shown, so make room for it above the first line. */
+@media (hover: none) {
+  .prose .code-block:has(.code-copy) pre {
+    padding-top: 2.75rem;
+  }
+}
+
+/* With a pointer: shown on hover or keyboard focus only, so it rarely covers code. */
+@media (hover: hover) {
+  .prose .code-copy {
+    opacity: 0;
+  }
+  .prose .code-block:hover .code-copy,
+  .prose .code-block:focus-within .code-copy {
+    opacity: 1;
+  }
+}
+
 .prose .anchor-link {
   color: var(--brand-teal);
   font-family: var(--font-mono);

@@ -25,10 +25,7 @@ export function FaqList({ items }: FaqListProps) {
             <h3 className="text-(length:--text-h3) font-semibold tracking-tight transition-colors group-hover:text-primary">
               {item.question}
             </h3>
-            <Plus
-              aria-hidden
-              className="mt-1 size-5 shrink-0 text-primary transition-transform duration-(--duration-normal) ease-(--ease-out-expo) group-open:rotate-45"
-            />
+            <Plus aria-hidden className="faq-icon mt-1 size-5 shrink-0 text-primary group-open:rotate-45" />
           </summary>
           <p className="max-w-2xl pb-8 text-body">
             <RichTextView text={item.answer} />

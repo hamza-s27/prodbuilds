@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import type { ComponentPropsWithoutRef } from "react";
 import { H2 } from "@/components/blog/mdx/AnchorHeading";
+import { CopyCodeButton } from "@/components/blog/mdx/CopyCodeButton";
 import {
   Callout,
   Caption,
@@ -19,9 +20,14 @@ import { LockOverrunDiagram } from "@/components/blog/diagrams/LockOverrunDiagra
 import { PollingGapDiagram } from "@/components/blog/diagrams/PollingGapDiagram";
 import { SoftCloseDiagram } from "@/components/blog/diagrams/SoftCloseDiagram";
 
-/** Code blocks are focusable so keyboard users can scroll them. */
+/** Code blocks are focusable so keyboard users can scroll them, with a copy button once hydrated. */
 function Pre(props: ComponentPropsWithoutRef<"pre">) {
-  return <pre tabIndex={0} {...props} />;
+  return (
+    <div className="code-block">
+      <pre tabIndex={0} {...props} />
+      <CopyCodeButton />
+    </div>
+  );
 }
 
 const components: MDXComponents = {

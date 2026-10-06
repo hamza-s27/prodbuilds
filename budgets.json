@@ -1,5 +1,14 @@
 {
-  "$comment": "Gzipped kb a modern browser loads up front per route (noModule polyfills excluded). Framework baseline (empty Next 16 + React 19.2 page, Turbopack) measured 2026-10-05 at 130.3 kb. Landing rule: <150 kb total; lazy chunks (ogl, gsap, lenis) are asserted in Playwright so that initial + lazy stays <= 150 kb on / and /services. See docs/redesign-plan.md §13.",
+  "$comment": "Gzipped kb a modern browser loads up front per route (noModule polyfills excluded). Framework baseline (empty Next 16 + React 19.2 page, Turbopack) measured 2026-10-05 at 130.3 kb. Landing rule: <150 kb total; lazy chunks (ogl, gsap, lenis) are asserted in Playwright so that initial + lazy stays <= 150 kb on / and /services. See docs/redesign-plan.md \u00a713.",
   "baselineKb": 130.3,
-  "default": { "initialJsKb": 140, "cssKb": 30 }
+  "default": {
+    "initialJsKb": 140,
+    "cssKb": 30
+  },
+  "routes": {
+    "/blog/*": {
+      "$comment": "Posts ship no animation runtime: framework + tiny islands (TOC, copy buttons). motion's smallest set (~5 kb) or gsap would break this.",
+      "initialJsKb": 136
+    }
+  }
 }

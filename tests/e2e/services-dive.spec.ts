@@ -108,11 +108,14 @@ test.describe("from 1024px", () => {
       await page.goto("/services#scaling");
 
       await expect(stackNav(page)).toHaveAttribute("data-active-layer", "scaling");
-      const running = await page.evaluate(async () => {
-        for (let frame = 0; frame < 2; frame += 1) await new Promise(requestAnimationFrame);
-        return document.getAnimations().filter((animation) => animation.playState === "running").length;
-      });
-      expect(running).toBe(0);
+      // The layer change starts 0.01 ms transitions (globals.css); they must settle, nothing may keep running.
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () => document.getAnimations().filter((animation) => animation.playState === "running").length,
+          ),
+        )
+        .toBe(0);
     });
   });
 

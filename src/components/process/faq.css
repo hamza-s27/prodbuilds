@@ -1,16 +1,26 @@
-/* Height animation for native <details>, where supported. */
+/* Height animation for native <details>, where supported and motion is allowed. */
 @supports selector(::details-content) {
-  .faq-item {
-    interpolate-size: allow-keywords;
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) {
+      & .faq-item {
+        interpolate-size: allow-keywords;
+      }
+      & .faq-item::details-content {
+        block-size: 0;
+        overflow: hidden;
+        transition:
+          block-size var(--duration-normal) var(--ease-out-expo),
+          content-visibility var(--duration-normal) allow-discrete;
+      }
+      & .faq-item[open]::details-content {
+        block-size: auto;
+      }
+    }
   }
-  .faq-item::details-content {
-    block-size: 0;
-    overflow: hidden;
-    transition:
-      block-size var(--duration-normal) var(--ease-out-expo),
-      content-visibility var(--duration-normal) allow-discrete;
-  }
-  .faq-item[open]::details-content {
-    block-size: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="off"]) .faq-icon {
+    transition: rotate var(--duration-normal) var(--ease-out-expo);
   }
 }
