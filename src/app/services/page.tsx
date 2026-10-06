@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { PageHead } from "@/components/layout/PageHead";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { ServiceLayerSection } from "@/components/services/ServiceLayerSection";
+import { StackDive } from "@/components/services/StackDive";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { servicesPage } from "@/content/inner-pages";
 import { pages } from "@/content/pages";
@@ -23,9 +23,7 @@ export default function ServicesPage() {
           title={servicesPage.heading}
           lead={servicesPage.lead}
         />
-        {orderedByDepth(services).map((service) => (
-          <ServiceLayerSection key={service.id} service={service} />
-        ))}
+        <StackDive services={orderedByDepth(services)} />
         <CtaBand heading={servicesPage.cta.heading} lead={servicesPage.cta.lead} />
       </main>
     </>

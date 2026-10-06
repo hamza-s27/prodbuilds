@@ -12,8 +12,8 @@ interface LayerGlyphProps {
 
 /**
  * Small static diagram of the stack (five slabs plus the AI rail) with the
- * current layer highlighted. Server-rendered; the sticky animated visual
- * replaces it from 1024px in Phase 4.
+ * current layer highlighted. Server-rendered; below 1024px only (the sticky
+ * StackVisual takes over from there).
  */
 export function LayerGlyph({ layer }: LayerGlyphProps) {
   const height = SLAB_COUNT * (SLAB_HEIGHT + SLAB_GAP) - SLAB_GAP;

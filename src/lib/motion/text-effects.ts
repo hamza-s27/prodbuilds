@@ -3,6 +3,13 @@
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
+/** How often a decrypt scramble changes, so it reads as flicker rather than noise. */
+export const SCRAMBLE_STEP_MS = 60;
+
+/** The scramble tick for a decrypt `durationMs` long, at `progress`. */
+export const scrambleTick = (progress: number, durationMs: number): number =>
+  Math.floor((progress * durationMs) / SCRAMBLE_STEP_MS);
+
 export const easeOutCubic = (t: number): number => 1 - (1 - t) ** 3;
 
 /** NumberTicker: counts from 0 up to `to`, easing out. */

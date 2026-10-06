@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { countFrame, decryptFrame, easeOutCubic } from "./text-effects";
+import { countFrame, decryptFrame, easeOutCubic, scrambleTick } from "./text-effects";
+
+describe("scrambleTick", () => {
+  it("advances once per scramble step", () => {
+    expect(scrambleTick(0, 600)).toBe(0);
+    expect(scrambleTick(0.5, 600)).toBe(5);
+    expect(scrambleTick(1, 600)).toBe(10);
+  });
+});
 
 describe("easeOutCubic", () => {
   it("starts at 0, ends at 1 and front-loads the change", () => {

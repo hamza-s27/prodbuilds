@@ -864,3 +864,12 @@ Shipped as planned, with these deviations:
 - Border beam on the lead form's email field: rotating conic gradient masked to a 1 px ring, only on hover/focus.
 - Review fixes before commit: pipeline status labels share one grid cell (no wrap/CLS mid-run at 1024 px, e2e-checked); re-enabling motion mid-run restarts cleanly instead of flashing a stale frame; the in-view hook reads the latest IntersectionObserver entry; facts print their real values; the local static server drops `upgrade-insecure-requests` (WebKit applies it to `http://localhost`; production is https-only).
 - Tests: `reduced-motion.spec.ts` (OS setting and toggle off: final content, no running animations, axe) and `home-motion.spec.ts` (start states, runs, hover pause, beam, axe with motion on).
+
+### Phase 4 outcome (2026-10-07)
+
+- Built as approved in §13: CSS `position: sticky` + an IntersectionObserver, no GSAP or Lenis. `/services` JS 134.3 kb gz.
+- `StackVisual` is a real "jump to layer" `<nav aria-label="Layers of the stack">`: five slab links plus the AI rail, `aria-current` on the layer whose section crosses a line 30% down the viewport (`useActiveSection`), a depth-gauge needle, a decrypting HUD readout (`useDecryptedText`) and beams from the rail into L0/L1 when AI is active. Works as plain anchors without JavaScript.
+- Deviation from the original plan: the sticky navigation also shows with reduced motion or the toggle off (state changes are instant; only the transitions are gated). Below 1024px each section keeps its server-rendered `LayerGlyph`, and the observer and decrypt don't run.
+- Sections stay in normal flow (nothing pinned); legacy ids and `aria-labelledby` unchanged.
+- Review fixes before commit: the active line moved from the centre to 30% (at 1440×2000 a deep link to `#product` marked Backend and `#ai` marked nothing); the sticky nav is capped to the viewport height and scrolls inside itself (on screens under ~545px tall the lower layers were unreachable); the readout wraps at 1024px; the needle hides while the AI rail is active; the scroll-linked progress fill was dropped (it disagreed with the needle); no flash of plain text between readout changes; a stable observer key.
+- Tests: `services-dive.spec.ts` (deep links for every layer, link navigation, stickiness, keyboard focus not under the header, CLS, reduced motion, no-JS, 1440×2000 and 1024×480 viewports, glyphs below 1024px).
